@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import au.com.addstar.monolith.chat.ChatMessage;
+
 
 public class MonoPlayer
 {
@@ -57,6 +59,11 @@ public class MonoPlayer
 			mBossDisplay.onPlayerAdd(this);
 	}
 	
+	public void sendMessage(ChatMessage... message)
+	{
+		for(ChatMessage m : message)
+			m.send(mPlayer);
+	}
 	
 	protected void onUpdate()
 	{
