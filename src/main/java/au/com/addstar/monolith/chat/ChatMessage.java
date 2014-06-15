@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Achievement;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_7_R3.CraftStatistic;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R3.inventory.CraftItemStack;
@@ -223,6 +224,13 @@ public class ChatMessage
 		return this;
 	}
 	
+	public void send(CommandSender sender)
+	{
+		if(sender instanceof Player)
+			send((Player)sender);
+		else
+			sender.sendMessage(toPlain());
+	}
 	public void send(Player player)
 	{
 		((CraftPlayer)player).getHandle().sendMessage(toComponents());
@@ -231,6 +239,45 @@ public class ChatMessage
 	private IChatBaseComponent[] toComponents()
 	{
 		return mComponents.toArray(new IChatBaseComponent[mComponents.size()]);
+	}
+	
+	private String[] toPlain()
+	{
+		String[] lines = new String[mComponents.size()];
+		int i = 0;
+		for(IChatBaseComponent root : mComponents)
+		{
+			StringBuilder line = new StringBuilder();
+			toPlain(root, line);
+			lines[i++] = line.toString();
+		}
+		
+		return lines;
+	}
+	
+	@SuppressWarnings( "unchecked" )
+	private void toPlain(IChatBaseComponent root, StringBuilder builder)
+	{
+		for(IChatBaseComponent component : (Iterable<IChatBaseComponent>)root)
+		{
+			ChatModifier mod = component.getChatModifier();
+			
+			builder.append(ChatColor.COLOR_CHAR);
+			builder.append(mod.a().getChar());
+			
+			if(mod.b()) // bold
+				builder.append(ChatColor.BOLD);
+			if(mod.c()) // Italic
+				builder.append(ChatColor.ITALIC);
+			if(mod.d()) // Strikethrough
+				builder.append(ChatColor.STRIKETHROUGH);
+			if(mod.e()) // Underline
+				builder.append(ChatColor.UNDERLINE);
+			if(mod.f()) // Magic
+				builder.append(ChatColor.MAGIC);
+			
+			builder.append(component.c());
+		}
 	}
 	
 	private static class Parser
