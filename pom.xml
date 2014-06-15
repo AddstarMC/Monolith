@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>au.com.addstar</groupId>
+  <artifactId>monolith</artifactId>
+  <version>b${env.BUILD_NUMBER}</version>
+  <name>Monolith</name>
+
+  <repositories>
+    <!-- Repository for Bukkit -->
+    <repository>
+      <id>md_5</id>
+      <url>http://repo.md-5.net/content/groups/public/</url>
+    </repository>
+
+    <!-- Addstar repo -->
+    <repository>
+      <id>addstar-repo</id>
+      <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
+      <snapshots>
+      	<enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>addstar-snapshot-repo</id>
+      <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
+      <snapshots>
+      	<enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+    
+    
+    <!-- Other repositories -->
+    <repository>
+      <id>maven-central</id>
+      <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.7.9-R0.3-SNAPSHOT</version>
+    </dependency>        
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <targetPath>.</targetPath>
+        <filtering>true</filtering>
+        <directory>${basedir}/src/main/resources</directory>
+      </resource>
+    </resources>
+
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
