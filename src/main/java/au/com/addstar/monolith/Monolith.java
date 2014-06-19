@@ -1,5 +1,9 @@
 package au.com.addstar.monolith;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -36,5 +40,19 @@ public class Monolith extends JavaPlugin
 			if(perm instanceof CommandSender && perm.hasPermission(permission))
 				message.send((CommandSender)perm);
 		}
+	}
+
+	public static List<String> matchStrings(String prefix, Collection<String> values)
+	{
+		ArrayList<String> matches = new ArrayList<String>();
+		
+		prefix = prefix.toLowerCase();
+		for(String value : values)
+		{
+			if(value.toLowerCase().startsWith(prefix))
+				matches.add(value);
+		}
+		
+		return matches;
 	}
 }
