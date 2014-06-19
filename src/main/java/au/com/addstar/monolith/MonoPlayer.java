@@ -2,9 +2,13 @@ package au.com.addstar.monolith;
 
 import java.util.WeakHashMap;
 
+import net.minecraft.server.v1_7_R3.PacketPlayOutWorldParticles;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import au.com.addstar.monolith.chat.ChatMessage;
 
@@ -85,5 +89,17 @@ public class MonoPlayer
 				}
 			}, 5);
 		}
+	}
+	
+	public void playParticleEffect(Location location, ParticleEffect effect, float speed, int count)
+	{
+		playParticleEffect(location, effect, speed, count, new Vector());
+	}
+	
+	public void playParticleEffect(Location location, ParticleEffect effect, float speed, int count, Vector offset)
+	{
+		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect.getId(), (float)location.getX(), (float)location.getY(), (float)location.getZ(), (float)offset.getX(), (float)offset.getY(), (float)offset.getZ(), speed, count);
+		if(mPlayer.getLocation().distanceSquared(location) < 256)
+			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
 	}
 }
