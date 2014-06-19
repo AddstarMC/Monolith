@@ -2,8 +2,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.addstar</groupId>
   <artifactId>Monolith</artifactId>
-  <version>b${env.BUILD_NUMBER}</version>
+  <version>1.0.0-SNAPSHOT</version>
   <name>Monolith</name>
+  
+  <properties>
+    <pluginversion>1.0.0.${env.BUILD_NUMBER}</pluginversion>
+  </properties>
 
   <repositories>
     <!-- Repository for Bukkit -->

@@ -1,6 +1,6 @@
 name: Monolith
 description: A custom API for handling many common tasks as well as some more unique ones.
 author: Schmoller
-version: ${project.version}
+version: ${pluginversion}
 
 main: au.com.addstar.monolith.Monolith
