@@ -102,4 +102,23 @@ public class MonoPlayer
 		if(mPlayer.getLocation().distanceSquared(location) < 256)
 			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return mPlayer.hashCode();
+	}
+	
+	@Override
+	public boolean equals( Object obj )
+	{
+		return mPlayer.equals(obj);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "MonoPlayer: " + mPlayer.getName();
+	}
+	
 }

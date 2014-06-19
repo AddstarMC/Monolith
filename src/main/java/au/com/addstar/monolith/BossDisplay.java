@@ -89,6 +89,8 @@ public class BossDisplay
 	{
 		for(DragonDisplay display : mDragons.values())
 			display.update();
+		
+		mHasChanged = false;
 	}
 	
 	public void update(MonoPlayer player)
@@ -122,10 +124,7 @@ public class BossDisplay
 			Location loc = mPlayer.getLocation();
 			
 			if(mHasChanged)
-			{
 				updateStats();
-				mHasChanged = false;
-			}
 			
 			if(mLocation.getWorld() != loc.getWorld())
 				spawn();
@@ -176,6 +175,12 @@ public class BossDisplay
 			mDragon.setHealth(toHealth());
 			PacketPlayOutEntityMetadata packet = new PacketPlayOutEntityMetadata(ENTITY_DRAGON_ID, mDragon.getDataWatcher(), true);
 			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
+		}
+		
+		@Override
+		public String toString()
+		{
+			return "DDisplay{" + mPlayer.getName() + "}";
 		}
 	}
 }
