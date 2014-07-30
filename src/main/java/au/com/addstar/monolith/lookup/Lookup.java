@@ -28,7 +28,7 @@ public class Lookup
 		try
 		{
 			if(!nameFile.exists())
-				mNameDB.load(plugin.getResource("/items.csv"));
+				mNameDB.load(plugin.getResource("items.csv"));
 			else
 				mNameDB.load(nameFile);
 		}
@@ -57,9 +57,9 @@ public class Lookup
 	/**
 	 * Finds a matching ItemStack that is known by the specified name.
 	 * @param name The name to search for
-	 * @return An ItemStack object with 0 size, or null
+	 * @return An MaterialDefinition object, or null
 	 */
-	public static ItemStack findItemByName(String name)
+	public static MaterialDefinition findItemByName(String name)
 	{
 		return mNameDB.getByName(name);
 	}
@@ -68,12 +68,12 @@ public class Lookup
 	 * Finds the names registered against this item.
 	 * The returned names can all be used to lookup this item using {@link #findItemByName(String)}.
 	 * If the actual translated name is wanted, use {@link StringTranslator#getName(ItemStack)}.
-	 * @param item The item to look for
+	 * @param material The material to look for
 	 * @return The names this item is registered against, or an empty set
 	 */
-	public static Set<String> findNameByItem(ItemStack item)
+	public static Set<String> findNameByItem(MaterialDefinition material)
 	{
-		Set<String> names = mNameDB.getById(item);
+		Set<String> names = mNameDB.getById(material);
 		if(names == null)
 			return Collections.emptySet();
 		else

@@ -11,6 +11,7 @@ import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import au.com.addstar.monolith.chat.ChatMessage;
+import au.com.addstar.monolith.lookup.Lookup;
 
 public class Monolith extends JavaPlugin
 {
@@ -25,6 +26,7 @@ public class Monolith extends JavaPlugin
 	public void onEnable()
 	{
 		mInstance = this;
+		Lookup.initialize(this);
 		Bukkit.getPluginManager().registerEvents(new Listeners(), this);
 	}
 

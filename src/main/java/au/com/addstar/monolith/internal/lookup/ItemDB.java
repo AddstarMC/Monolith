@@ -10,41 +10,35 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+
+import au.com.addstar.monolith.lookup.MaterialDefinition;
 
 import com.google.common.collect.HashMultimap;
 
 public class ItemDB
 {
-	private HashMap<String, ItemStack> mNameMap;
-	private HashMultimap<ItemStack, String> mIdMap;
+	private HashMap<String, MaterialDefinition> mNameMap;
+	private HashMultimap<MaterialDefinition, String> mIdMap;
 	
 	public ItemDB()
 	{
-		mNameMap = new HashMap<String, ItemStack>();
+		mNameMap = new HashMap<String, MaterialDefinition>();
 		mIdMap = HashMultimap.create();
 	}
 	
-	public ItemStack getByName(String name)
+	public MaterialDefinition getByName(String name)
 	{
 		return mNameMap.get(name.toLowerCase());
 	}
 	
-	public Set<String> getById(ItemStack item)
+	public Set<String> getById(MaterialDefinition item)
 	{
-		if(item.getAmount() == 0)
-			return mIdMap.get(item);
-		else
-		{
-			ItemStack stack = item.clone();
-			stack.setAmount(0);
-			return mIdMap.get(stack);
-		}
+		return mIdMap.get(item);
 	}
 	
 	public Set<String> getById(Material material, int data)
 	{
-		return getById(new ItemStack(material, 0, (short)data));
+		return getById(new MaterialDefinition(material, (short)data));
 	}
 	
 	public void load(File file) throws IOException
@@ -108,9 +102,9 @@ public class ItemDB
 				continue;
 			}
 			
-			ItemStack stack = new ItemStack(material, 0, (short)data);
-			mNameMap.put(name.toLowerCase(), stack);
-			mIdMap.put(stack, name);
+			MaterialDefinition def = new MaterialDefinition(material, (short)data);
+			mNameMap.put(name.toLowerCase(), def);
+			mIdMap.put(def, name);
 		}
 	}
 }
