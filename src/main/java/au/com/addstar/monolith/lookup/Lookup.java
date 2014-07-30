@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
-import net.minecraft.server.v1_7_R3.Item;
+import net.minecraft.server.v1_7_R4.Item;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -47,11 +47,11 @@ public class Lookup
 	 */
 	public static Material findByMinecraftName(String name)
 	{
-		Item item = (Item)Item.REGISTRY.a(name);
+		Item item = (Item)Item.REGISTRY.get(name);
 		if(item == null)
 			return null;
 		
-		return Material.getMaterial(Item.b(item));
+		return Material.getMaterial(Item.getId(item));
 	}
 	
 	/**
