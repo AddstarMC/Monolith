@@ -8,14 +8,20 @@ import java.util.Set;
 import net.minecraft.server.v1_7_R4.Item;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import au.com.addstar.monolith.Monolith;
+import au.com.addstar.monolith.internal.lookup.EnchantDB;
 import au.com.addstar.monolith.internal.lookup.ItemDB;
+import au.com.addstar.monolith.internal.lookup.PotionsDB;
 
 public class Lookup
 {
 	private static ItemDB mNameDB;
+	private static EnchantDB mEnchantDB;
+	private static PotionsDB mPotionDB;
 
 	/**
 	 * Initializes lookup systems. This should not be called by users of this API
@@ -35,6 +41,38 @@ public class Lookup
 		catch(IOException e)
 		{
 			plugin.getLogger().severe("Unable to load item name database:");
+			e.printStackTrace();
+		}
+		
+		mEnchantDB = new EnchantDB();
+		nameFile = new File(plugin.getDataFolder(), "enchantments.csv");
+		
+		try
+		{
+			if(!nameFile.exists())
+				mEnchantDB.load(plugin.getResource("enchantments.csv"));
+			else
+				mEnchantDB.load(nameFile);
+		}
+		catch(IOException e)
+		{
+			plugin.getLogger().severe("Unable to load enchantment name database:");
+			e.printStackTrace();
+		}
+		
+		mPotionDB = new PotionsDB();
+		nameFile = new File(plugin.getDataFolder(), "potions.csv");
+		
+		try
+		{
+			if(!nameFile.exists())
+				mPotionDB.load(plugin.getResource("potions.csv"));
+			else
+				mPotionDB.load(nameFile);
+		}
+		catch(IOException e)
+		{
+			plugin.getLogger().severe("Unable to load potion effect name database:");
 			e.printStackTrace();
 		}
 	}
@@ -93,5 +131,47 @@ public class Lookup
 			return null;
 		
 		return Item.REGISTRY.c(item);
+	}
+	
+	/**
+	 * Finds the {@link PotionEffectType} that is known by the specified name.
+	 * @param name The name of the potion effect
+	 * @return The PotionEffectType, or null
+	 */
+	public static PotionEffectType findPotionEffectByName(String name)
+	{
+		return mPotionDB.getByName(name);
+	}
+	
+	/**
+	 * Finds the names registered against this potion effect.
+	 * The returned names can all be used to lookup this potion effect using {@link #findPotionEffectByName(String)}.
+	 * @param type The potion effect to look for
+	 * @return The names this potion effect is registered against, or an empty set
+	 */
+	public static Set<String> findNameByPotionEffect(PotionEffectType type)
+	{
+		return mPotionDB.getByEffect(type);
+	}
+	
+	/**
+	 * Finds the {@link Enchantment} that is known by the specified name.
+	 * @param name The name of the enchantment
+	 * @return The Enchantment, or null
+	 */
+	public static Enchantment findEnchantmentByName(String name)
+	{
+		return mEnchantDB.getByName(name);
+	}
+	
+	/**
+	 * Finds the names registered against this enchantment
+	 * The returned names can all be used to lookup this enchantment using {@link #findEnchantmentByName(String)}.
+	 * @param type The enchantment to look for
+	 * @return The names this enchantment is registered against, or an empty set
+	 */
+	public static Set<String> findNameByEnchantment(Enchantment enchant)
+	{
+		return mEnchantDB.getByEnchant(enchant);
 	}
 }
