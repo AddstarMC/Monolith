@@ -79,4 +79,19 @@ public class Lookup
 		else
 			return names;
 	}
+	
+	/**
+	 * Finds the minecraft name of the specified material
+	 * @param material The material to look for
+	 * @return The minecraft name, or null of none was found
+	 */
+	public static String findMinecraftNameByItem(Material material)
+	{
+		@SuppressWarnings( "deprecation" )
+        Item item = Item.getById(material.getId());
+		if (item == null)
+			return null;
+		
+		return Item.REGISTRY.c(item);
+	}
 }

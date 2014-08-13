@@ -24,7 +24,9 @@ public class StringTranslator
 	public static String getName(ItemStack item)
 	{
 		net.minecraft.server.v1_7_R4.ItemStack base = CraftItemStack.asNMSCopy(item);
-		return base.getName();
+		if(base != null && base.getItem() != null)
+			return base.getName();
+		return "Unknown";
 	}
 	
 	public static String getName(Entity entity)
