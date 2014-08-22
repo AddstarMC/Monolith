@@ -90,10 +90,10 @@ public class ItemDB
 			if(material == null)
 				continue;
 			
-			byte data = 0;
+			short data = 0;
 			try
 			{
-				data = Byte.parseByte(parts[2]);
+				data = Short.parseShort(parts[2]);
 				if(data < 0)
 					continue;
 			}
@@ -102,7 +102,7 @@ public class ItemDB
 				continue;
 			}
 			
-			MaterialDefinition def = new MaterialDefinition(material, (short)data);
+			MaterialDefinition def = new MaterialDefinition(material, data);
 			mNameMap.put(name.toLowerCase(), def);
 			mIdMap.put(def, name);
 		}
