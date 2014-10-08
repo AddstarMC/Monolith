@@ -164,7 +164,7 @@ public class BossDisplay
 		
 		private void positionDragon()
 		{
-			PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(ENTITY_DRAGON_ID, mLocation.getBlockX() * 32, -500 * 32, mLocation.getBlockZ() * 32, (byte)0, (byte)0);
+			PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(ENTITY_DRAGON_ID, mLocation.getBlockX() * 32, -500 * 32, mLocation.getBlockZ() * 32, (byte)0, (byte)0, false);
 			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
 		}
 		
