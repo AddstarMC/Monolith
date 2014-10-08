@@ -1,6 +1,6 @@
 package au.com.addstar.monolith;
 
-import java.util.WeakHashMap;
+import java.util.HashMap;
 
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
@@ -15,7 +15,7 @@ import au.com.addstar.monolith.chat.ChatMessage;
 
 public class MonoPlayer
 {
-	private static final WeakHashMap<Player, MonoPlayer> mPlayers = new WeakHashMap<Player, MonoPlayer>();
+	private static final HashMap<Player, MonoPlayer> mPlayers = new HashMap<Player, MonoPlayer>();
 	
 	public static MonoPlayer getPlayer(Player player)
 	{
@@ -89,6 +89,11 @@ public class MonoPlayer
 				}
 			}, 5);
 		}
+	}
+	
+	protected void onDestroy()
+	{
+		mPlayers.remove(mPlayer);
 	}
 	
 	public void playParticleEffect(Location location, ParticleEffect effect, float speed, int count)
