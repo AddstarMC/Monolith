@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
+import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.Item;
 
 import org.bukkit.Material;
@@ -87,7 +88,14 @@ public class Lookup
 	{
 		Item item = (Item)Item.REGISTRY.get(name);
 		if(item == null)
-			return null;
+		{
+			// Attempt blocks that dont have items
+			Block block = (Block)Block.REGISTRY.get(name);
+			if (block == null)
+				return null;
+			
+			return Material.getMaterial(Block.getId(block));
+		}
 		
 		return Material.getMaterial(Item.getId(item));
 	}
