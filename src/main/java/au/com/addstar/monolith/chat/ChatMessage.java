@@ -1,14 +1,14 @@
 package au.com.addstar.monolith.chat;
 
-import net.minecraft.server.v1_7_R4.ChatClickable;
-import net.minecraft.server.v1_7_R4.ChatComponentText;
-import net.minecraft.server.v1_7_R4.ChatHoverable;
-import net.minecraft.server.v1_7_R4.ChatModifier;
-import net.minecraft.server.v1_7_R4.EnumChatFormat;
-import net.minecraft.server.v1_7_R4.EnumClickAction;
-import net.minecraft.server.v1_7_R4.EnumHoverAction;
-import net.minecraft.server.v1_7_R4.IChatBaseComponent;
-import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.server.v1_8_R1.ChatClickable;
+import net.minecraft.server.v1_8_R1.ChatComponentText;
+import net.minecraft.server.v1_8_R1.ChatHoverable;
+import net.minecraft.server.v1_8_R1.ChatModifier;
+import net.minecraft.server.v1_8_R1.EnumChatFormat;
+import net.minecraft.server.v1_8_R1.EnumClickAction;
+import net.minecraft.server.v1_8_R1.EnumHoverAction;
+import net.minecraft.server.v1_8_R1.IChatBaseComponent;
+import net.minecraft.server.v1_8_R1.NBTTagCompound;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,9 +19,9 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Achievement;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_7_R4.CraftStatistic;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R1.CraftStatistic;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,13 +30,27 @@ import com.google.common.collect.ImmutableMap.Builder;
 
 public class ChatMessage
 {
-	private static final Map<Character, EnumChatFormat> mFormats;
+	private static final Map<ChatColor, EnumChatFormat> mFormats;
 
 	static
 	{
-		Builder<Character, EnumChatFormat> builder = ImmutableMap.builder();
-		for (EnumChatFormat format : EnumChatFormat.values())
-			builder.put(Character.toLowerCase(format.getChar()), format);
+		Builder<ChatColor, EnumChatFormat> builder = ImmutableMap.builder();
+		builder.put(ChatColor.BLACK, EnumChatFormat.BLACK);
+		builder.put(ChatColor.DARK_BLUE, EnumChatFormat.DARK_BLUE);
+		builder.put(ChatColor.DARK_GREEN, EnumChatFormat.DARK_GREEN);
+		builder.put(ChatColor.DARK_AQUA, EnumChatFormat.DARK_AQUA);
+		builder.put(ChatColor.DARK_RED, EnumChatFormat.DARK_RED);
+		builder.put(ChatColor.DARK_PURPLE, EnumChatFormat.DARK_PURPLE);
+		builder.put(ChatColor.GOLD, EnumChatFormat.GOLD);
+		builder.put(ChatColor.GRAY, EnumChatFormat.GRAY);
+		builder.put(ChatColor.DARK_GRAY, EnumChatFormat.DARK_GRAY);
+		builder.put(ChatColor.BLUE, EnumChatFormat.BLUE);
+		builder.put(ChatColor.AQUA, EnumChatFormat.AQUA);
+		builder.put(ChatColor.GREEN, EnumChatFormat.GREEN);
+		builder.put(ChatColor.RED, EnumChatFormat.RED);
+		builder.put(ChatColor.LIGHT_PURPLE, EnumChatFormat.LIGHT_PURPLE);
+		builder.put(ChatColor.YELLOW, EnumChatFormat.YELLOW);
+		builder.put(ChatColor.WHITE, EnumChatFormat.WHITE);
 
 		mFormats = builder.build();
 	}
@@ -129,7 +143,7 @@ public class ChatMessage
 	private ChatModifier resetFormat()
 	{
 		ChatModifier old = mCurrentModifier;
-		return mCurrentModifier = new ChatModifier().setChatClickable(old.h()).a(old.i()).a(old.m());
+		return mCurrentModifier = new ChatModifier().setChatClickable(old.h()).setChatHoverable(old.i()).setChatModifier(old.clone());
 	}
 
 	private void format(ChatColor color)
@@ -191,36 +205,36 @@ public class ChatMessage
 
 	public ChatMessage hover( String text )
 	{
-		mCurrentModifier.a(new ChatHoverable(EnumHoverAction.SHOW_TEXT, Parser.fromStringBasic(text)));
+		mCurrentModifier.setChatHoverable(new ChatHoverable(EnumHoverAction.SHOW_TEXT, Parser.fromStringBasic(text)));
 		return this;
 	}
 
 	public ChatMessage hover( Achievement achievement )
 	{
-		mCurrentModifier.a(new ChatHoverable(EnumHoverAction.SHOW_ACHIEVEMENT, new ChatComponentText(CraftStatistic.getNMSAchievement(achievement).name)));
+		mCurrentModifier.setChatHoverable(new ChatHoverable(EnumHoverAction.SHOW_ACHIEVEMENT, new ChatComponentText(CraftStatistic.getNMSAchievement(achievement).name)));
 		return this;
 	}
 
 	public ChatMessage hover( ItemStack item )
 	{
-		net.minecraft.server.v1_7_R4.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_8_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         Validate.notNull(nmsItem, "The item " + item.toString() + " cannot be used in a chat hover");
         NBTTagCompound tag = new NBTTagCompound();
         nmsItem.save(tag);
-        mCurrentModifier.a(new ChatHoverable(EnumHoverAction.SHOW_ITEM, new ChatComponentText(tag.toString())));
+        mCurrentModifier.setChatHoverable(new ChatHoverable(EnumHoverAction.SHOW_ITEM, new ChatComponentText(tag.toString())));
 		return this;
 	}
 
 	public ChatMessage hoverOff()
 	{
-		mCurrentModifier.a((ChatHoverable)null);
+		mCurrentModifier.setChatHoverable(null);
 		return this;
 	}
 
 	public ChatMessage bothOff()
 	{
-		mCurrentModifier.a((ChatHoverable)null);
-		mCurrentModifier.a((ChatHoverable)null);
+		mCurrentModifier.setChatHoverable(null);
+		mCurrentModifier.setChatClickable(null);
 		return this;
 	}
 	
@@ -262,18 +276,17 @@ public class ChatMessage
 		{
 			ChatModifier mod = component.getChatModifier();
 			
-			builder.append(ChatColor.COLOR_CHAR);
-			builder.append(mod.a().getChar());
+			builder.append(mod.getColor().toString());
 			
-			if(mod.b()) // bold
+			if(mod.isBold())
 				builder.append(ChatColor.BOLD);
-			if(mod.c()) // Italic
+			if(mod.isItalic())
 				builder.append(ChatColor.ITALIC);
-			if(mod.d()) // Strikethrough
+			if(mod.isStrikethrough())
 				builder.append(ChatColor.STRIKETHROUGH);
-			if(mod.e()) // Underline
+			if(mod.isUnderlined())
 				builder.append(ChatColor.UNDERLINE);
-			if(mod.f()) // Magic
+			if(mod.isRandom())
 				builder.append(ChatColor.MAGIC);
 			
 			builder.append(component.c());

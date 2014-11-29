@@ -2,15 +2,15 @@ package au.com.addstar.monolith;
 
 import java.util.WeakHashMap;
 
-import net.minecraft.server.v1_7_R4.EntityEnderDragon;
-import net.minecraft.server.v1_7_R4.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_7_R4.PacketPlayOutEntityMetadata;
-import net.minecraft.server.v1_7_R4.PacketPlayOutEntityTeleport;
-import net.minecraft.server.v1_7_R4.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_8_R1.EntityWither;
+import net.minecraft.server.v1_8_R1.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_8_R1.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_8_R1.PacketPlayOutEntityTeleport;
+import net.minecraft.server.v1_8_R1.PacketPlayOutSpawnEntityLiving;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class BossDisplay
@@ -19,7 +19,7 @@ public class BossDisplay
 	private float mValue = 1;
 	private boolean mHasChanged = false;
 	
-	private WeakHashMap<MonoPlayer, DragonDisplay> mDragons = new WeakHashMap<MonoPlayer, DragonDisplay>();
+	private WeakHashMap<MonoPlayer, WitherDisplay> mDragons = new WeakHashMap<MonoPlayer, WitherDisplay>();
 	
 	public BossDisplay()
 	{
@@ -65,21 +65,21 @@ public class BossDisplay
 	
 	void onPlayerAdd(MonoPlayer player)
 	{
-		DragonDisplay display = new DragonDisplay(player.getPlayer());
+		WitherDisplay display = new WitherDisplay(player.getPlayer());
 		display.spawn();
 		mDragons.put(player, display);
 	}
 	
 	void onPlayerRemove(MonoPlayer player)
 	{
-		DragonDisplay display = mDragons.remove(player);
+		WitherDisplay display = mDragons.remove(player);
 		if(display != null)
 			display.remove();
 	}
 	
 	public void refresh(MonoPlayer player)
 	{
-		DragonDisplay display = mDragons.remove(player);
+		WitherDisplay display = mDragons.remove(player);
 		if(display != null)
 			display.spawn();
 	}
@@ -87,7 +87,7 @@ public class BossDisplay
 	
 	public void updateAll()
 	{
-		for(DragonDisplay display : mDragons.values())
+		for(WitherDisplay display : mDragons.values())
 			display.update();
 		
 		mHasChanged = false;
@@ -95,7 +95,7 @@ public class BossDisplay
 	
 	public void update(MonoPlayer player)
 	{
-		DragonDisplay display = mDragons.get(player);
+		WitherDisplay display = mDragons.get(player);
 		if(display != null)
 			display.update();
 	}
@@ -105,15 +105,15 @@ public class BossDisplay
 		return (int)Math.min(Math.max(mValue * 200, 1), 200);
 	}
 	
-	private class DragonDisplay
+	private class WitherDisplay
 	{
-		private static final int ENTITY_DRAGON_ID = 999999999;
+		private static final int ENTITY_WITHER_ID = 9999999;
 		
 		private Player mPlayer;
 		private Location mLocation;
-		private EntityEnderDragon mDragon;
+		private EntityWither mWither;
 		
-		public DragonDisplay(Player player)
+		public WitherDisplay(Player player)
 		{
 			mPlayer = player;
 			mLocation = player.getLocation();
@@ -121,7 +121,7 @@ public class BossDisplay
 		
 		public void update()
 		{
-			Location loc = mPlayer.getLocation();
+			Location loc = getIntendedPosition();
 			
 			if(mHasChanged)
 				updateStats();
@@ -134,53 +134,62 @@ public class BossDisplay
 				
 				if(dist >= 10000)
 					spawn();
-				else if(dist > 500)
+				else if(dist > 100)
 				{
 					mLocation = loc;
-					positionDragon();
+					positionEntity();
 				}
 			}
 		}
 		
+		private Location getIntendedPosition()
+		{
+			Location loc = mPlayer.getLocation();
+			loc.add(loc.getDirection().multiply(50));
+			
+			return loc;
+		}
+		
 		public void remove()
 		{
-			PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(ENTITY_DRAGON_ID);
+			PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(ENTITY_WITHER_ID);
 			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
 		}
 		
 		public void spawn()
 		{
-			mLocation = mPlayer.getLocation();
+			mLocation = getIntendedPosition();
 			
-			mDragon = new EntityEnderDragon(null);
-			mDragon.setCustomName(mText);
-			mDragon.setCustomNameVisible(true);
-			mDragon.setHealth(toHealth());
-			mDragon.setLocation(mLocation.getX(), -500, mLocation.getZ(), 0, 0);
-			mDragon.d(ENTITY_DRAGON_ID); // Set entityId
-			PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(mDragon);
+			mWither = new EntityWither(null);
+			mWither.setCustomName(mText);
+			mWither.setCustomNameVisible(true);
+			mWither.setHealth(toHealth());
+			mWither.setLocation(mLocation.getX(), mLocation.getY(), mLocation.getZ(), 0, 0);
+			mWither.getDataWatcher().watch(0, (byte)(0x20)); // Invisible
+			mWither.d(ENTITY_WITHER_ID); // Set entityId
+			PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(mWither);
 			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
 		}
 		
-		private void positionDragon()
+		private void positionEntity()
 		{
-			PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(ENTITY_DRAGON_ID, mLocation.getBlockX() * 32, -500 * 32, mLocation.getBlockZ() * 32, (byte)0, (byte)0, false);
+			PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(ENTITY_WITHER_ID, mLocation.getBlockX() * 32, mLocation.getBlockY() * 32, mLocation.getBlockZ() * 32, (byte)0, (byte)0, false);
 			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
 		}
 		
 		private void updateStats()
 		{
-			mDragon.setCustomName(mText);
-			mDragon.setCustomNameVisible(true);
-			mDragon.setHealth(toHealth());
-			PacketPlayOutEntityMetadata packet = new PacketPlayOutEntityMetadata(ENTITY_DRAGON_ID, mDragon.getDataWatcher(), true);
+			mWither.setCustomName(mText);
+			mWither.setCustomNameVisible(true);
+			mWither.setHealth(toHealth());
+			PacketPlayOutEntityMetadata packet = new PacketPlayOutEntityMetadata(ENTITY_WITHER_ID, mWither.getDataWatcher(), true);
 			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
 		}
 		
 		@Override
 		public String toString()
 		{
-			return "DDisplay{" + mPlayer.getName() + "}";
+			return "WDisplay{" + mPlayer.getName() + "}";
 		}
 	}
 }

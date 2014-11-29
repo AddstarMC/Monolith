@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
-import net.minecraft.server.v1_7_R4.Block;
-import net.minecraft.server.v1_7_R4.Item;
+import net.minecraft.server.v1_8_R1.Block;
+import net.minecraft.server.v1_8_R1.Item;
+import net.minecraft.server.v1_8_R1.MinecraftKey;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -86,11 +87,12 @@ public class Lookup
 	 */
 	public static Material findByMinecraftName(String name)
 	{
-		Item item = (Item)Item.REGISTRY.get(name);
+		MinecraftKey key = new MinecraftKey(name);
+		Item item = (Item)Item.REGISTRY.get(key);
 		if(item == null)
 		{
 			// Attempt blocks that dont have items
-			Block block = (Block)Block.REGISTRY.get(name);
+			Block block = (Block)Block.REGISTRY.get(key);
 			if (block == null)
 				return null;
 			
@@ -138,7 +140,8 @@ public class Lookup
 		if (item == null)
 			return null;
 		
-		return Item.REGISTRY.c(item);
+		MinecraftKey key = (MinecraftKey)Item.REGISTRY.c(item);
+		return key.toString();
 	}
 	
 	/**
