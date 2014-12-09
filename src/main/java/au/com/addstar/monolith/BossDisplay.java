@@ -100,11 +100,6 @@ public class BossDisplay
 			display.update();
 	}
 	
-	private int toHealth()
-	{
-		return (int)Math.min(Math.max(mValue * 200, 1), 200);
-	}
-	
 	private class WitherDisplay
 	{
 		private static final int ENTITY_WITHER_ID = 9999999;
@@ -134,7 +129,7 @@ public class BossDisplay
 				
 				if(dist >= 10000)
 					spawn();
-				else if(dist > 100)
+				else if(dist > 30)
 				{
 					mLocation = loc;
 					positionEntity();
@@ -142,10 +137,17 @@ public class BossDisplay
 			}
 		}
 		
+		private int toHealth()
+		{
+			// NOTE: For the time being, this is forced to be max health due to withers still showing the surrounding effect when they have less than half health
+			return (int)mWither.getMaxHealth();
+			//return (int)Math.min(Math.max(mValue * 200, 1), 200);
+		}
+		
 		private Location getIntendedPosition()
 		{
 			Location loc = mPlayer.getLocation();
-			loc.add(loc.getDirection().multiply(50));
+			loc.add(loc.getDirection().multiply(30));
 			
 			return loc;
 		}
