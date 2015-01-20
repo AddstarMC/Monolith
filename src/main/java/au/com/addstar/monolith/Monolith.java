@@ -11,11 +11,13 @@ import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import au.com.addstar.monolith.chat.ChatMessage;
+import au.com.addstar.monolith.internal.GeSuitHandler;
 import au.com.addstar.monolith.lookup.Lookup;
 
 public class Monolith extends JavaPlugin
 {
 	private static Monolith mInstance;
+	private GeSuitHandler mGeSuitHandler;
 	
 	public static Monolith getInstance()
 	{
@@ -28,6 +30,8 @@ public class Monolith extends JavaPlugin
 		mInstance = this;
 		Lookup.initialize(this);
 		Bukkit.getPluginManager().registerEvents(new Listeners(), this);
+		
+		mGeSuitHandler = new GeSuitHandler(this);
 	}
 
 	public static void broadcastMessage(ChatMessage message)
@@ -56,5 +60,10 @@ public class Monolith extends JavaPlugin
 		}
 		
 		return matches;
+	}
+	
+	public GeSuitHandler getGeSuitHandler()
+	{
+		return mGeSuitHandler;
 	}
 }

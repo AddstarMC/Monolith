@@ -2,19 +2,29 @@ package au.com.addstar.monolith.lookup;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.server.v1_8_R1.Block;
 import net.minecraft.server.v1_8_R1.Item;
 import net.minecraft.server.v1_8_R1.MinecraftKey;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
 import au.com.addstar.monolith.Monolith;
+import au.com.addstar.monolith.internal.FutureWaiter;
 import au.com.addstar.monolith.internal.lookup.EnchantDB;
 import au.com.addstar.monolith.internal.lookup.ItemDB;
 import au.com.addstar.monolith.internal.lookup.PotionsDB;
@@ -184,5 +194,144 @@ public class Lookup
 	public static Set<String> findNameByEnchantment(Enchantment enchant)
 	{
 		return mEnchantDB.getByEnchant(enchant);
+	}
+	
+	/**
+	 * Does a bungee-aware lookup to resolve the specified name to a PlayerDefinition.
+	 * @param name The name to look for
+	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready. <br/>
+	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
+	 */
+	public static ListenableFuture<PlayerDefinition> lookupPlayerName(String name)
+	{
+		return Futures.transform(lookupPlayerNames(Arrays.asList(name)), new Function<List<PlayerDefinition>, PlayerDefinition>()
+		{
+			@Override
+			public PlayerDefinition apply( List<PlayerDefinition> list )
+			{
+				if (list.isEmpty())
+					return null;
+				else
+					return list.get(0);
+			}
+		});
+	}
+	
+	/**
+	 * Does a bungee-aware lookup to resolve the specified name to a PlayerDefinition. <br>
+	 * <b>NOTES</b>:
+	 * <ul>
+	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
+	 * <li>A player is required to be on this server to perform this lookup</li>
+	 * </ul>
+	 * @param name The name to look for.
+	 * @param callback A callback that will be called on the server thread when the lookup is completed.
+	 */
+	public static void lookupPlayerName(String name, LookupCallback<PlayerDefinition> callback)
+	{
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<PlayerDefinition>(lookupPlayerName(name), callback, 5, TimeUnit.SECONDS));
+	}
+	
+	/**
+	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition. <br>
+	 * <b>NOTES</b>:
+	 * <ul>
+	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
+	 * <li>A player is required to be on this server to perform this lookup</li>
+	 * </ul>
+	 * @param id The uuid to look for
+	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready. <br/>
+	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
+	 */
+	public static ListenableFuture<PlayerDefinition> lookupPlayerUUID(UUID id)
+	{
+		return Futures.transform(lookupPlayerUUIDs(Arrays.asList(id)), new Function<List<PlayerDefinition>, PlayerDefinition>()
+		{
+			@Override
+			public PlayerDefinition apply( List<PlayerDefinition> list )
+			{
+				if (list.isEmpty())
+					return null;
+				else
+					return list.get(0);
+			}
+		});
+	}
+	
+	/**
+	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition. <br>
+	 * <b>NOTES</b>:
+	 * <ul>
+	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
+	 * <li>A player is required to be on this server to perform this lookup</li>
+	 * </ul>
+	 * @param id The uuid to resolve.
+	 * @param callback A callback that will be called on the server thread when the lookup is completed.
+	 */
+	public static void lookupPlayerUUID(UUID id, LookupCallback<PlayerDefinition> callback)
+	{
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<PlayerDefinition>(lookupPlayerUUID(id), callback, 5, TimeUnit.SECONDS));
+	}
+	
+	/**
+	 * Does a bungee-aware lookup to resolve the specified names to a PlayerDefinitions. <br>
+	 * <b>NOTES</b>:
+	 * <ul>
+	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
+	 * <li>A player is required to be on this server to perform this lookup</li>
+	 * </ul>
+	 * @param names An Iterable containing the names to resolve
+	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready. <br/>
+	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
+	 */
+	public static ListenableFuture<List<PlayerDefinition>> lookupPlayerNames(Iterable<String> names)
+	{
+		return Monolith.getInstance().getGeSuitHandler().lookupPlayerNames(names);
+	}
+	
+	/**
+	 * Does a bungee-aware lookup to resolve the specified names to PlayerDefinitions. <br>
+	 * <b>NOTES</b>:
+	 * <ul>
+	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
+	 * <li>A player is required to be on this server to perform this lookup</li>
+	 * </ul>
+	 * @param names An Iterable containing the names to resolve
+	 * @param callback A callback that will be called on the server thread when the lookup is completed.
+	 */
+	public static void lookupPlayerNames(Iterable<String> names, LookupCallback<List<PlayerDefinition>> callback)
+	{
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<List<PlayerDefinition>>(lookupPlayerNames(names), callback, 5, TimeUnit.SECONDS));
+	}
+	
+	/**
+	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions. <br>
+	 * <b>NOTES</b>:
+	 * <ul>
+	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
+	 * <li>A player is required to be on this server to perform this lookup</li>
+	 * </ul>
+	 * @param ids An Iterable containing the uuids to resolve
+	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready. <br/>
+	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
+	 */
+	public static ListenableFuture<List<PlayerDefinition>> lookupPlayerUUIDs(Iterable<UUID> ids)
+	{
+		return Monolith.getInstance().getGeSuitHandler().lookupPlayerUUIDs(ids);
+	}
+	
+	/**
+	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions. <br>
+	 * <b>NOTES</b>:
+	 * <ul>
+	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
+	 * <li>A player is required to be on this server to perform this lookup</li>
+	 * </ul>
+	 * @param ids An Iterable containing the uuids to resolve
+	 * @param callback A callback that will be called on the server thread when the lookup is completed.
+	 */
+	public static void lookupPlayerUUIDs(Iterable<UUID> ids, LookupCallback<List<PlayerDefinition>> callback)
+	{
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<List<PlayerDefinition>>(lookupPlayerUUIDs(ids), callback, 5, TimeUnit.SECONDS));
 	}
 }
