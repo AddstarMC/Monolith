@@ -13,7 +13,6 @@ import au.com.addstar.monolith.internal.messages.MessageResolvePlayer;
 import au.com.addstar.monolith.internal.messages.MessageResolveUUID;
 import au.com.addstar.monolith.lookup.PlayerDefinition;
 
-import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.ListenableFuture;
 
 public class GeSuitHandler
@@ -33,7 +32,12 @@ public class GeSuitHandler
 	
 	public ListenableFuture<List<PlayerDefinition>> lookupPlayerNames(Iterable<String> names)
 	{
-		Player toSend = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
+		// Now using this method thanks to the damn invalid method crap bukkit did (Bukkit.getOnlinePlayers() returns either a collection or array when compiling.)
+		Player toSend = null;
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			toSend = player;
+			break;
+		}
 		if (toSend == null)
 			throw new IllegalStateException("Messaging not available");
 
@@ -46,7 +50,12 @@ public class GeSuitHandler
 	
 	public ListenableFuture<List<PlayerDefinition>> lookupPlayerUUIDs(Iterable<UUID> ids)
 	{
-		Player toSend = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
+		// Now using this method thanks to the damn invalid method crap bukkit did (Bukkit.getOnlinePlayers() returns either a collection or array when compiling.)
+		Player toSend = null;
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			toSend = player;
+			break;
+		}
 		if (toSend == null)
 			throw new IllegalStateException("Messaging not available");
 
