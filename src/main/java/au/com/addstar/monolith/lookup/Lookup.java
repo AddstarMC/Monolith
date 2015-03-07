@@ -16,6 +16,8 @@ import net.minecraft.server.v1_8_R1.MinecraftKey;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
@@ -26,6 +28,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import au.com.addstar.monolith.Monolith;
 import au.com.addstar.monolith.internal.FutureWaiter;
 import au.com.addstar.monolith.internal.lookup.EnchantDB;
+import au.com.addstar.monolith.internal.lookup.EntityDB;
 import au.com.addstar.monolith.internal.lookup.ItemDB;
 import au.com.addstar.monolith.internal.lookup.PotionsDB;
 
@@ -34,6 +37,7 @@ public class Lookup
 	private static ItemDB mNameDB;
 	private static EnchantDB mEnchantDB;
 	private static PotionsDB mPotionDB;
+	private static EntityDB mEntityDB;
 
 	/**
 	 * Initializes lookup systems. This should not be called by users of this API
@@ -85,6 +89,22 @@ public class Lookup
 		catch(IOException e)
 		{
 			plugin.getLogger().severe("Unable to load potion effect name database:");
+			e.printStackTrace();
+		}
+		
+		mEntityDB = new EntityDB();
+		nameFile = new File(plugin.getDataFolder(), "entity.csv");
+		
+		try
+		{
+			if(!nameFile.exists())
+				mEntityDB.load(plugin.getResource("entity.csv"));
+			else
+				mEntityDB.load(nameFile);
+		}
+		catch(IOException e)
+		{
+			plugin.getLogger().severe("Unable to load entity database:");
 			e.printStackTrace();
 		}
 	}
@@ -333,5 +353,49 @@ public class Lookup
 	public static void lookupPlayerUUIDs(Iterable<UUID> ids, LookupCallback<List<PlayerDefinition>> callback)
 	{
 		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<List<PlayerDefinition>>(lookupPlayerUUIDs(ids), callback, 5, TimeUnit.SECONDS));
+	}
+	
+	/**
+	 * Finds a matching EntityDefinition that is known by the specified name.
+	 * @param name The name to search for
+	 * @return An EntityDefinition object, or null
+	 */
+	public static EntityDefinition findEntityByName(String name)
+	{
+		return mEntityDB.getByName(name);
+	}
+	
+	/**
+	 * Finds the names registered against this entity definition.
+	 * The returned names can all be used to lookup this item using {@link #findEntityByName(String)}.
+	 * If the actual translated name is wanted, use {@link StringTranslator#getName(Entity)}.
+	 * @param entity The entity to lookup
+	 * @return The names this entity is registered against, or an empty set
+	 */
+	public static Set<String> findNameByEntity(Entity entity)
+	{
+		return findNameByEntity(new EntityDefinition(entity));
+	}
+	
+	/**
+	 * Finds the names registered against this entity definition.
+	 * The returned names can all be used to lookup this item using {@link #findEntityByName(String)}.
+	 * @param def The extended entity type to look for
+	 * @return The names this entity is registered against, or an empty set
+	 */
+	public static Set<String> findNameByEntity(EntityDefinition def)
+	{
+		return mEntityDB.getByType(def);
+	}
+	
+	/**
+	 * Finds the names registered against this entity definition.
+	 * The returned names can all be used to lookup this item using {@link #findEntityByName(String)}.
+	 * @param type The entity type to look for
+	 * @return The names this entity is registered against, or an empty set
+	 */
+	public static Set<String> findNameByEntity(EntityType type)
+	{
+		return findNameByEntity(new EntityDefinition(type, null));
 	}
 }
