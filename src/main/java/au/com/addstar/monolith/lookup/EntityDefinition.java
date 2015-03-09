@@ -4,7 +4,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.Rabbit.Type;
 import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.Skeleton.SkeletonType;
 
 public class EntityDefinition
@@ -29,6 +34,12 @@ public class EntityDefinition
 			if (((Creeper)entity).isPowered())
 				mSubType = "POWERED";
 		}
+		else if (entity instanceof Rabbit)
+			mSubType = ((Rabbit)entity).getRabbitType().name();
+		else if (entity instanceof Horse)
+			mSubType = ((Horse)entity).getVariant().name();
+		else if (entity instanceof Ocelot)
+			mSubType = ((Ocelot)entity).getCatType().name();
 	}
 	
 	public EntityType getType()
@@ -59,6 +70,15 @@ public class EntityDefinition
 				if (mSubType.equalsIgnoreCase("powered"))
 					((Creeper)entity).setPowered(true);
 				break;
+			case HORSE:
+				((Horse)entity).setVariant(Variant.valueOf(mSubType.toUpperCase()));
+				break;
+			case RABBIT:
+				((Rabbit)entity).setRabbitType(Type.valueOf(mSubType.toUpperCase()));
+				break;
+			case OCELOT:
+				((Ocelot)entity).setCatType(org.bukkit.entity.Ocelot.Type.valueOf(mSubType.toUpperCase()));
+				break;
 			// No other subtypes
 			default:
 				break;
@@ -66,5 +86,14 @@ public class EntityDefinition
 		}
 		
 		return entity;
+	}
+	
+	@Override
+	public String toString()
+	{
+		if (mSubType != null)
+			return String.format("%s:%s", mType.name(), mSubType);
+		else
+			return mType.name();
 	}
 }

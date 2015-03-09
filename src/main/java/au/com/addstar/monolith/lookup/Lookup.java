@@ -93,12 +93,12 @@ public class Lookup
 		}
 		
 		mEntityDB = new EntityDB();
-		nameFile = new File(plugin.getDataFolder(), "entity.csv");
+		nameFile = new File(plugin.getDataFolder(), "entities.csv");
 		
 		try
 		{
 			if(!nameFile.exists())
-				mEntityDB.load(plugin.getResource("entity.csv"));
+				mEntityDB.load(plugin.getResource("entities.csv"));
 			else
 				mEntityDB.load(nameFile);
 		}
