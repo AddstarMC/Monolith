@@ -10,6 +10,11 @@
   </properties>
 
   <repositories>
+    <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/groups/public</url>
+    </repository>
+    
     <!-- Addstar repo -->
     <repository>
       <id>addstar-repo</id>
