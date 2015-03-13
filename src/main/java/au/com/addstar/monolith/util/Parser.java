@@ -217,7 +217,7 @@ public class Parser
 		{
 			int pos = value.toLowerCase().indexOf("x");
 			count = Integer.parseInt(value.substring(0,pos));
-			value = value.substring(pos);
+			value = value.substring(pos+1);
 		}
 		else
 			count = -1;

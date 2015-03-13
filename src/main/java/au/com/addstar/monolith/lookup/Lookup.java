@@ -123,7 +123,7 @@ public class Lookup
 		{
 			// Attempt blocks that dont have items
 			Block block = (Block)Block.REGISTRY.get(key);
-			if (block == null)
+			if (block == null || block.getMaterial() == net.minecraft.server.v1_8_R1.Material.AIR)
 				return null;
 			
 			return Material.getMaterial(Block.getId(block));
