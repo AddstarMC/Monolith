@@ -1,6 +1,7 @@
 package au.com.addstar.monolith.template;
 
 import org.bukkit.Art;
+import org.bukkit.DyeColor;
 import org.bukkit.Rotation;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Horse.Color;
@@ -10,7 +11,9 @@ import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Villager.Profession;
 import org.bukkit.entity.minecart.CommandMinecart;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Colorable;
 import org.bukkit.material.MaterialData;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import com.google.common.collect.Iterables;
@@ -31,9 +34,9 @@ public final class EntitySettings
 		
 		public static final EntityTemplateSetting<String> CustomName = create("customName", Entity.class, "setCustomName", String.class, "displayName", "name");
 		public static final EntityTemplateSetting<Boolean> CustomNameVisible = createWithDefault("customNameVisible", Entity.class, "setCustomNameVisible", false, "displayNameVisible", "nameVisible");
-		public static final EntityTemplateSetting<Vector> Velocity = createWithDefault("velocity", Entity.class, "setVelocity", Vector.class, new Vector());
-		public static final EntityTemplateSetting<Float> FallDistance = createWithDefault("fallDistance", Entity.class, "setFallDistance", 0.0f);
-		public static final EntityTemplateSetting<Integer> FireTicks = createWithDefault("fireTicks", Entity.class, "setFireTicks", 0);
+		public static final EntityTemplateSetting<Vector> Velocity = create("velocity", Entity.class, "setVelocity", Vector.class);
+		public static final EntityTemplateSetting<Float> FallDistance = create("fallDistance", Entity.class, "setFallDistance", Float.class);
+		public static final EntityTemplateSetting<Integer> FireTicks = create("fireTicks", Entity.class, "setFireTicks", Integer.class);
 		
 		private static final All instance = new All();
 		public static All getInstance()
@@ -53,7 +56,7 @@ public final class EntitySettings
 		public static final EntityTemplateSetting<Integer> MaximumAir = create("maximumAir", LivingEntity.class, "setMaximumAir", Integer.class, "maxAir");
 		public static final EntityTemplateSetting<Integer> MaximumNoDamageTicks = create("maximumNoDamageTicks", LivingEntity.class, "setMaximumNoDamageTicks", Integer.class, "maxNoDamageTicks", "maxNoDmgTicks");
 		public static final EntityTemplateSetting<Integer> NoDamageTicks = create("noDamageTicks", LivingEntity.class, "setNoDamageTicks", Integer.class, "noDmgTicks");
-		public static final EntityTemplateSetting<Boolean> Persistent = create("persistent", LivingEntity.class, "setRemoveWhenFarAway", Boolean.class);
+		public static final EntityTemplateSetting<Boolean> Persistent = createWithDefault("persistent", LivingEntity.class, "setRemoveWhenFarAway", Boolean.class, false);
 		public static final EntityTemplateSetting<Integer> RemainingAir = create("remainingAir", LivingEntity.class, "setRemainingAir", Integer.class);
 		
 		private static final Living instance = new Living();
@@ -182,6 +185,8 @@ public final class EntitySettings
 		public static final EntityTemplateSetting<Integer> Minecart_DisplayBlockOffset = create("displayBlockOffset", Minecart.class, "setDisplayBlockOffset", Integer.class);
 		public static final EntityTemplateSetting<Double> Minecart_MaxSpeed = create("maxSpeed", Minecart.class, "setMaxSpeed", Double.class);
 		public static final EntityTemplateSetting<Boolean> Minecart_SlowWhenEmpty = create("slowWhenEmpty", Minecart.class, "setSlowWhenEmpty", Boolean.class);
+		public static final EntityTemplateSetting<Vector> Minecart_DerailedVelocityMod = create("derailedVelocity", Minecart.class, "setDerailedVelocityMod", Vector.class);
+		public static final EntityTemplateSetting<Vector> Minecart_FlyingVelocityMod = create("flyingVelocity", Minecart.class, "setFlyingVelocityMod", Vector.class);
 		
 		public static final EntityTemplateSetting<String> CommandMinecart_Command = create("command", CommandMinecart.class, "setCommand", String.class);
 		public static final EntityTemplateSetting<String> CommandMinecart_Name = create("name", CommandMinecart.class, "setName", String.class);
@@ -189,6 +194,48 @@ public final class EntitySettings
 		public static final EntityTemplateSetting<Art> Painting_Art = create("art", Painting.class, "setArt", Art.class);
 		public static final EntityTemplateSetting<ItemStack> ItemFrame_Item = create("item", ItemFrame.class, "setItem", ItemStack.class, "itemstack");
 		public static final EntityTemplateSetting<Rotation> ItemFrame_Rotation = create("rotation", ItemFrame.class, "setRotation", Rotation.class);
+		
+		public static final EntityTemplateSetting<ItemStack> ArmorStand_Boots = create("boots", ArmorStand.class, "setBoots", ItemStack.class);
+		public static final EntityTemplateSetting<ItemStack> ArmorStand_Chestplate = create("chestplate", ArmorStand.class, "setChestplate", ItemStack.class);
+		public static final EntityTemplateSetting<ItemStack> ArmorStand_Helmet = create("helmet", ArmorStand.class, "setHelmet", ItemStack.class);
+		public static final EntityTemplateSetting<ItemStack> ArmorStand_Leggings = create("leggings", ArmorStand.class, "setLeggings", ItemStack.class);
+		public static final EntityTemplateSetting<ItemStack> ArmorStand_HeldItem = create("heldItem", ArmorStand.class, "setItemInHand", ItemStack.class, "hand", "held");
+		public static final EntityTemplateSetting<Boolean> ArmorStand_Base = createWithDefault("baseplate", ArmorStand.class, "setBasePlate", Boolean.class, true);
+		public static final EntityTemplateSetting<Boolean> ArmorStand_Arms = createWithDefault("arms", ArmorStand.class, "setArms", Boolean.class, false);
+		public static final EntityTemplateSetting<Boolean> ArmorStand_IsSmall = createWithDefault("small", ArmorStand.class, "setSmall", Boolean.class, false);
+		public static final EntityTemplateSetting<Boolean> ArmorStand_Visible = createWithDefault("visible", ArmorStand.class, "setVisible", Boolean.class, true);
+		public static final EntityTemplateSetting<Boolean> ArmorStand_Gravity = createWithDefault("gravity", ArmorStand.class, "setGravity", Boolean.class, true);
+		public static final EntityTemplateSetting<EulerAngle> ArmorStand_PoseBody = create("bodyPose", ArmorStand.class, "setBodyPose", EulerAngle.class);
+		public static final EntityTemplateSetting<EulerAngle> ArmorStand_PoseHead = create("headPose", ArmorStand.class, "setHeadPose", EulerAngle.class);
+		public static final EntityTemplateSetting<EulerAngle> ArmorStand_PoseLeftArm = create("leftArmPose", ArmorStand.class, "setLeftArmPose", EulerAngle.class);
+		public static final EntityTemplateSetting<EulerAngle> ArmorStand_PoseRightArm = create("rightArmPose", ArmorStand.class, "setRightArmPose", EulerAngle.class);
+		public static final EntityTemplateSetting<EulerAngle> ArmorStand_PoseLeftLeg = create("leftLegPose", ArmorStand.class, "setLeftLegPose", EulerAngle.class);
+		public static final EntityTemplateSetting<EulerAngle> ArmorStand_PoseRightLeg = create("rightLegpose", ArmorStand.class, "setRightLegPose", EulerAngle.class);
+		
+		public static final EntityTemplateSetting<Integer> TNTPrimed_FuseTicks = create("fuseTicks", TNTPrimed.class, "setFuseTicks", Integer.class, "fuse");
+		
+		public static final EntityTemplateSetting<Vector> Fireball_Direction = create("direction", Fireball.class, "setDirection", Vector.class);
+		
+		public static final EntityTemplateSetting<Boolean> WitherSkull_Charged = create("charged", WitherSkull.class, "setCharged", Boolean.class);
+		
+		public static final EntityTemplateSetting<Boolean> Bat_Awake = create("awake", Bat.class, "setAwake", Boolean.class);
+		
+		public static final EntityTemplateSetting<Boolean> Ocelot_Sitting = createWithDefault("sitting", Ocelot.class, "setSitting", Boolean.class, false);
+		public static final EntityTemplateSetting<Ocelot.Type> Ocelot_Type = create("type", Ocelot.class, "setCatType", Ocelot.Type.class);
+		
+		public static final EntityTemplateSetting<Rabbit.Type> Rabbit_Type = create("type", Rabbit.class, "setRabbitType", Rabbit.Type.class);
+		
+		public static final EntityTemplateSetting<Boolean> Sheep_Sheared = createWithDefault("sheared", Sheep.class, "setSheared", Boolean.class, false);
+		public static final EntityTemplateSetting<DyeColor> Sheep_Color = create("color", Colorable.class, "setColor", DyeColor.class, "colour");
+		
+		public static final EntityTemplateSetting<Boolean> Wolf_Angry = createWithDefault("angry", Wolf.class, "setAngry", Boolean.class, false);
+		public static final EntityTemplateSetting<Boolean> Wolf_Sitting = createWithDefault("sitting", Wolf.class, "setSitting", Boolean.class, false);
+		public static final EntityTemplateSetting<DyeColor> Wolf_CollarColor = create("collarColor", Wolf.class, "setCollarColor", DyeColor.class, "collar", "collarColour");
+		
+		public static final EntityTemplateSetting<Boolean> Arrow_Critical = create("critical", Arrow.class, "setCritical", Boolean.class);
+		public static final EntityTemplateSetting<Integer> Arrow_Knockback = create("knockbackStrength", Arrow.class, "setKnockbackStrength", Integer.class, "knockback");
+		
+		public static final EntityTemplateSetting<ItemStack> ThrownPotion_Item = create("item", ThrownPotion.class, "setItem", ItemStack.class, "itemstack");
 		
 		private static final Specific instance = new Specific();
 		public static Specific getInstance()

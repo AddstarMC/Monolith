@@ -1,6 +1,8 @@
 package au.com.addstar.monolith.lookup;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -11,6 +13,7 @@ import org.bukkit.entity.Rabbit.Type;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Horse.Variant;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.inventory.ItemStack;
 
 public class EntityDefinition
 {
@@ -52,9 +55,36 @@ public class EntityDefinition
 		return mSubType;
 	}
 	
+	public boolean isSpawnable()
+	{
+		switch (mType)
+		{
+		case COMPLEX_PART:
+		case UNKNOWN:
+		case PLAYER:
+		case WEATHER:
+		case FISHING_HOOK:
+		case SPLASH_POTION:
+			return false;
+		default:
+			return true;
+		}
+	}
+	
 	public Entity createEntity(Location location)
 	{
-		Entity entity = location.getWorld().spawnEntity(location, mType);
+		World world = location.getWorld();
+		Entity entity;
+		
+		switch (mType)
+		{
+		case DROPPED_ITEM:
+			entity = world.dropItem(location, new ItemStack(Material.STONE));
+			break;
+		default:
+			entity = world.spawnEntity(location, mType);
+			break;
+		}
 		
 		if (entity == null)
 			return null;
