@@ -2,11 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.addstar</groupId>
   <artifactId>Monolith</artifactId>
-  <version>1.2.0-SNAPSHOT</version>
+  <version>1.2.1-SNAPSHOT</version>
   <name>Monolith</name>
   
   <properties>
-    <pluginversion>1.2.0.${env.BUILD_NUMBER}</pluginversion>
+    <pluginversion>1.2.1.${env.BUILD_NUMBER}</pluginversion>
   </properties>
 
   <repositories>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.8-R0.1-SNAPSHOT</version>
+      <version>1.8.3-R0.1-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.spigotmc</groupId>

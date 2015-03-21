@@ -2,10 +2,10 @@ package au.com.addstar.monolith.villagers;
 
 import java.lang.reflect.Field;
 
-import net.minecraft.server.v1_8_R1.MerchantRecipe;
+import net.minecraft.server.v1_8_R2.MerchantRecipe;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 public class Trade

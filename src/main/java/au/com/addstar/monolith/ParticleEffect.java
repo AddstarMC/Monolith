@@ -1,6 +1,6 @@
 package au.com.addstar.monolith;
 
-import net.minecraft.server.v1_8_R1.EnumParticle;
+import net.minecraft.server.v1_8_R2.EnumParticle;
 
 public enum ParticleEffect
 {

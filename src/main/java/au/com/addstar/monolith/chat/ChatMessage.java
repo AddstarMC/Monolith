@@ -1,14 +1,14 @@
 package au.com.addstar.monolith.chat;
 
-import net.minecraft.server.v1_8_R1.ChatClickable;
-import net.minecraft.server.v1_8_R1.ChatComponentText;
-import net.minecraft.server.v1_8_R1.ChatHoverable;
-import net.minecraft.server.v1_8_R1.ChatModifier;
-import net.minecraft.server.v1_8_R1.EnumChatFormat;
-import net.minecraft.server.v1_8_R1.EnumClickAction;
-import net.minecraft.server.v1_8_R1.EnumHoverAction;
-import net.minecraft.server.v1_8_R1.IChatBaseComponent;
-import net.minecraft.server.v1_8_R1.NBTTagCompound;
+import net.minecraft.server.v1_8_R2.ChatClickable;
+import net.minecraft.server.v1_8_R2.ChatClickable.EnumClickAction;
+import net.minecraft.server.v1_8_R2.ChatComponentText;
+import net.minecraft.server.v1_8_R2.ChatHoverable;
+import net.minecraft.server.v1_8_R2.ChatHoverable.EnumHoverAction;
+import net.minecraft.server.v1_8_R2.ChatModifier;
+import net.minecraft.server.v1_8_R2.EnumChatFormat;
+import net.minecraft.server.v1_8_R2.IChatBaseComponent;
+import net.minecraft.server.v1_8_R2.NBTTagCompound;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,9 +19,9 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Achievement;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R1.CraftStatistic;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R2.CraftStatistic;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -217,7 +217,7 @@ public class ChatMessage
 
 	public ChatMessage hover( ItemStack item )
 	{
-		net.minecraft.server.v1_8_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_8_R2.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         Validate.notNull(nmsItem, "The item " + item.toString() + " cannot be used in a chat hover");
         NBTTagCompound tag = new NBTTagCompound();
         nmsItem.save(tag);
@@ -269,7 +269,6 @@ public class ChatMessage
 		return lines;
 	}
 	
-	@SuppressWarnings( "unchecked" )
 	private void toPlain(IChatBaseComponent root, StringBuilder builder)
 	{
 		for(IChatBaseComponent component : (Iterable<IChatBaseComponent>)root)

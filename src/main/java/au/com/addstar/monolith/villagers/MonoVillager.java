@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.server.v1_8_R1.EntityVillager;
-import net.minecraft.server.v1_8_R1.MerchantRecipe;
-import net.minecraft.server.v1_8_R1.MerchantRecipeList;
+import net.minecraft.server.v1_8_R2.EntityVillager;
+import net.minecraft.server.v1_8_R2.MerchantRecipe;
+import net.minecraft.server.v1_8_R2.MerchantRecipeList;
 
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftVillager;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftVillager;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
@@ -26,10 +26,10 @@ public class MonoVillager
 	{
 		try
 		{
-			mFieldCareer = EntityVillager.class.getDeclaredField("bv");
+			mFieldCareer = EntityVillager.class.getDeclaredField("bx");
 			mFieldCareer.setAccessible(true);
 			
-			mFieldCareerStage = EntityVillager.class.getDeclaredField("bw");
+			mFieldCareerStage = EntityVillager.class.getDeclaredField("by");
 			mFieldCareerStage.setAccessible(true);
 		}
 		catch(Exception e)
@@ -143,7 +143,8 @@ public class MonoVillager
 		if (!mHandle.getHandle().cm()) // Has no trading player
 			return null;
 		
-		return mHandle.getHandle().u_().getBukkitEntity();
+		// EntityVillager.getTradingPlayer() : EntityHuman
+		return mHandle.getHandle().v_().getBukkitEntity();
 	}
 	
 	public Village getVillage()
