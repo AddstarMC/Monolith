@@ -5,17 +5,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.server.v1_8_R2.BlockPosition;
-import net.minecraft.server.v1_8_R2.MovingObjectPosition;
-import net.minecraft.server.v1_8_R2.Vec3D;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.MovingObjectPosition;
+import net.minecraft.server.v1_8_R3.Vec3D;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_8_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R2.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.MaterialData;
@@ -446,7 +446,7 @@ public class Raytrace
 		
 		// We are allowed to hit this type, begin
 		BlockPosition pos = new BlockPosition(block.getX(), block.getY(), block.getZ());
-		net.minecraft.server.v1_8_R2.Block type = CraftMagicNumbers.getBlock(block);
+		net.minecraft.server.v1_8_R3.Block type = CraftMagicNumbers.getBlock(block);
 		
 		// Expand the search area around the block to ensure that it passes completely through the block
 		Vec3D srcVec = new Vec3D(start.getX(), start.getY(), start.getZ());

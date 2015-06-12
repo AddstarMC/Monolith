@@ -9,9 +9,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_8_R2.Block;
-import net.minecraft.server.v1_8_R2.Item;
-import net.minecraft.server.v1_8_R2.MinecraftKey;
+import net.minecraft.server.v1_8_R3.Block;
+import net.minecraft.server.v1_8_R3.Item;
+import net.minecraft.server.v1_8_R3.MinecraftKey;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -123,7 +123,7 @@ public class Lookup
 		{
 			// Attempt blocks that dont have items
 			Block block = (Block)Block.REGISTRY.get(key);
-			if (block == null || block.getMaterial() == net.minecraft.server.v1_8_R2.Material.AIR)
+			if (block == null || block.getMaterial() == net.minecraft.server.v1_8_R3.Material.AIR)
 				return null;
 			
 			return Material.getMaterial(Block.getId(block));
