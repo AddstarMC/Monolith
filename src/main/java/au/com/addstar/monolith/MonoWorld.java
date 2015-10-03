@@ -45,7 +45,7 @@ public class MonoWorld
 		for(Player player : mWorld.getPlayers())
 		{
 			player.getLocation(temp);
-			if(temp.distanceSquared(location) < 256)
+			if(player.getWorld() == location.getWorld() && temp.distanceSquared(location) < 256)
 				((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
 		}
 	}
