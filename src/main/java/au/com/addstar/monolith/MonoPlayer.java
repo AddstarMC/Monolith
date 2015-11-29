@@ -95,11 +95,13 @@ public class MonoPlayer
 		mPlayers.remove(mPlayer);
 	}
 	
+	@Deprecated
 	public void playParticleEffect(Location location, ParticleEffect effect, float speed, int count)
 	{
 		playParticleEffect(location, effect, speed, count, new Vector());
 	}
 	
+	@Deprecated
 	public void playParticleEffect(Location location, ParticleEffect effect, float speed, int count, Vector offset)
 	{
 		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect.getEffect(), false, (float)location.getX(), (float)location.getY(), (float)location.getZ(), (float)offset.getX(), (float)offset.getY(), (float)offset.getZ(), speed, count);

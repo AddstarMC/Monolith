@@ -2,6 +2,7 @@ package au.com.addstar.monolith;
 
 import net.minecraft.server.v1_8_R3.EnumParticle;
 
+@Deprecated
 public enum ParticleEffect
 {
 	EXPLOSION_HUGE(EnumParticle.EXPLOSION_HUGE),
