@@ -1,8 +1,7 @@
 package au.com.addstar.monolith.effects;
 
-import java.awt.Color;
-
 import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -288,7 +287,7 @@ public class EffectParticle extends BaseEffect
 		count = section.getInt("count");
 		
 		if (section.contains("color"))
-			colour = new Color(section.getInt("color"));
+			colour = Color.fromRGB(section.getInt("color"));
 		else
 			colour = null;
 		
@@ -317,7 +316,7 @@ public class EffectParticle extends BaseEffect
 		section.set("speed", speed);
 		section.set("count", count);
 		if (colour != null)
-			section.set("color", colour.getRGB());
+			section.set("color", colour.asRGB());
 		
 		if (data instanceof Material)
 		{
