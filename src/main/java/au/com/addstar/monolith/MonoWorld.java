@@ -10,6 +10,8 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import au.com.addstar.monolith.chat.Title;
+
 public class MonoWorld
 {
 	private static WeakHashMap<World, MonoWorld> mWorlds = new WeakHashMap<World, MonoWorld>();
@@ -50,5 +52,10 @@ public class MonoWorld
 			if(player.getWorld() == location.getWorld() && temp.distanceSquared(location) < 256)
 				((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
 		}
+	}
+	
+	public void showTitle(Title title)
+	{
+		title.show(mWorld.getPlayers());
 	}
 }

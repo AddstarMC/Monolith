@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import au.com.addstar.monolith.chat.ChatMessage;
+import au.com.addstar.monolith.chat.Title;
 
 public class MonoPlayer
 {
@@ -107,6 +108,11 @@ public class MonoPlayer
 		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect.getEffect(), false, (float)location.getX(), (float)location.getY(), (float)location.getZ(), (float)offset.getX(), (float)offset.getY(), (float)offset.getZ(), speed, count);
 		if(mPlayer.getLocation().distanceSquared(location) < 256)
 			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
+	}
+	
+	public void showTitle(Title title)
+	{
+		title.show(mPlayer);
 	}
 	
 	@Override

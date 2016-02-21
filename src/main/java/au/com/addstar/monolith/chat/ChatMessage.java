@@ -174,7 +174,7 @@ public class ChatMessage
 			}
 		}
 		else
-			resetFormat().setColor(mFormats.get(color.getChar()));
+			resetFormat().setColor(mFormats.get(color));
 	}
 
 	public ChatMessage then( ChatColor... color )
@@ -250,7 +250,7 @@ public class ChatMessage
 		((CraftPlayer)player).getHandle().sendMessage(toComponents());
 	}
 	
-	private IChatBaseComponent[] toComponents()
+	IChatBaseComponent[] toComponents()
 	{
 		return mComponents.toArray(new IChatBaseComponent[mComponents.size()]);
 	}
