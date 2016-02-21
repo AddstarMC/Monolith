@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import au.com.addstar.monolith.chat.ChatMessage;
+import au.com.addstar.monolith.chat.ChatMessageType;
 import au.com.addstar.monolith.chat.Title;
 
 public class MonoPlayer
@@ -67,6 +68,17 @@ public class MonoPlayer
 	{
 		for(ChatMessage m : message)
 			m.send(mPlayer);
+	}
+	
+	public void sendMessage(ChatMessageType type, ChatMessage... message)
+	{
+		for(ChatMessage m : message)
+			m.send(mPlayer, type);
+	}
+	
+	public void sendMessage(ChatMessageType type, String message)
+	{
+		ChatMessage.begin(message).send(mPlayer, type);
 	}
 	
 	protected void onUpdate()

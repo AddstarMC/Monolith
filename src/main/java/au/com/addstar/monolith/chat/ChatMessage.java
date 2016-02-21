@@ -9,6 +9,7 @@ import net.minecraft.server.v1_8_R3.ChatModifier;
 import net.minecraft.server.v1_8_R3.EnumChatFormat;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -248,6 +249,15 @@ public class ChatMessage
 	public void send(Player player)
 	{
 		((CraftPlayer)player).getHandle().sendMessage(toComponents());
+	}
+	
+	public void send(Player player, ChatMessageType type)
+	{
+		for (IChatBaseComponent component : toComponents())
+		{
+			PacketPlayOutChat chat = new PacketPlayOutChat(component, (byte)type.ordinal());
+			((CraftPlayer)player).getHandle().playerConnection.sendPacket(chat);
+		}
 	}
 	
 	IChatBaseComponent[] toComponents()
