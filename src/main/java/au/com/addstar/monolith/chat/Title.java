@@ -153,7 +153,7 @@ public class Title
 			setupTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE, mTitle.toComponents()[0]);
 		else
 			setupTitle = null;
-		System.out.println(Arrays.toString(mSubtitle.toComponents()));
+		
 		if (mSubtitle != null)
 			setupSubtitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, mSubtitle.toComponents()[0]);
 		else
