@@ -255,6 +255,15 @@ public class ChatMessage
 	{
 		for (IChatBaseComponent component : toComponents())
 		{
+			// Action bar does not support full json correctly
+			if (type == ChatMessageType.ActionBar)
+			{
+				StringBuilder builder = new StringBuilder();
+				toPlain(component, builder);
+				
+				component = new ChatComponentText(builder.toString());
+			}
+			
 			PacketPlayOutChat chat = new PacketPlayOutChat(component, (byte)type.ordinal());
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(chat);
 		}
@@ -298,7 +307,7 @@ public class ChatMessage
 			if(mod.isRandom())
 				builder.append(ChatColor.MAGIC);
 			
-			builder.append(component.c());
+			builder.append(component.getText());
 		}
 	}
 	
@@ -329,10 +338,10 @@ public class ChatMessage
                 // Do formatting/newline stuff
                 switch(groupId)
                 {
-                case 0: // Chat color
+                case 1: // Chat color
                 	message.then(ChatColor.getByChar(match.charAt(1)));
                 	break;
-                case 1: // Newline
+                case 2: // Newline
                 	message.thenNewline();
                 	break;
                 }
