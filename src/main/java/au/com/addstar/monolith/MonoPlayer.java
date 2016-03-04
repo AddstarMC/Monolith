@@ -2,14 +2,9 @@ package au.com.addstar.monolith;
 
 import java.util.HashMap;
 
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
-
 import au.com.addstar.monolith.chat.ChatMessage;
 import au.com.addstar.monolith.chat.ChatMessageType;
 import au.com.addstar.monolith.chat.Title;
@@ -48,11 +43,13 @@ public class MonoPlayer
 		return ((CraftPlayer)mPlayer).getHandle().locale;
 	}
 	
+	@Deprecated
 	public BossDisplay getBossBarDisplay()
 	{
 		return mBossDisplay;
 	}
 	
+	@Deprecated
 	public void setBossBarDisplay(BossDisplay display)
 	{
 		if(mBossDisplay != null)
@@ -106,20 +103,6 @@ public class MonoPlayer
 	protected void onDestroy()
 	{
 		mPlayers.remove(mPlayer);
-	}
-	
-	@Deprecated
-	public void playParticleEffect(Location location, ParticleEffect effect, float speed, int count)
-	{
-		playParticleEffect(location, effect, speed, count, new Vector());
-	}
-	
-	@Deprecated
-	public void playParticleEffect(Location location, ParticleEffect effect, float speed, int count, Vector offset)
-	{
-		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect.getEffect(), false, (float)location.getX(), (float)location.getY(), (float)location.getZ(), (float)offset.getX(), (float)offset.getY(), (float)offset.getZ(), speed, count);
-		if(mPlayer.getLocation().distanceSquared(location) < 256)
-			((CraftPlayer)mPlayer).getHandle().playerConnection.sendPacket(packet);
 	}
 	
 	public void showTitle(Title title)

@@ -1,15 +1,15 @@
 package au.com.addstar.monolith.chat;
 
-import net.minecraft.server.v1_8_R3.ChatClickable;
-import net.minecraft.server.v1_8_R3.ChatClickable.EnumClickAction;
-import net.minecraft.server.v1_8_R3.ChatComponentText;
-import net.minecraft.server.v1_8_R3.ChatHoverable;
-import net.minecraft.server.v1_8_R3.ChatHoverable.EnumHoverAction;
-import net.minecraft.server.v1_8_R3.ChatModifier;
-import net.minecraft.server.v1_8_R3.EnumChatFormat;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
+import net.minecraft.server.v1_9_R1.ChatClickable;
+import net.minecraft.server.v1_9_R1.ChatClickable.EnumClickAction;
+import net.minecraft.server.v1_9_R1.ChatComponentText;
+import net.minecraft.server.v1_9_R1.ChatHoverable;
+import net.minecraft.server.v1_9_R1.ChatHoverable.EnumHoverAction;
+import net.minecraft.server.v1_9_R1.ChatModifier;
+import net.minecraft.server.v1_9_R1.EnumChatFormat;
+import net.minecraft.server.v1_9_R1.IChatBaseComponent;
+import net.minecraft.server.v1_9_R1.NBTTagCompound;
+import net.minecraft.server.v1_9_R1.PacketPlayOutChat;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,9 +20,9 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Achievement;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R3.CraftStatistic;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_9_R1.CraftStatistic;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableMap.Builder;
 
 public class ChatMessage
 {
+	// TODO: Incorporate new features from http://wiki.vg/Chat
 	private static final Map<ChatColor, EnumChatFormat> mFormats;
 
 	static
@@ -218,7 +219,7 @@ public class ChatMessage
 
 	public ChatMessage hover( ItemStack item )
 	{
-		net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_9_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
         Validate.notNull(nmsItem, "The item " + item.toString() + " cannot be used in a chat hover");
         NBTTagCompound tag = new NBTTagCompound();
         nmsItem.save(tag);

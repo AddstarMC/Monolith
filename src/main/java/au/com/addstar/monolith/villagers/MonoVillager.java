@@ -1,21 +1,11 @@
 package au.com.addstar.monolith.villagers;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import net.minecraft.server.v1_8_R3.EntityVillager;
-import net.minecraft.server.v1_8_R3.MerchantRecipe;
-import net.minecraft.server.v1_8_R3.MerchantRecipeList;
-
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftVillager;
+import net.minecraft.server.v1_9_R1.EntityVillager;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftVillager;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
-
-import com.google.common.base.Converter;
-import com.google.common.collect.Maps;
 
 public class MonoVillager
 {
@@ -26,10 +16,10 @@ public class MonoVillager
 	{
 		try
 		{
-			mFieldCareer = EntityVillager.class.getDeclaredField("bx");
+			mFieldCareer = EntityVillager.class.getDeclaredField("bH");
 			mFieldCareer.setAccessible(true);
 			
-			mFieldCareerStage = EntityVillager.class.getDeclaredField("by");
+			mFieldCareerStage = EntityVillager.class.getDeclaredField("bI");
 			mFieldCareerStage.setAccessible(true);
 		}
 		catch(Exception e)
@@ -60,18 +50,6 @@ public class MonoVillager
 	public Profession getProfession()
 	{
 		return mHandle.getProfession();
-	}
-	
-	/**
-	 * Gets a list o
-	 * @return
-	 */
-	public List<Trade> getTrades()
-	{
-		MerchantRecipeList handleList = mHandle.getHandle().getOffers(null);
-		List<MerchantRecipe> typedList = (List<MerchantRecipe>)handleList;
-		
-		return new TransformingList<Trade, MerchantRecipe>(typedList, new MerchantConverter());
 	}
 	
 	private int getCareer()
@@ -123,28 +101,13 @@ public class MonoVillager
 		setCareerStage(128);
 	}
 	
-	public void setTrades(Collection<Trade> trades)
-	{
-		MerchantRecipeList handleList = mHandle.getHandle().getOffers(null);
-		handleList.clear();
-		
-		for (Trade trade : trades)
-			handleList.add(trade.getHandle());
-	}
-	
-	public void addTrade(Trade trade)
-	{
-		MerchantRecipeList handleList = mHandle.getHandle().getOffers(null);
-		handleList.add(trade.getHandle());
-	}
-	
 	public HumanEntity getTradingWith()
 	{
-		if (!mHandle.getHandle().cm()) // Has no trading player
+		if (!mHandle.getHandle().da()) // Has no trading player
 			return null;
 		
 		// EntityVillager.getTradingPlayer() : EntityHuman
-		return mHandle.getHandle().v_().getBukkitEntity();
+		return mHandle.getHandle().t_().getBukkitEntity();
 	}
 	
 	public Village getVillage()
@@ -157,37 +120,5 @@ public class MonoVillager
 	public static MonoVillager getVillager(Villager villager)
 	{
 		return new MonoVillager(villager);
-	}
-	
-	private static class MerchantConverter extends Converter<MerchantRecipe, Trade>
-	{
-		private Map<MerchantRecipe, Trade> mCache;
-		
-		public MerchantConverter()
-		{
-			mCache = Maps.newIdentityHashMap();
-		}
-		
-		@Override
-		protected Trade doForward( MerchantRecipe handle )
-		{
-			if (handle == null)
-				return null;
-			
-			Trade trade = mCache.get(handle);
-			if (trade == null)
-			{
-				trade = new Trade(handle);
-				mCache.put(handle, trade);
-			}
-			
-			return trade;
-		}
-
-		@Override
-		protected MerchantRecipe doBackward( Trade trade )
-		{
-			return trade.getHandle();
-		}
 	}
 }
