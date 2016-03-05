@@ -107,3 +107,6 @@ FishingHook,FISHING_HOOK
 Lightning,LIGHTNING
 Weather,WEATHER
 Player,PLAYER
+Shulker,SHULKER
+PotionSplash,AREA_EFFECT_CLOUD
+AreaEffectCloud,AREA_EFFECT_CLOUD

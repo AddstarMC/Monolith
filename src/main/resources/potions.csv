@@ -71,3 +71,10 @@ Absorption,ABSORPTION
 Absorb,ABSORPTION
 Saturation,SATURATION
 Food,SATURATION
+Glowing,GLOWING
+Luck,LUCK
+Unluck,UNLUCK
+Unlucky,UNLUCK
+BadLuck,UNLUCK
+Levitation,LEVITATION
+Hover,LEVITATION
