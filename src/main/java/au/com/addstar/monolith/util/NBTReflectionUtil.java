@@ -8,6 +8,8 @@ package au.com.addstar.monolith.util;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public class NBTReflectionUtil {
 
     @SuppressWarnings("rawtypes")
@@ -57,8 +59,7 @@ public class NBTReflectionUtil {
         java.lang.reflect.Method method;
         try {
             method = cis.getMethod("asNMSCopy", ItemStack.class);
-            Object answer = method.invoke(cis, item);
-            return answer;
+            return method.invoke(cis, item);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -89,8 +90,7 @@ public class NBTReflectionUtil {
         java.lang.reflect.Method method;
         try {
             method = c.getMethod("getTag");
-            Object answer = method.invoke(nmsitem);
-            return answer;
+            return method.invoke(nmsitem);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -285,5 +285,19 @@ public class NBTReflectionUtil {
         }
         return null;
     }
+
+    public static String listNBT(ItemStack item) {
+        Object nmsitem = getNMSItemStack(item);
+        if (nmsitem == null) {
+            System.out.println("Got null! (Outdated Plugin?)");
+            return null;
+        }
+        Object nbttag = getNBTTagCompound(nmsitem);
+        if (nbttag == null) {
+          return null;
+        }
+        return nbttag.toString();
+    }
+
 
 }

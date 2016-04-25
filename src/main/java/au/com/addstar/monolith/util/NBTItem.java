@@ -54,4 +54,8 @@ public class NBTItem {
         return NBTReflectionUtil.hasKey(bukkitItem, key);
     }
 
+    public String listNBT(){
+         return NBTReflectionUtil.listNBT(bukkitItem);
+     }
+
 }
