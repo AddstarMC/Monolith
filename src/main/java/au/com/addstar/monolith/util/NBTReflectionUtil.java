@@ -27,7 +27,7 @@ public class NBTReflectionUtil {
         }
     }
 
-    private static Object getNewNBTTag() {
+    public static Object getNewNBTTag() {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         try {
             @SuppressWarnings("rawtypes")
@@ -40,7 +40,7 @@ public class NBTReflectionUtil {
         }
     }
 
-    private static Object setNBTTag(Object NBTTag, Object NMSItem) {
+    public static Object setNBTTag(Object NBTTag, Object NMSItem) {
         try {
             java.lang.reflect.Method method;
             method = NMSItem.getClass().getMethod("setTag", NBTTag.getClass());
@@ -84,7 +84,7 @@ public class NBTReflectionUtil {
     }
 
     @SuppressWarnings({"unchecked"})
-    private static Object getNBTTagCompound(Object nmsitem) {
+    public static Object getNBTTagCompound(Object nmsitem) {
         @SuppressWarnings("rawtypes")
         Class c = nmsitem.getClass();
         java.lang.reflect.Method method;
@@ -297,6 +297,27 @@ public class NBTReflectionUtil {
           return null;
         }
         return nbttag.toString();
+    }
+
+    public static Object getNBTlistTag(ItemStack item, String key){
+        Object nmsitem = getNMSItemStack(item);
+        if (nmsitem == null) {
+            System.out.println("Got null! (Outdated Plugin?)");
+            return null;
+        }
+        Object nbttag = getNBTTagCompound(nmsitem);
+        if (nbttag == null) {
+            nbttag = getNewNBTTag();
+        }
+        java.lang.reflect.Method method;
+        try {
+            method = nbttag.getClass().getMethod("getList", String.class, int.class);
+            return method.invoke(nbttag, key, 9);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+
     }
 
 
