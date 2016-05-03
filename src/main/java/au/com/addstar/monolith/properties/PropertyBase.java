@@ -1,5 +1,6 @@
 package au.com.addstar.monolith.properties;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -70,4 +71,15 @@ public abstract class PropertyBase<T>
 	 * @param value The new value to store
 	 */
 	public abstract void setValue(T value);
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (!(obj instanceof PropertyBase<?>))
+			return false;
+		
+		PropertyBase<?> other = (PropertyBase<?>)obj;
+		
+		return getName().equals(other.getName()) && getOwner().equals(other.getOwner()) && Objects.equals(getValue(), other.getValue());
+	}
 }

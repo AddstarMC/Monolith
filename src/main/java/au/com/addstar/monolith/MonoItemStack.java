@@ -15,47 +15,67 @@ import org.bukkit.material.MaterialData;
 
 import au.com.addstar.monolith.properties.PropertyContainer;
 import au.com.addstar.monolith.properties.PropertyContainerImpl;
+import net.minecraft.server.v1_9_R1.NBTBase;
 import net.minecraft.server.v1_9_R1.NBTTagCompound;
 import net.minecraft.server.v1_9_R1.NBTTagList;
 
 /**
  * This class is a type of ItemStack that provides extra
- * useful functionality 
+ * useful functionality.
+ * <br>
+ * <b>NOTE:</b> If the ItemStack held within is changed by external
+ * code, the accuracy of values here can not be ensured. 
  */
 public class MonoItemStack extends ItemStack implements Attributable
 {
-	private final CraftItemStack item;
+	private static final String PropertiesNBTKey = "-mono-properties";
+	
+	private static final Field CraftStack_Handle;
+	private static final Field NMSStack_Tag;
+	
+	private static final Field BukkitStack_UnhandledTags;
+	
+	static
+	{
+		// Work out how to get the NBT data from item stacks
+		try
+		{
+			// For CraftItemStacks
+			CraftStack_Handle = CraftItemStack.class.getDeclaredField("handle");
+			NMSStack_Tag = CraftStack_Handle.getType().getDeclaredField("tag");
+			
+			CraftStack_Handle.setAccessible(true);
+			NMSStack_Tag.setAccessible(true);
+			
+			// For plain old bukkit item stacks
+			ItemStack temp = new ItemStack(Material.STONE);
+			Class<?> metaClass = temp.getItemMeta().getClass();
+			
+			BukkitStack_UnhandledTags = metaClass.getDeclaredField("unhandledTags");
+			BukkitStack_UnhandledTags.setAccessible(true);
+		}
+		catch (NoSuchFieldException e)
+		{
+			throw new IllegalStateException("This version of Monolith is not compatible with this version of minecraft", e);
+		}
+	}
+	
+	private ItemStack item;
 	private PropertyContainer properties;
 	
 	/**
 	 * Creates a new MonoItemStack.
-	 * This item stack is backed by an actual low level item stack.
-	 * If you are going to modify anything within this ItemStack, you MUST
-	 * override the stored item stack (that you provided to this constructor)
-	 * with this instance otherwise you might lose the modifications.
-	 * <br>
-	 * Example:
-	 * <pre>
-	 * ItemStack item = player.getInventory().getItemInMainHand();
-	 * MonoItemStack monoItem = new MonoItemStack(item);
-	 * player.getInventory().setItemInMainHand(monoItem);
-	 * 
-	 * // ... Now it is safe to modify monoItem 
-	 * </pre>
-	 * 
+	 * This ItemStack is a wrapper on the provided ItemStack.
+	 * Changes to this ItemStack will affect the provided ItemStack.
 	 * @param item The item to base this on
+	 * @throws IllegalArgumentException Thrown if the material is AIR
 	 */
 	public MonoItemStack(ItemStack item)
 	{
-		if (item instanceof CraftItemStack)
-			this.item = (CraftItemStack)item;
-		else
-			this.item = CraftItemStack.asCraftCopy(item);
-	}
-	
-	private MonoItemStack(CraftItemStack craftItem)
-	{
-		item = craftItem;
+		if (item.getType() == Material.AIR)
+			throw new IllegalArgumentException("AIR cannot have properties");
+		
+		this.item = item;
 	}
 	
 	/**
@@ -64,44 +84,68 @@ public class MonoItemStack extends ItemStack implements Attributable
 	 */
 	public PropertyContainer getProperties()
 	{
+		if (getType() == Material.AIR)
+			throw new UnsupportedOperationException("AIR cannot have properties");
+		
 		// Create the properties if needed
 		if (properties == null)
 		{
 			try
 			{
-				// Load the NBT Tag for the item
-				Field handleField = CraftItemStack.class.getDeclaredField("handle");
-				Field tagField = handleField.getType().getDeclaredField("tag");
-				handleField.setAccessible(true);
-				tagField.setAccessible(true);
+				NBTTagList list;
 				
-				Object handle = handleField.get(item);
-				Object rawTag = tagField.get(handle);
-				
-				NBTTagCompound tag = (NBTTagCompound)rawTag;
-				
-				if (tag == null)
+				// CraftItemStack just uses the thing directly
+				if (item instanceof CraftItemStack)
 				{
-					tag = new NBTTagCompound();
-					tagField.set(handle, tag);
+					Object handle = CraftStack_Handle.get(item);
+					Object rawTag = NMSStack_Tag.get(handle);
+					
+					NBTTagCompound tag = (NBTTagCompound)rawTag;
+					
+					if (tag == null)
+					{
+						tag = new NBTTagCompound();
+						NMSStack_Tag.set(handle, tag);
+					}
+					
+					if (tag.hasKeyOfType(PropertiesNBTKey, 9))
+					{
+						list = tag.getList(PropertiesNBTKey, 10);
+					}
+					else
+					{
+						list = new NBTTagList();
+						tag.set(PropertiesNBTKey, list);
+					}
 				}
-				
-				// Read the properties
-				if (tag.hasKeyOfType("-mono-properties", 9))
-				{
-					NBTTagList list = tag.getList("-mono-properties", 10);
-					properties = new PropertyContainerImpl(list);
-				}
+				// Bukkit item stack needs to use the item meta
 				else
 				{
-					NBTTagList list = new NBTTagList();
-					tag.set("-mono-properties", list);
-					properties = new PropertyContainerImpl(list);
+					ItemMeta meta = item.getItemMeta();
+					@SuppressWarnings("unchecked")
+					Map<String, NBTBase> tags = (Map<String, NBTBase>)BukkitStack_UnhandledTags.get(meta);
+					
+					if (tags.containsKey(PropertiesNBTKey))
+					{
+						NBTBase rawTag = tags.get(PropertiesNBTKey);
+						if (rawTag instanceof NBTTagList)
+							list = (NBTTagList)rawTag;
+						else
+						{
+							list = new NBTTagList();
+							tags.put(PropertiesNBTKey, list);
+						}
+					}
+					else
+					{
+						list = new NBTTagList();
+						tags.put(PropertiesNBTKey, list);
+					}
+					
+					item.setItemMeta(meta);
 				}
-			}
-			catch (NoSuchFieldException e)
-			{
-				throw new IllegalStateException("This version of Monolith is not compatible with this version of minecraft", e);
+				
+				properties = new PropertyContainerImpl(list);
 			}
 			catch (IllegalAccessException e)
 			{
@@ -174,7 +218,13 @@ public class MonoItemStack extends ItemStack implements Attributable
 	@Override
 	public boolean setItemMeta(ItemMeta itemMeta)
 	{
-		return item.setItemMeta(itemMeta);
+		if (item.setItemMeta(itemMeta))
+		{
+			properties = null;
+			return true;
+		}
+		else
+			return false;
 	}
 	
 	@Override

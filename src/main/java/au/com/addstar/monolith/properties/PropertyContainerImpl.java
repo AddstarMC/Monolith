@@ -20,6 +20,11 @@ public class PropertyContainerImpl implements PropertyContainer
 		this.root = root;
 	}
 	
+	public NBTTagList getRoot()
+	{
+		return root;
+	}
+	
 	@Override
 	public PropertyBase<?> get(String name, UUID owner)
 	{
