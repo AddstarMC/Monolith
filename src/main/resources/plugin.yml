@@ -1,5 +1,5 @@
 name: Monolith
-description: A custom API for handling many common tasks as well as some more unique ones.
+description: A custom API for handling many common tasks as well as some more unique ones. NMS Version 1.9.R2
 author: Schmoller
 version: ${pluginversion}
 

@@ -5,17 +5,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.server.v1_9_R1.BlockPosition;
-import net.minecraft.server.v1_9_R1.MovingObjectPosition;
-import net.minecraft.server.v1_9_R1.Vec3D;
+import net.minecraft.server.v1_9_R2.AxisAlignedBB;
+import net.minecraft.server.v1_9_R2.BlockPosition;
+import net.minecraft.server.v1_9_R2.MovingObjectPosition;
+import net.minecraft.server.v1_9_R2.Vec3D;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_9_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.MaterialData;
@@ -434,7 +433,7 @@ public class Raytrace
 		
 		return hits;
 	}
-	
+
 	private Hit tryHitBlock(Block block, Location start, Vector end)
 	{
 		if (block.getType() == Material.AIR)
@@ -446,15 +445,12 @@ public class Raytrace
 		
 		// We are allowed to hit this type, begin
 		BlockPosition pos = new BlockPosition(block.getX(), block.getY(), block.getZ());
-		net.minecraft.server.v1_9_R1.Block type = CraftMagicNumbers.getBlock(block);
-		
 		// Expand the search area around the block to ensure that it passes completely through the block
 		Vec3D srcVec = new Vec3D(start.getX(), start.getY(), start.getZ());
 		Vec3D dstVec = new Vec3D(end.getX(), end.getY(), end.getZ());
-		
+		AxisAlignedBB bb = new AxisAlignedBB(pos);
 		// Do the trace
-		// TODO: There is also a type.getPlacedState() that may be better to use rather than type.getBlockData()
-		MovingObjectPosition hitPos = type.a(type.getBlockData(), ((CraftWorld)block.getWorld()).getHandle(), pos, srcVec, dstVec);
+		MovingObjectPosition hitPos = bb.a(srcVec, dstVec);
 		if (hitPos == null)
 			return null;
 		

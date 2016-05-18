@@ -27,11 +27,26 @@ public class Monolith extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		mInstance = this;
-		Lookup.initialize(this);
-		Bukkit.getPluginManager().registerEvents(new Listeners(), this);
-		
-		mGeSuitHandler = new GeSuitHandler(this);
+		String version;
+
+		try {
+
+			version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+
+		} catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
+			whatVersionAreYouUsingException.printStackTrace();
+			version = null;
+		}
+		getLogger().info("Your server is running version " + version);
+
+		if (version != null && version.equals("v1_9_R2")) {
+			mInstance = this;
+			Lookup.initialize(this);
+			Bukkit.getPluginManager().registerEvents(new Listeners(), this);
+			mGeSuitHandler = new GeSuitHandler(this);
+		} else {
+			getLogger().severe("This plugin is for NMS Version 1.9.R2 or Server Version 1.9.4. Disabled");
+		}
 	}
 
 	public static void broadcastMessage(ChatMessage message)
@@ -50,7 +65,7 @@ public class Monolith extends JavaPlugin
 
 	public static List<String> matchStrings(String prefix, Collection<String> values)
 	{
-		ArrayList<String> matches = new ArrayList<String>();
+		ArrayList<String> matches = new ArrayList<>();
 		
 		prefix = prefix.toLowerCase();
 		for(String value : values)

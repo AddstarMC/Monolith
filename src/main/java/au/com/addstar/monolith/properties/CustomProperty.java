@@ -10,16 +10,16 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraft.server.v1_9_R1.NBTBase;
-import net.minecraft.server.v1_9_R1.NBTTagByte;
-import net.minecraft.server.v1_9_R1.NBTTagCompound;
-import net.minecraft.server.v1_9_R1.NBTTagDouble;
-import net.minecraft.server.v1_9_R1.NBTTagFloat;
-import net.minecraft.server.v1_9_R1.NBTTagInt;
-import net.minecraft.server.v1_9_R1.NBTTagList;
-import net.minecraft.server.v1_9_R1.NBTTagLong;
-import net.minecraft.server.v1_9_R1.NBTTagShort;
-import net.minecraft.server.v1_9_R1.NBTTagString;
+import net.minecraft.server.v1_9_R2.NBTBase;
+import net.minecraft.server.v1_9_R2.NBTTagByte;
+import net.minecraft.server.v1_9_R2.NBTTagCompound;
+import net.minecraft.server.v1_9_R2.NBTTagDouble;
+import net.minecraft.server.v1_9_R2.NBTTagFloat;
+import net.minecraft.server.v1_9_R2.NBTTagInt;
+import net.minecraft.server.v1_9_R2.NBTTagList;
+import net.minecraft.server.v1_9_R2.NBTTagLong;
+import net.minecraft.server.v1_9_R2.NBTTagShort;
+import net.minecraft.server.v1_9_R2.NBTTagString;
 
 /**
  * Represents a property that holds any object that implements the
@@ -31,7 +31,7 @@ public class CustomProperty extends PropertyBase<ConfigurationSerializable>
 	 * Creates a new custom valued property
 	 * @param name The name of the property
 	 * @param owner The UUID of the owner for grouping purposes
-	 * @param value The value to hold
+	 * @param object The value to hold
 	 */
 	public CustomProperty(String name, UUID owner, ConfigurationSerializable object)
 	{

@@ -8,8 +8,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 
-import net.minecraft.server.v1_9_R1.NBTTagCompound;
-import net.minecraft.server.v1_9_R1.NBTTagList;
+import net.minecraft.server.v1_9_R2.NBTTagCompound;
+import net.minecraft.server.v1_9_R2.NBTTagList;
 
 public class PropertyContainerImpl implements PropertyContainer
 {
@@ -32,9 +32,10 @@ public class PropertyContainerImpl implements PropertyContainer
 		{
 			NBTTagCompound raw = root.get(i);
 			PropertyBase<?> property = loadProperty(raw);
-			
+			if (property.getName() != null) {
 			if (property.getName().equals(name) && property.getOwner().equals(owner))
 				return property;
+		}
 		}
 		
 		return null;
@@ -99,16 +100,16 @@ public class PropertyContainerImpl implements PropertyContainer
 	@Override
 	public void remove(String name, UUID owner)
 	{
-		for (int i = 0; i < root.size(); ++i)
-		{
+		for (int i = 0; i < root.size(); ++i) {
 			NBTTagCompound raw = root.get(i);
 			PropertyBase<?> property = loadProperty(raw);
-			
-			if (property.getName().equals(name) && property.getOwner().equals(owner))
-			{
-				root.remove(i);
-				break;
+			if (property.getName() != null) {
+				if (property.getName().equals(name) && property.getOwner().equals(owner)) {
+					root.remove(i);
+					break;
+				}
 			}
+
 		}
 	}
 
@@ -119,11 +120,11 @@ public class PropertyContainerImpl implements PropertyContainer
 		{
 			NBTTagCompound raw = root.get(i);
 			PropertyBase<?> property = loadProperty(raw);
-			
-			if (property.getOwner().equals(owner))
-			{
-				root.remove(i);
-				--i;
+			if (property.getOwner() != null) {
+				if (property.getOwner().equals(owner)) {
+					root.remove(i);
+					--i;
+				}
 			}
 		}
 	}

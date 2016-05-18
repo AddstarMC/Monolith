@@ -9,10 +9,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_9_R1.Block;
-import net.minecraft.server.v1_9_R1.Blocks;
-import net.minecraft.server.v1_9_R1.Item;
-import net.minecraft.server.v1_9_R1.MinecraftKey;
+import net.minecraft.server.v1_9_R2.Block;
+import net.minecraft.server.v1_9_R2.Blocks;
+import net.minecraft.server.v1_9_R2.Item;
+import net.minecraft.server.v1_9_R2.MinecraftKey;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -119,11 +119,11 @@ public class Lookup
 	public static Material findByMinecraftName(String name)
 	{
 		MinecraftKey key = new MinecraftKey(name);
-		Item item = (Item)Item.REGISTRY.get(key);
+		Item item = Item.REGISTRY.get(key);
 		if(item == null)
 		{
 			// Attempt blocks that dont have items
-			Block block = (Block)Block.REGISTRY.get(key);
+			Block block = Block.REGISTRY.get(key);
 			if (block == null || block == Blocks.AIR)
 				return null;
 			
@@ -209,7 +209,7 @@ public class Lookup
 	/**
 	 * Finds the names registered against this enchantment
 	 * The returned names can all be used to lookup this enchantment using {@link #findEnchantmentByName(String)}.
-	 * @param type The enchantment to look for
+	 * @param enchant The enchantment to look for
 	 * @return The names this enchantment is registered against, or an empty set
 	 */
 	public static Set<String> findNameByEnchantment(Enchantment enchant)

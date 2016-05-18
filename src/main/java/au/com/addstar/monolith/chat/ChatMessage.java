@@ -1,15 +1,15 @@
 package au.com.addstar.monolith.chat;
 
-import net.minecraft.server.v1_9_R1.ChatClickable;
-import net.minecraft.server.v1_9_R1.ChatClickable.EnumClickAction;
-import net.minecraft.server.v1_9_R1.ChatComponentText;
-import net.minecraft.server.v1_9_R1.ChatHoverable;
-import net.minecraft.server.v1_9_R1.ChatHoverable.EnumHoverAction;
-import net.minecraft.server.v1_9_R1.ChatModifier;
-import net.minecraft.server.v1_9_R1.EnumChatFormat;
-import net.minecraft.server.v1_9_R1.IChatBaseComponent;
-import net.minecraft.server.v1_9_R1.NBTTagCompound;
-import net.minecraft.server.v1_9_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_9_R2.ChatClickable;
+import net.minecraft.server.v1_9_R2.ChatClickable.EnumClickAction;
+import net.minecraft.server.v1_9_R2.ChatComponentText;
+import net.minecraft.server.v1_9_R2.ChatHoverable;
+import net.minecraft.server.v1_9_R2.ChatHoverable.EnumHoverAction;
+import net.minecraft.server.v1_9_R2.ChatModifier;
+import net.minecraft.server.v1_9_R2.EnumChatFormat;
+import net.minecraft.server.v1_9_R2.IChatBaseComponent;
+import net.minecraft.server.v1_9_R2.NBTTagCompound;
+import net.minecraft.server.v1_9_R2.PacketPlayOutChat;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,9 +20,9 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Achievement;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_9_R1.CraftStatistic;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_9_R2.CraftStatistic;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -85,7 +85,7 @@ public class ChatMessage
 
 	private ChatMessage()
 	{
-		mComponents = new ArrayList<IChatBaseComponent>();
+		mComponents = new ArrayList<>();
 		mCurrentModifier = new ChatModifier();
 	}
 
@@ -219,9 +219,9 @@ public class ChatMessage
 
 	public ChatMessage hover( ItemStack item )
 	{
-		net.minecraft.server.v1_9_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        Validate.notNull(nmsItem, "The item " + item.toString() + " cannot be used in a chat hover");
-        NBTTagCompound tag = new NBTTagCompound();
+		net.minecraft.server.v1_9_R2.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		Validate.notNull(nmsItem, "The item " + item.toString() + " cannot be used in a chat hover");
+		NBTTagCompound tag = new NBTTagCompound();
         nmsItem.save(tag);
         mCurrentModifier.setChatHoverable(new ChatHoverable(EnumHoverAction.SHOW_ITEM, new ChatComponentText(tag.toString())));
 		return this;
@@ -291,12 +291,12 @@ public class ChatMessage
 	
 	private void toPlain(IChatBaseComponent root, StringBuilder builder)
 	{
-		for(IChatBaseComponent component : (Iterable<IChatBaseComponent>)root)
+		for (IChatBaseComponent component : root)
 		{
 			ChatModifier mod = component.getChatModifier();
-			
-			builder.append(mod.getColor().toString());
-			
+			if (mod.getColor() != null) {
+				builder.append(mod.getColor().toString());
+			}
 			if(mod.isBold())
 				builder.append(ChatColor.BOLD);
 			if(mod.isItalic())
