@@ -8,6 +8,9 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
 
+/**
+ * A Villager defined by Monolith
+ */
 public class MonoVillager
 {
 	private static final Field mFieldCareer;
@@ -38,7 +41,8 @@ public class MonoVillager
 	}
 	
 	/**
-	 * Gets the villager entity this wrapper uses
+	 * @return Gets the villager entity this wrapper uses
+	 *
 	 */
 	public Villager getEntity()
 	{
@@ -46,7 +50,7 @@ public class MonoVillager
 	}
 
 	/**
-	 * A shortcut method for getting the profession of the vilager
+	 * @return A shortcut method for getting the profession of the vilager
 	 */
 	public Profession getProfession()
 	{

@@ -42,6 +42,7 @@ public class Lookup
 
 	/**
 	 * Initializes lookup systems. This should not be called by users of this API
+	 * @param plugin the plugin to initialize
 	 */
 	public static void initialize(Monolith plugin)
 	{
@@ -146,7 +147,7 @@ public class Lookup
 	/**
 	 * Finds the names registered against this item.
 	 * The returned names can all be used to lookup this item using {@link #findItemByName(String)}.
-	 * If the actual translated name is wanted, use {@link StringTranslator#getName(ItemStack)}.
+	 * If the actual translated name is wanted, use StringTranslator#getName(ItemStack).
 	 * @param material The material to look for
 	 * @return The names this item is registered against, or an empty set
 	 */
@@ -220,7 +221,7 @@ public class Lookup
 	/**
 	 * Does a bungee-aware lookup to resolve the specified name to a PlayerDefinition.
 	 * @param name The name to look for
-	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready. <br/>
+	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready.  
 	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
 	 */
 	public static ListenableFuture<PlayerDefinition> lookupPlayerName(String name)
@@ -239,7 +240,7 @@ public class Lookup
 	}
 	
 	/**
-	 * Does a bungee-aware lookup to resolve the specified name to a PlayerDefinition. <br>
+	 * Does a bungee-aware lookup to resolve the specified name to a PlayerDefinition.  
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
@@ -254,14 +255,14 @@ public class Lookup
 	}
 	
 	/**
-	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition. <br>
+	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition.  
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
 	 * <li>A player is required to be on this server to perform this lookup</li>
 	 * </ul>
 	 * @param id The uuid to look for
-	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready. <br/>
+	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready.  
 	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
 	 */
 	public static ListenableFuture<PlayerDefinition> lookupPlayerUUID(UUID id)
@@ -280,7 +281,7 @@ public class Lookup
 	}
 	
 	/**
-	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition. <br>
+	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition.  
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
@@ -295,14 +296,14 @@ public class Lookup
 	}
 	
 	/**
-	 * Does a bungee-aware lookup to resolve the specified names to a PlayerDefinitions. <br>
+	 * Does a bungee-aware lookup to resolve the specified names to a PlayerDefinitions.  
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
 	 * <li>A player is required to be on this server to perform this lookup</li>
 	 * </ul>
 	 * @param names An Iterable containing the names to resolve
-	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready. <br/>
+	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready.  
 	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
 	 */
 	public static ListenableFuture<List<PlayerDefinition>> lookupPlayerNames(Iterable<String> names)
@@ -311,7 +312,7 @@ public class Lookup
 	}
 	
 	/**
-	 * Does a bungee-aware lookup to resolve the specified names to PlayerDefinitions. <br>
+	 * Does a bungee-aware lookup to resolve the specified names to PlayerDefinitions.  
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
@@ -326,14 +327,14 @@ public class Lookup
 	}
 	
 	/**
-	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions. <br>
+	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions.  
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
 	 * <li>A player is required to be on this server to perform this lookup</li>
 	 * </ul>
 	 * @param ids An Iterable containing the uuids to resolve
-	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready. <br/>
+	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready.  
 	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
 	 */
 	public static ListenableFuture<List<PlayerDefinition>> lookupPlayerUUIDs(Iterable<UUID> ids)
@@ -342,7 +343,7 @@ public class Lookup
 	}
 	
 	/**
-	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions. <br>
+	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions.  
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
@@ -369,7 +370,7 @@ public class Lookup
 	/**
 	 * Finds the names registered against this entity definition.
 	 * The returned names can all be used to lookup this item using {@link #findEntityByName(String)}.
-	 * If the actual translated name is wanted, use {@link StringTranslator#getName(Entity)}.
+	 * If the actual translated name is wanted, use StringTranslator#getName(Entity).
 	 * @param entity The entity to lookup
 	 * @return The names this entity is registered against, or an empty set
 	 */

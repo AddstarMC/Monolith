@@ -13,6 +13,7 @@ public final class AttachmentFunctions
 	/**
 	 * Provides a function that computes the offset based on the entities look vector
 	 * @param offset The offset relative to the look direction
+	 * @param <T> extends @link{org.bukkit.entity.LivingEntity}
 	 * @return The Function
 	 */
 	public static <T extends LivingEntity> Function<T, Vector> lookRelativeOffset(Vector offset)

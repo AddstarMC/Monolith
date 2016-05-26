@@ -40,7 +40,7 @@ public class CommandDispatcher
 	}
 	/**
 	 * Registers a command to be handled by this dispatcher
-	 * @param command
+	 * @param command the command to register must implement @link{ICommand}
 	 */
 	public void registerCommand(ICommand command)
 	{

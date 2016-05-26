@@ -67,6 +67,7 @@ public class Parser
 	/**
 	 * Parses enums from a string. Parsing is case insensitive and will try with and without underscores
 	 * @param type The enum class
+	 * @param <T> any class that extends Enum
 	 * @param value The value to parse
 	 * @return The parsed value
 	 * @throws IllegalArgumentException Thrown if the value cannot be parsed as one of the enum class
@@ -261,6 +262,7 @@ public class Parser
 	 * A generic parse method which attempts to parse the value based on what type you want out.
 	 * 
 	 * @param type The type you want to get
+	 * @param <T> The class that defines the Type you wish to return
 	 * @param value The value to parse
 	 * @return An instance of the specified type with a value equivalent to the input string
 	 * @throws IllegalArgumentException Thrown if an error occurs while parsing the value

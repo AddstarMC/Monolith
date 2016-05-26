@@ -2,15 +2,36 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.addstar</groupId>
   <artifactId>Monolith</artifactId>
-  <version>1.4.2</version>
+  <version>1.4.2-SNAPSHOT</version>
   <name>Monolith</name>
-  
   <properties>
-    <pluginversion>${project.version}.${buildnumber}</pluginversion>
+    <pluginversion>${project.version}-${buildnumber}</pluginversion>
     <!-- so as to allow local declaration when building locally-->
-    <buildnumber>${env.BUILD_NUMBER}</buildnumber>
+    <buildnumber/>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
+  <scm>
+    <connection>scm:git:git@github.com:AddstarMC/Monolith.git</connection>
+    <developerConnection>scm:git:git@github.com:AddstarMC/Monolith.git</developerConnection>
+    <url>https://github.com/AddstarMC/monolith</url>
+    <tag>master</tag>
+  </scm>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>addstar</id>
+      <name>Addstar Internal Releases</name>
+      <url>scp://repo/maven2</url>
+      <layout>default</layout>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>propSnap</id>
+      <name>Propellors Snapshots</name>
+      <url>sftp://propellers.net/maven</url>
+      <layout>legacy</layout>
+    </snapshotRepository>
+  </distributionManagement>
   <repositories>
     <repository>
       <id>spigot-repo</id>
@@ -80,9 +101,45 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.3</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>aggregate-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.1</version>
       </plugin>
     </plugins>
   </build>
