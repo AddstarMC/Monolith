@@ -2,19 +2,19 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.addstar</groupId>
   <artifactId>Monolith</artifactId>
-  <version>1.4.2-SNAPSHOT</version>
+  <version>1.4.2</version>
   <name>Monolith</name>
   <properties>
     <pluginversion>${project.version}-${buildnumber}</pluginversion>
     <!-- so as to allow local declaration when building locally-->
-    <buildnumber/>
+    <buildnumber />
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <scm>
     <connection>scm:git:git@github.com:AddstarMC/Monolith.git</connection>
     <developerConnection>scm:git:git@github.com:AddstarMC/Monolith.git</developerConnection>
     <url>https://github.com/AddstarMC/monolith</url>
-    <tag>master</tag>
+    <tag>Monolith-1.4.2</tag>
   </scm>
   <distributionManagement>
     <repository>
