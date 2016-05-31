@@ -18,18 +18,14 @@
   </scm>
   <distributionManagement>
     <repository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>addstar</id>
-      <name>Addstar Internal Releases</name>
-      <url>scp://repo/maven2</url>
-      <layout>default</layout>
+      <id>maven.addstar.com.au</id>
+      <name>maven.addstar.com.au-releases</name>
+      <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
     </repository>
     <snapshotRepository>
-      <uniqueVersion>true</uniqueVersion>
-      <id>propSnap</id>
-      <name>Propellors Snapshots</name>
-      <url>sftp://propellers.net/maven</url>
-      <layout>legacy</layout>
+      <id>maven.addstar.com.au</id>
+      <name>maven.addstar.com.au-snapshots</name>
+      <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
     </snapshotRepository>
   </distributionManagement>
   <repositories>
