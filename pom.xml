@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.addstar</groupId>
   <artifactId>Monolith</artifactId>
-  <version>1.4.2</version>
+  <version>1.4.3-SNAPSHOT</version>
   <name>Monolith</name>
   <properties>
     <pluginversion>${project.version}-${buildnumber}</pluginversion>
@@ -14,7 +14,7 @@
     <connection>scm:git:git@github.com:AddstarMC/Monolith.git</connection>
     <developerConnection>scm:git:git@github.com:AddstarMC/Monolith.git</developerConnection>
     <url>https://github.com/AddstarMC/monolith</url>
-    <tag>Monolith-1.4.2</tag>
+    <tag>master</tag>
   </scm>
   <distributionManagement>
     <repository>
