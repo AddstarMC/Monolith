@@ -4,15 +4,14 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.bukkit.Material;
-import org.bukkit.attribute.Attributable;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
+import au.com.addstar.monolith.attributes.ItemAttributes;
+import au.com.addstar.monolith.attributes.MonoItemAttributes;
 import au.com.addstar.monolith.properties.PropertyContainer;
 import au.com.addstar.monolith.properties.PropertyContainerImpl;
 import net.minecraft.server.v1_9_R2.NBTBase;
@@ -26,9 +25,10 @@ import net.minecraft.server.v1_9_R2.NBTTagList;
  * <b>NOTE:</b> If the ItemStack held within is changed by external
  * code, the accuracy of values here can not be ensured. 
  */
-public class MonoItemStack extends ItemStack implements Attributable
+public class MonoItemStack extends ItemStack
 {
 	private static final String PropertiesNBTKey = "-mono-properties";
+	private static final String AttributesNBTKey = "AttributeModifiers";
 	
 	private static final Field CraftStack_Handle;
 	private static final Field NMSStack_Tag;
@@ -62,6 +62,7 @@ public class MonoItemStack extends ItemStack implements Attributable
 	
 	private ItemStack item;
 	private PropertyContainer properties;
+	private MonoItemAttributes attributes;
 	
 	/**
 	 * Creates a new MonoItemStack.
@@ -90,76 +91,94 @@ public class MonoItemStack extends ItemStack implements Attributable
 		// Create the properties if needed
 		if (properties == null)
 		{
-			try
-			{
-				NBTTagList list;
-				
-				// CraftItemStack just uses the thing directly
-				if (item instanceof CraftItemStack)
-				{
-					Object handle = CraftStack_Handle.get(item);
-					Object rawTag = NMSStack_Tag.get(handle);
-					
-					NBTTagCompound tag = (NBTTagCompound)rawTag;
-					
-					if (tag == null)
-					{
-						tag = new NBTTagCompound();
-						NMSStack_Tag.set(handle, tag);
-					}
-					
-					if (tag.hasKeyOfType(PropertiesNBTKey, 9))
-					{
-						list = tag.getList(PropertiesNBTKey, 10);
-					}
-					else
-					{
-						list = new NBTTagList();
-						tag.set(PropertiesNBTKey, list);
-					}
-				}
-				// Bukkit item stack needs to use the item meta
-				else
-				{
-					ItemMeta meta = item.getItemMeta();
-					@SuppressWarnings("unchecked")
-					Map<String, NBTBase> tags = (Map<String, NBTBase>)BukkitStack_UnhandledTags.get(meta);
-					
-					if (tags.containsKey(PropertiesNBTKey))
-					{
-						NBTBase rawTag = tags.get(PropertiesNBTKey);
-						if (rawTag instanceof NBTTagList)
-							list = (NBTTagList)rawTag;
-						else
-						{
-							list = new NBTTagList();
-							tags.put(PropertiesNBTKey, list);
-						}
-					}
-					else
-					{
-						list = new NBTTagList();
-						tags.put(PropertiesNBTKey, list);
-					}
-					
-					item.setItemMeta(meta);
-				}
-				
-				properties = new PropertyContainerImpl(list);
-			}
-			catch (IllegalAccessException e)
-			{
-				throw new IllegalStateException("This version of Monolith is not compatible with this version of minecraft", e);
-			}
+			NBTTagList list = getNBTList(PropertiesNBTKey);
+			properties = new PropertyContainerImpl(list);
 		}
 		
 		return properties;
 	}
 	
-	@Override
-	public AttributeInstance getAttribute(Attribute attribute)
+	/**
+	 * Gets the item attributes for this item
+	 * @return The ItemAttributes
+	 */
+	public ItemAttributes getAttributes()
 	{
-		throw new UnsupportedOperationException("Not yet implemented");
+		if (getType() == Material.AIR)
+			throw new UnsupportedOperationException("AIR cannot have attributes");
+		
+		if (attributes == null)
+		{
+			NBTTagList list = getNBTList(AttributesNBTKey);
+			attributes = new MonoItemAttributes(list);
+		}
+		
+		return attributes;
+	}
+	
+	private NBTTagList getNBTList(String key)
+	{
+		try
+		{
+			NBTTagList list;
+			
+			// CraftItemStack just uses the thing directly
+			if (item instanceof CraftItemStack)
+			{
+				Object handle = CraftStack_Handle.get(item);
+				Object rawTag = NMSStack_Tag.get(handle);
+				
+				NBTTagCompound tag = (NBTTagCompound)rawTag;
+				
+				if (tag == null)
+				{
+					tag = new NBTTagCompound();
+					NMSStack_Tag.set(handle, tag);
+				}
+				
+				if (tag.hasKeyOfType(key, 9))
+				{
+					list = tag.getList(key, 10);
+				}
+				else
+				{
+					list = new NBTTagList();
+					tag.set(key, list);
+				}
+			}
+			// Bukkit item stack needs to use the item meta
+			else
+			{
+				ItemMeta meta = item.getItemMeta();
+				@SuppressWarnings("unchecked")
+				Map<String, NBTBase> tags = (Map<String, NBTBase>)BukkitStack_UnhandledTags.get(meta);
+				
+				if (tags.containsKey(key))
+				{
+					NBTBase rawTag = tags.get(key);
+					if (rawTag instanceof NBTTagList)
+						list = (NBTTagList)rawTag;
+					else
+					{
+						list = new NBTTagList();
+						tags.put(key, list);
+					}
+				}
+				else
+				{
+					list = new NBTTagList();
+					tags.put(key, list);
+				}
+				
+				item.setItemMeta(meta);
+			}
+			
+			return list;
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new IllegalStateException("This version of Monolith is not compatible with this version of minecraft", e);
+		}
 	}
 	
 	
