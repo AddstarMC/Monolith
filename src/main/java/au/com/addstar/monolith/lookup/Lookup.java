@@ -9,17 +9,16 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_9_R2.Block;
-import net.minecraft.server.v1_9_R2.Blocks;
-import net.minecraft.server.v1_9_R2.Item;
-import net.minecraft.server.v1_9_R2.MinecraftKey;
+import net.minecraft.server.v1_10_R1.Block;
+import net.minecraft.server.v1_10_R1.Blocks;
+import net.minecraft.server.v1_10_R1.Item;
+import net.minecraft.server.v1_10_R1.MinecraftKey;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import com.google.common.base.Function;

@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import net.minecraft.server.v1_9_R2.NBTTagCompound;
+import net.minecraft.server.v1_10_R1.NBTTagCompound;
 
 /**
  * Properties are pieces of data that you can attach onto various objects.
