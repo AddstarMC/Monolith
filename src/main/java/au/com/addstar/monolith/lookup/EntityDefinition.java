@@ -6,13 +6,9 @@ import org.bukkit.World;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Rabbit.Type;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Horse.Variant;
-import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.inventory.ItemStack;
 
 public class EntityDefinition
@@ -29,18 +25,14 @@ public class EntityDefinition
 	public EntityDefinition(Entity entity)
 	{
 		mType = entity.getType();
-		
-		if (entity instanceof Skeleton)
-			mSubType = ((Skeleton)entity).getSkeletonType().name();
-		else if (entity instanceof Creeper)
+
+		if (entity instanceof Creeper)
 		{
 			if (((Creeper)entity).isPowered())
 				mSubType = "POWERED";
 		}
 		else if (entity instanceof Rabbit)
 			mSubType = ((Rabbit)entity).getRabbitType().name();
-		else if (entity instanceof Horse)
-			mSubType = ((Horse)entity).getVariant().name();
 		else if (entity instanceof Ocelot)
 			mSubType = ((Ocelot)entity).getCatType().name();
 	}
@@ -93,15 +85,9 @@ public class EntityDefinition
 		{
 			switch (mType)
 			{
-			case SKELETON:
-				((Skeleton)entity).setSkeletonType(SkeletonType.valueOf(mSubType.toUpperCase()));
-				break;
 			case CREEPER:
 				if (mSubType.equalsIgnoreCase("powered"))
 					((Creeper)entity).setPowered(true);
-				break;
-			case HORSE:
-				((Horse)entity).setVariant(Variant.valueOf(mSubType.toUpperCase()));
 				break;
 			case RABBIT:
 				((Rabbit)entity).setRabbitType(Type.valueOf(mSubType.toUpperCase()));

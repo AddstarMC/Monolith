@@ -10,16 +10,16 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraft.server.v1_10_R1.NBTBase;
-import net.minecraft.server.v1_10_R1.NBTTagByte;
-import net.minecraft.server.v1_10_R1.NBTTagCompound;
-import net.minecraft.server.v1_10_R1.NBTTagDouble;
-import net.minecraft.server.v1_10_R1.NBTTagFloat;
-import net.minecraft.server.v1_10_R1.NBTTagInt;
-import net.minecraft.server.v1_10_R1.NBTTagList;
-import net.minecraft.server.v1_10_R1.NBTTagLong;
-import net.minecraft.server.v1_10_R1.NBTTagShort;
-import net.minecraft.server.v1_10_R1.NBTTagString;
+import net.minecraft.server.v1_11_R1.NBTBase;
+import net.minecraft.server.v1_11_R1.NBTTagByte;
+import net.minecraft.server.v1_11_R1.NBTTagCompound;
+import net.minecraft.server.v1_11_R1.NBTTagDouble;
+import net.minecraft.server.v1_11_R1.NBTTagFloat;
+import net.minecraft.server.v1_11_R1.NBTTagInt;
+import net.minecraft.server.v1_11_R1.NBTTagList;
+import net.minecraft.server.v1_11_R1.NBTTagLong;
+import net.minecraft.server.v1_11_R1.NBTTagShort;
+import net.minecraft.server.v1_11_R1.NBTTagString;
 
 /**
  * Represents a property that holds any object that implements the
@@ -187,8 +187,8 @@ public class CustomProperty extends PropertyBase<ConfigurationSerializable>
 		else if (tag instanceof NBTTagFloat)
 			return ((NBTTagFloat)tag).i();
 		else if (tag instanceof NBTTagDouble)
-			return ((NBTTagDouble)tag).h();
-		else if (tag instanceof NBTTagString)
+            return ((NBTTagDouble) tag).asDouble();
+        else if (tag instanceof NBTTagString)
 			return ((NBTTagString)tag).c_();
 		else if (tag instanceof NBTTagList)
 			return fromNBTList((NBTTagList)tag);

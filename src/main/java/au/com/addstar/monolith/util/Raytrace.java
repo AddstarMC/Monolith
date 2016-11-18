@@ -5,10 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.server.v1_10_R1.AxisAlignedBB;
-import net.minecraft.server.v1_10_R1.BlockPosition;
-import net.minecraft.server.v1_10_R1.MovingObjectPosition;
-import net.minecraft.server.v1_10_R1.Vec3D;
+import net.minecraft.server.v1_11_R1.AxisAlignedBB;
+import net.minecraft.server.v1_11_R1.BlockPosition;
+import net.minecraft.server.v1_11_R1.MovingObjectPosition;
+import net.minecraft.server.v1_11_R1.Vec3D;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;

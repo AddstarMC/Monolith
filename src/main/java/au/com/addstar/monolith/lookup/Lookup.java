@@ -9,10 +9,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_10_R1.Block;
-import net.minecraft.server.v1_10_R1.Blocks;
-import net.minecraft.server.v1_10_R1.Item;
-import net.minecraft.server.v1_10_R1.MinecraftKey;
+import net.minecraft.server.v1_11_R1.Block;
+import net.minecraft.server.v1_11_R1.Blocks;
+import net.minecraft.server.v1_11_R1.Item;
+import net.minecraft.server.v1_11_R1.MinecraftKey;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

@@ -2,8 +2,8 @@ package au.com.addstar.monolith.villagers;
 
 import java.lang.reflect.Field;
 
-import net.minecraft.server.v1_10_R1.EntityVillager;
-import org.bukkit.craftbukkit.v1_10_R1.entity.CraftVillager;
+import net.minecraft.server.v1_11_R1.EntityVillager;
+import org.bukkit.craftbukkit.v1_11_R1.entity.CraftVillager;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
@@ -108,7 +108,7 @@ public class MonoVillager
 	
 	public HumanEntity getTradingWith()
 	{
-		if (!mHandle.getHandle().dg()) // Has no trading player
+		if (!mHandle.getHandle().dj()) // Has no trading player
 			return null;
 		
 		// EntityVillager.getTradingPlayer() : EntityHuman

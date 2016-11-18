@@ -1,7 +1,7 @@
 package au.com.addstar.monolith;
 
-import net.minecraft.server.v1_10_R1.NBTTagCompound;
-import org.bukkit.craftbukkit.v1_10_R1.inventory.CraftItemStack;
+import net.minecraft.server.v1_11_R1.NBTTagCompound;
+import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.SpawnEgg;
@@ -24,7 +24,7 @@ public class MonoSpawnEgg extends SpawnEgg {
         this.item = egg;
         this.spawnType = EntityType.CHICKEN;
         this.customName = null;
-        net.minecraft.server.v1_10_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound tag = nmsStack.getTag();
         if (tag != null) {
             try {
@@ -65,7 +65,7 @@ public class MonoSpawnEgg extends SpawnEgg {
 
     @SuppressWarnings("deprecation")
     public boolean setMonoSpawnedType(EntityType type) {
-        net.minecraft.server.v1_10_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound tag = nmsStack.getTag();
         if (tag != null) {
             try {
