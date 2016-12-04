@@ -61,7 +61,16 @@ public class NBTItemStack extends ItemStack{
     }
 
     public String listNBT(){
-         return nbtTag.toString();
+        if (hasNBTData()) {
+            return nbtTag.toString();
+        } else {
+            return "Empty";
+        }
      }
+
+    public boolean hasNBTData() {
+        return nbtTag != null;
+    }
+
 
 }
