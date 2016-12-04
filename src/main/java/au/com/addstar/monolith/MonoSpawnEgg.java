@@ -80,19 +80,27 @@ public class MonoSpawnEgg extends SpawnEgg {
                     if (entityTag.hasKeyOfType("id", 8)) {
                         entityTag.setString("id", "minecraft:" + type.getName());
                     }
+
                 }else{
                     NBTTagCompound entityTag = new NBTTagCompound();
                     entityTag.setString("id", "minecraft:" + type.getName());
                     tag.set("EntityTag", entityTag);
                     nmsStack.setTag(tag);
-                    this.item = CraftItemStack.asBukkitCopy(nmsStack);
                 }
                 this.spawnType = type;
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            tag = new NBTTagCompound();
+            NBTTagCompound entityTag = new NBTTagCompound();
+            entityTag.setString("id", "minecraft:" + type.getName());
+            tag.set("EntityTag", entityTag);
+            nmsStack.setTag(tag);
+            this.spawnType = type;
         }
+        this.item = CraftItemStack.asBukkitCopy(nmsStack);
         return this.spawnType==type;
 
 }
