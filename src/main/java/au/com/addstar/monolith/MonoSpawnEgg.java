@@ -1,56 +1,39 @@
 package au.com.addstar.monolith;
 
-import net.minecraft.server.v1_11_R1.NBTTagCompound;
-import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.SpawnEgg;
+import org.bukkit.inventory.meta.SpawnEggMeta;
 
 /**
+ *
+ * Deprecated since Spigot 1.11 we now have SpawnEggMeta
  * Created for the AddstarMC Project.
  * Created by Narimm on 26/04/2016.
  */
+@Deprecated
 public class MonoSpawnEgg extends SpawnEgg {
 
-    private SpawnEgg egg;
     private ItemStack item;
+    private SpawnEggMeta meta;
     private EntityType spawnType;
     private String customName;
     private boolean customNameVisible;
 
     public MonoSpawnEgg(ItemStack egg) {
-        this.egg = (SpawnEgg) egg.getData();
         this.item = egg;
-        this.spawnType = EntityType.CHICKEN;
-        this.customName = null;
-        net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound tag = nmsStack.getTag();
-        if (tag != null) {
-            try {
-                if (tag.hasKey("EntityTag") && tag.hasKeyOfType("EntityTag", 10)) {
-                    NBTTagCompound entityTag = tag.getCompound("EntityTag");
-                    if (entityTag.hasKeyOfType("id", 8)) {
-                        String rawSpawnData = entityTag.getString("id").replace("minecraft:", "");
-                        this.spawnType = EntityType.fromName(rawSpawnData);
-                    }
-                    if (entityTag.hasKeyOfType("CustomName",8)){
-                        this.customName = entityTag.getString("CustomName");
-                    }
-                    if (entityTag.hasKeyOfType("CustomNameVisible",1)){
-                        this.customNameVisible = entityTag.getBoolean("CustomNameVisible");
-                    }
-                }else{
-                    //no tag so create one
-                    NBTTagCompound entityTag = new NBTTagCompound();
-                    entityTag.setString("id", "minecraft:" + EntityType.CHICKEN.name());
-                    tag.set("EntityTag", entityTag);
-                    nmsStack.setTag(tag);
-                    this.item = CraftItemStack.asBukkitCopy(nmsStack);
-                }
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
+        this.meta = null;
+        ItemMeta newmeta = item.getItemMeta();
+        try {
+            this.meta = (SpawnEggMeta) newmeta;
+        } catch (ClassCastException e) {
+            e.printStackTrace();//You cant make an egg out of a non egg.
         }
+        this.spawnType = meta.getSpawnedType();
+        this.customName = meta.getDisplayName();
+        this.customNameVisible = true;
+
     }
     public EntityType getMonoSpawnedType() {
         return this.spawnType;
@@ -71,44 +54,16 @@ public class MonoSpawnEgg extends SpawnEgg {
      * @return
      */
     public boolean setMonoSpawnedType(EntityType type) {
-        net.minecraft.server.v1_11_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound tag = nmsStack.getTag();
-        if (tag != null) {
-            try {
-                if (tag.hasKey("EntityTag") && tag.hasKeyOfType("EntityTag", 10)) {
-                    NBTTagCompound entityTag = tag.getCompound("EntityTag");
-                    if (entityTag.hasKeyOfType("id", 8)) {
-                        entityTag.setString("id", "minecraft:" + type.getName());
-                    }
+        meta.setSpawnedType(type);
 
-                }else{
-                    NBTTagCompound entityTag = new NBTTagCompound();
-                    entityTag.setString("id", "minecraft:" + type.getName());
-                    tag.set("EntityTag", entityTag);
-                    nmsStack.setTag(tag);
-                }
-                this.spawnType = type;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            tag = new NBTTagCompound();
-            NBTTagCompound entityTag = new NBTTagCompound();
-            entityTag.setString("id", "minecraft:" + type.getName());
-            tag.set("EntityTag", entityTag);
-            nmsStack.setTag(tag);
-            this.spawnType = type;
-        }
-        this.item = CraftItemStack.asBukkitCopy(nmsStack);
-        return this.spawnType==type;
-
+        return this.meta.getSpawnedType() == type;
 }
 
     /*
     * Creates a 1.8 compatible spawn egg...
      */
     public SpawnEgg getBukkitSpawnEgg(){
+        SpawnEgg egg = new MonoSpawnEgg(this.toItemStack());
         egg.setSpawnedType(this.getMonoSpawnedType());
         return egg;
     }
