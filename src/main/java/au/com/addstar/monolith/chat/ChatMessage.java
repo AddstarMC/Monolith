@@ -1,15 +1,16 @@
 package au.com.addstar.monolith.chat;
 
-import net.minecraft.server.v1_11_R1.ChatClickable;
-import net.minecraft.server.v1_11_R1.ChatClickable.EnumClickAction;
-import net.minecraft.server.v1_11_R1.ChatComponentText;
-import net.minecraft.server.v1_11_R1.ChatHoverable;
-import net.minecraft.server.v1_11_R1.ChatHoverable.EnumHoverAction;
-import net.minecraft.server.v1_11_R1.ChatModifier;
-import net.minecraft.server.v1_11_R1.EnumChatFormat;
-import net.minecraft.server.v1_11_R1.IChatBaseComponent;
-import net.minecraft.server.v1_11_R1.NBTTagCompound;
-import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_12_R1.ChatClickable;
+import net.minecraft.server.v1_12_R1.ChatClickable.EnumClickAction;
+import net.minecraft.server.v1_12_R1.ChatComponentText;
+import net.minecraft.server.v1_12_R1.ChatHoverable;
+import net.minecraft.server.v1_12_R1.ChatHoverable.EnumHoverAction;
+import net.minecraft.server.v1_12_R1.ChatModifier;
+import net.minecraft.server.v1_12_R1.EnumChatFormat;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_12_R1.ChatMessageType;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -17,12 +18,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.Achievement;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_11_R1.CraftStatistic;
-import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -211,16 +210,10 @@ public class ChatMessage
 		return this;
 	}
 
-	public ChatMessage hover( Achievement achievement )
-	{
-		mCurrentModifier.setChatHoverable(new ChatHoverable(EnumHoverAction.SHOW_ACHIEVEMENT, new ChatComponentText(CraftStatistic.getNMSAchievement(achievement).name)));
-		return this;
-	}
-
 	public ChatMessage hover( ItemStack item )
 	{
-        net.minecraft.server.v1_11_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        Validate.notNull(nmsItem, "The item " + item.toString() + " cannot be used in a chat hover");
+		net.minecraft.server.v1_12_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		Validate.notNull(nmsItem, "The item " + item.toString() + " cannot be used in a chat hover");
 		NBTTagCompound tag = new NBTTagCompound();
         nmsItem.save(tag);
         mCurrentModifier.setChatHoverable(new ChatHoverable(EnumHoverAction.SHOW_ITEM, new ChatComponentText(tag.toString())));
@@ -251,21 +244,21 @@ public class ChatMessage
 	{
 		((CraftPlayer)player).getHandle().sendMessage(toComponents());
 	}
-	
-	public void send(Player player, ChatMessageType type)
+
+	public void send(Player player, au.com.addstar.monolith.chat.ChatMessageType type)
 	{
 		for (IChatBaseComponent component : toComponents())
 		{
 			// Action bar does not support full json correctly
-			if (type == ChatMessageType.ActionBar)
+			if (type == au.com.addstar.monolith.chat.ChatMessageType.ActionBar)
 			{
 				StringBuilder builder = new StringBuilder();
 				toPlain(component, builder);
 				
 				component = new ChatComponentText(builder.toString());
 			}
-			
-			PacketPlayOutChat chat = new PacketPlayOutChat(component, (byte)type.ordinal());
+
+			PacketPlayOutChat chat = new PacketPlayOutChat(component, ChatMessageType.a((byte) type.ordinal()));
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(chat);
 		}
 	}

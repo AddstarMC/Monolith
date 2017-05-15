@@ -12,8 +12,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import com.google.common.collect.Lists;
 
 import au.com.addstar.monolith.util.Attributes;
-import net.minecraft.server.v1_11_R1.NBTTagCompound;
-import net.minecraft.server.v1_11_R1.NBTTagList;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import net.minecraft.server.v1_12_R1.NBTTagList;
 
 public class MonoItemAttributes implements ItemAttributes
 {

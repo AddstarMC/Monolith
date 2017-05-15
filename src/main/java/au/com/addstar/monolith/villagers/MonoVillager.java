@@ -2,8 +2,8 @@ package au.com.addstar.monolith.villagers;
 
 import java.lang.reflect.Field;
 
-import net.minecraft.server.v1_11_R1.EntityVillager;
-import org.bukkit.craftbukkit.v1_11_R1.entity.CraftVillager;
+import net.minecraft.server.v1_12_R1.EntityVillager;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftVillager;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Villager.Profession;
@@ -20,10 +20,10 @@ public class MonoVillager
 	{
 		try
 		{
-			mFieldCareer = EntityVillager.class.getDeclaredField("bJ");
+			mFieldCareer = EntityVillager.class.getDeclaredField("bK");
 			mFieldCareer.setAccessible(true);
-			
-			mFieldCareerStage = EntityVillager.class.getDeclaredField("bK");
+
+			mFieldCareerStage = EntityVillager.class.getDeclaredField("bL");
 			mFieldCareerStage.setAccessible(true);
 		}
 		catch(Exception e)
@@ -108,7 +108,7 @@ public class MonoVillager
 	
 	public HumanEntity getTradingWith()
 	{
-		if (!mHandle.getHandle().dj()) // Has no trading player
+		if (!mHandle.getHandle().dl()) // Has no trading player
 			return null;
 		
 		// EntityVillager.getTradingPlayer() : EntityHuman

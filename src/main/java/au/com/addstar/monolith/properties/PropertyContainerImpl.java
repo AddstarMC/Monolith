@@ -8,8 +8,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 
-import net.minecraft.server.v1_11_R1.NBTTagCompound;
-import net.minecraft.server.v1_11_R1.NBTTagList;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import net.minecraft.server.v1_12_R1.NBTTagList;
 
 public class PropertyContainerImpl implements PropertyContainer
 {
@@ -139,34 +139,13 @@ public class PropertyContainerImpl implements PropertyContainer
 	@Override
 	public Iterable<PropertyBase<?>> getAllProperties(final UUID owner)
 	{
-		return new Iterable<PropertyBase<?>>()
-		{
-			@Override
-			public Iterator<PropertyBase<?>> iterator()
-			{
-				return Iterators.filter(new PropertyIterator(), new Predicate<PropertyBase<?>>()
-				{
-					@Override
-					public boolean apply(PropertyBase<?> property)
-					{
-						return property.getOwner().equals(owner);
-					}
-				});
-			}
-		};
+		return () -> Iterators.filter(new PropertyIterator(), property -> property.getOwner().equals(owner));
 	}
 
 	@Override
 	public Iterable<PropertyBase<?>> getAllProperties()
 	{
-		return new Iterable<PropertyBase<?>>()
-		{
-			@Override
-			public Iterator<PropertyBase<?>> iterator()
-			{
-				return new PropertyIterator();
-			}
-		};
+		return () -> new PropertyIterator();
 	}
 	
 	@Override

@@ -9,10 +9,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_11_R1.Block;
-import net.minecraft.server.v1_11_R1.Blocks;
-import net.minecraft.server.v1_11_R1.Item;
-import net.minecraft.server.v1_11_R1.MinecraftKey;
+import net.minecraft.server.v1_12_R1.Block;
+import net.minecraft.server.v1_12_R1.Blocks;
+import net.minecraft.server.v1_12_R1.Item;
+import net.minecraft.server.v1_12_R1.MinecraftKey;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -225,16 +225,11 @@ public class Lookup
 	 */
 	public static ListenableFuture<PlayerDefinition> lookupPlayerName(String name)
 	{
-		return Futures.transform(lookupPlayerNames(Arrays.asList(name)), new Function<List<PlayerDefinition>, PlayerDefinition>()
-		{
-			@Override
-			public PlayerDefinition apply( List<PlayerDefinition> list )
-			{
-				if (list.isEmpty())
-					return null;
-				else
-					return list.get(0);
-			}
+		return Futures.transform(lookupPlayerNames(Arrays.asList(name)), list -> {
+			if (list.isEmpty())
+				return null;
+			else
+				return list.get(0);
 		});
 	}
 	
@@ -250,7 +245,7 @@ public class Lookup
 	 */
 	public static void lookupPlayerName(String name, LookupCallback<PlayerDefinition> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<PlayerDefinition>(lookupPlayerName(name), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerName(name), callback, 5, TimeUnit.SECONDS));
 	}
 	
 	/**
@@ -322,7 +317,7 @@ public class Lookup
 	 */
 	public static void lookupPlayerNames(Iterable<String> names, LookupCallback<List<PlayerDefinition>> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<List<PlayerDefinition>>(lookupPlayerNames(names), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerNames(names), callback, 5, TimeUnit.SECONDS));
 	}
 	
 	/**
@@ -353,7 +348,7 @@ public class Lookup
 	 */
 	public static void lookupPlayerUUIDs(Iterable<UUID> ids, LookupCallback<List<PlayerDefinition>> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<List<PlayerDefinition>>(lookupPlayerUUIDs(ids), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerUUIDs(ids), callback, 5, TimeUnit.SECONDS));
 	}
 	
 	/**

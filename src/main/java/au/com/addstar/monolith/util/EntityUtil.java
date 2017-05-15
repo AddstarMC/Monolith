@@ -2,11 +2,11 @@ package au.com.addstar.monolith.util;
 
 import java.util.List;
 
-import net.minecraft.server.v1_11_R1.AxisAlignedBB;
+import net.minecraft.server.v1_12_R1.AxisAlignedBB;
 
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.Vector;
@@ -35,11 +35,11 @@ public class EntityUtil
 		AxisAlignedBB rawBB = new AxisAlignedBB(bb.getMinCorner().getX(), bb.getMinCorner().getY(), bb.getMinCorner().getZ(), bb.getMaxCorner().getX(), bb.getMaxCorner().getY(), bb.getMaxCorner().getZ());
 		
 		// Call List<? extends Entity> getEntities(Class<? extends Entity>, AxisAlignedBB, Predicate<? extends Entity>)
-		List<net.minecraft.server.v1_11_R1.Entity> rawResults = ((CraftWorld) world).getHandle().a(net.minecraft.server.v1_11_R1.Entity.class, rawBB, (Predicate<net.minecraft.server.v1_11_R1.Entity>) null);
+		List<net.minecraft.server.v1_12_R1.Entity> rawResults = ((CraftWorld) world).getHandle().a(net.minecraft.server.v1_12_R1.Entity.class, rawBB, (Predicate<net.minecraft.server.v1_12_R1.Entity>) null);
 		List<T> resolved = Lists.newArrayListWithCapacity(rawResults.size());
 		for (Object rawResult : rawResults)
 		{
-			net.minecraft.server.v1_11_R1.Entity nmsEntity = (net.minecraft.server.v1_11_R1.Entity) rawResult;
+			net.minecraft.server.v1_12_R1.Entity nmsEntity = (net.minecraft.server.v1_12_R1.Entity) rawResult;
 			
 			Entity bukkitEntity = nmsEntity.getBukkitEntity();
 			if (type.isInstance(bukkitEntity))
