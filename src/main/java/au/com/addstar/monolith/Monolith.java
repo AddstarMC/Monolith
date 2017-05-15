@@ -44,9 +44,10 @@ public class Monolith extends JavaPlugin
 			Lookup.initialize(this);
 			Bukkit.getPluginManager().registerEvents(new Listeners(), this);
 			mGeSuitHandler = new GeSuitHandler(this);
+			getLogger().info("enabled");
 		} else {
-            getLogger().severe("This plugin is for NMS Version 1.11.R1 or Server Version 1.11. Disabled");
-        }
+			getLogger().severe("This plugin is for NMS Version 1.11.R2 or Server Version 1.11.2. Disabled");
+		}
 	}
 
 	public static void broadcastMessage(ChatMessage message)
