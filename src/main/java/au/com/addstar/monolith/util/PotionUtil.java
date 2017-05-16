@@ -281,84 +281,46 @@ public class PotionUtil {
             PotionType type = null;
             boolean strong = tag.contains("strong");
             boolean extended = tag.contains("long");
-            switch (tag) {
-                case "fire_resistance":
-                case "long_fire_resistance":
-                    type = PotionType.FIRE_RESISTANCE;
-                    break;
-                case "harming":
-                case "strong_harming":
-                    type = PotionType.INSTANT_DAMAGE;
-                    break;
-                case "healing":
-                case "strong_healing":
-                    type = PotionType.INSTANT_HEAL;
-                    break;
-                case "invisibility":
-                case "long_invisibility":
-                    type = PotionType.INVISIBILITY;
-                    break;
-                case "leaping":
-                case "long_leaping":
-                case "strong_leaping":
-                    type = PotionType.JUMP;
-                    break;
-                case "luck":
-                    type = PotionType.LUCK;
-                    break;
-                case "night_vision":
-                case "long_night_vision":
-                    type = PotionType.NIGHT_VISION;
-                    break;
-                case "poison":
-                case "long_poison":
-                case "strong_poison":
-                    type = PotionType.POISON;
-                    break;
-                case "regeneration":
-                case "long_regeneration":
-                case "strong_regeneration":
-                    type = PotionType.REGEN;
-                    break;
-                case "slowness":
-                case "long_slowness":
-                    type = PotionType.SLOWNESS;
-                    break;
-                case "swiftness":
-                case "long_swiftness":
-                case "strong_swiftness":
-                    type = PotionType.SPEED;
-                    break;
-                case "strength":
-                case "long_strength":
-                case "strong_strength":
-                    type = PotionType.STRENGTH;
-                    break;
-                case "water_breathing":
-                case "long_water_breathing":
-                    type = PotionType.WATER_BREATHING;
-                    break;
-                case "water":
-                    type = PotionType.WATER;
-                    break;
-                case "weakness":
-                case "long_weakness":
-                    type = PotionType.WEAKNESS;
-                    break;
-                case "empty":
-                    type = PotionType.EMPTY;
-                    break;
-                case "mundane":
-                    type = PotionType.MUNDANE;
-                    break;
-                case "thick":
-                    type = PotionType.THICK;
-                    break;
-                case "awkward":
-                    type = PotionType.AWKWARD;
-                    break;
-                default:
-                    return null;
+            if (tag.equals("fire_resistance") || tag.equals("long_fire_resistance")) {
+                type = PotionType.FIRE_RESISTANCE;
+            } else if (tag.equals("harming") || tag.equals("strong_harming")) {
+                type = PotionType.INSTANT_DAMAGE;
+            } else if (tag.equals("healing") || tag.equals("strong_healing")) {
+                type = PotionType.INSTANT_HEAL;
+            } else if (tag.equals("invisibility") || tag.equals("long_invisibility")) {
+                type = PotionType.INVISIBILITY;
+            } else if (tag.equals("leaping") || tag.equals("long_leaping") || tag.equals("strong_leaping")) {
+                type = PotionType.JUMP;
+            } else if (tag.equals("luck")) {
+                type = PotionType.LUCK;
+            } else if (tag.equals("night_vision") || tag.equals("long_night_vision")) {
+                type = PotionType.NIGHT_VISION;
+            } else if (tag.equals("poison") || tag.equals("long_poison") || tag.equals("strong_poison")) {
+                type = PotionType.POISON;
+            } else if (tag.equals("regeneration") || tag.equals("long_regeneration") || tag.equals("strong_regeneration")) {
+                type = PotionType.REGEN;
+            } else if (tag.equals("slowness") || tag.equals("long_slowness")) {
+                type = PotionType.SLOWNESS;
+            } else if (tag.equals("swiftness") || tag.equals("long_swiftness") || tag.equals("strong_swiftness")) {
+                type = PotionType.SPEED;
+            } else if (tag.equals("strength") || tag.equals("long_strength") || tag.equals("strong_strength")) {
+                type = PotionType.STRENGTH;
+            } else if (tag.equals("water_breathing") || tag.equals("long_water_breathing")) {
+                type = PotionType.WATER_BREATHING;
+            } else if (tag.equals("water")) {
+                type = PotionType.WATER;
+            } else if (tag.equals("weakness") || tag.equals("long_weakness")) {
+                type = PotionType.WEAKNESS;
+            } else if (tag.equals("empty")) {
+                type = PotionType.EMPTY;
+            } else if (tag.equals("mundane")) {
+                type = PotionType.MUNDANE;
+            } else if (tag.equals("thick")) {
+                type = PotionType.THICK;
+            } else if (tag.equals("awkward")) {
+                type = PotionType.AWKWARD;
+            } else {
+                return null;
             }
 
             return new PotionUtil(type, strong, extended,

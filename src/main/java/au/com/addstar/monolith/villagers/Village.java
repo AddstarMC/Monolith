@@ -82,9 +82,12 @@ public class Village
 		List<VillageDoor> doors = mHandle.f();
 		
 		final World world = getWorld();
-		List<BlockState> states = Lists.transform(doors, door -> {
-			BlockPosition pos = door.d();
-			return world.getBlockAt(pos.getX(), pos.getY(), pos.getZ()).getState();
+		List<BlockState> states = Lists.transform(doors, new Function<VillageDoor, BlockState>() {
+			@Override
+			public BlockState apply(VillageDoor door) {
+				BlockPosition pos = door.d();
+				return world.getBlockAt(pos.getX(), pos.getY(), pos.getZ()).getState();
+			}
 		});
 
 		return Collections.unmodifiableList(states);

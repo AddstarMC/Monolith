@@ -47,7 +47,7 @@ public class Lookup
 	{
 		mNameDB = new ItemDB();
 		File nameFile = new File(plugin.getDataFolder(), "items.csv");
-		
+
 		try
 		{
 			if(!nameFile.exists())
@@ -60,10 +60,10 @@ public class Lookup
 			plugin.getLogger().severe("Unable to load item name database:");
 			e.printStackTrace();
 		}
-		
+
 		mEnchantDB = new EnchantDB();
 		nameFile = new File(plugin.getDataFolder(), "enchantments.csv");
-		
+
 		try
 		{
 			if(!nameFile.exists())
@@ -76,10 +76,10 @@ public class Lookup
 			plugin.getLogger().severe("Unable to load enchantment name database:");
 			e.printStackTrace();
 		}
-		
+
 		mPotionDB = new PotionsDB();
 		nameFile = new File(plugin.getDataFolder(), "potions.csv");
-		
+
 		try
 		{
 			if(!nameFile.exists())
@@ -92,10 +92,10 @@ public class Lookup
 			plugin.getLogger().severe("Unable to load potion effect name database:");
 			e.printStackTrace();
 		}
-		
+
 		mEntityDB = new EntityDB();
 		nameFile = new File(plugin.getDataFolder(), "entities.csv");
-		
+
 		try
 		{
 			if(!nameFile.exists())
@@ -109,7 +109,7 @@ public class Lookup
 			e.printStackTrace();
 		}
 	}
-	
+
 	@SuppressWarnings( "deprecation" )
 	/**
 	 * Gets a material using the minecraft name.
@@ -126,13 +126,13 @@ public class Lookup
 			Block block = Block.REGISTRY.get(key);
 			if (block == null || block == Blocks.AIR)
 				return null;
-			
+
 			return Material.getMaterial(Block.getId(block));
 		}
-		
+
 		return Material.getMaterial(Item.getId(item));
 	}
-	
+
 	/**
 	 * Finds a matching ItemStack that is known by the specified name.
 	 * @param name The name to search for
@@ -142,7 +142,7 @@ public class Lookup
 	{
 		return mNameDB.getByName(name);
 	}
-	
+
 	/**
 	 * Finds the names registered against this item.
 	 * The returned names can all be used to lookup this item using {@link #findItemByName(String)}.
@@ -158,7 +158,7 @@ public class Lookup
 		else
 			return names;
 	}
-	
+
 	/**
 	 * Finds the minecraft name of the specified material
 	 * @param material The material to look for
@@ -170,11 +170,11 @@ public class Lookup
         Item item = Item.getById(material.getId());
 		if (item == null)
 			return null;
-		
+
 		MinecraftKey key = Item.REGISTRY.b(item);
 		return key.toString();
 	}
-	
+
 	/**
 	 * Finds the {@link PotionEffectType} that is known by the specified name.
 	 * @param name The name of the potion effect
@@ -184,7 +184,7 @@ public class Lookup
 	{
 		return mPotionDB.getByName(name);
 	}
-	
+
 	/**
 	 * Finds the names registered against this potion effect.
 	 * The returned names can all be used to lookup this potion effect using {@link #findPotionEffectByName(String)}.
@@ -195,7 +195,7 @@ public class Lookup
 	{
 		return mPotionDB.getByEffect(type);
 	}
-	
+
 	/**
 	 * Finds the {@link Enchantment} that is known by the specified name.
 	 * @param name The name of the enchantment
@@ -205,7 +205,7 @@ public class Lookup
 	{
 		return mEnchantDB.getByName(name);
 	}
-	
+
 	/**
 	 * Finds the names registered against this enchantment
 	 * The returned names can all be used to lookup this enchantment using {@link #findEnchantmentByName(String)}.
@@ -216,25 +216,28 @@ public class Lookup
 	{
 		return mEnchantDB.getByEnchant(enchant);
 	}
-	
+
 	/**
 	 * Does a bungee-aware lookup to resolve the specified name to a PlayerDefinition.
 	 * @param name The name to look for
-	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready.  
+	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready.
 	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
 	 */
 	public static ListenableFuture<PlayerDefinition> lookupPlayerName(String name)
 	{
-		return Futures.transform(lookupPlayerNames(Arrays.asList(name)), list -> {
-			if (list.isEmpty())
-				return null;
-			else
-				return list.get(0);
+		return Futures.transform(lookupPlayerNames(Arrays.asList(name)), new Function<List<PlayerDefinition>, PlayerDefinition>() {
+			@Override
+			public PlayerDefinition apply(List<PlayerDefinition> list) {
+				if (list.isEmpty())
+					return null;
+				else
+					return list.get(0);
+			}
 		});
 	}
-	
+
 	/**
-	 * Does a bungee-aware lookup to resolve the specified name to a PlayerDefinition.  
+	 * Does a bungee-aware lookup to resolve the specified name to a PlayerDefinition.
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
@@ -245,18 +248,18 @@ public class Lookup
 	 */
 	public static void lookupPlayerName(String name, LookupCallback<PlayerDefinition> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerName(name), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<PlayerDefinition>(lookupPlayerName(name), callback, 5, TimeUnit.SECONDS));
 	}
-	
+
 	/**
-	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition.  
+	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition.
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
 	 * <li>A player is required to be on this server to perform this lookup</li>
 	 * </ul>
 	 * @param id The uuid to look for
-	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready.  
+	 * @return A ListenableFuture that can be used to get the PlayerDefinition once ready.
 	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
 	 */
 	public static ListenableFuture<PlayerDefinition> lookupPlayerUUID(UUID id)
@@ -273,9 +276,9 @@ public class Lookup
 			}
 		});
 	}
-	
+
 	/**
-	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition.  
+	 * Does a bungee-aware lookup to resolve the specified uuid to a PlayerDefinition.
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
@@ -288,25 +291,25 @@ public class Lookup
 	{
 		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<PlayerDefinition>(lookupPlayerUUID(id), callback, 5, TimeUnit.SECONDS));
 	}
-	
+
 	/**
-	 * Does a bungee-aware lookup to resolve the specified names to a PlayerDefinitions.  
+	 * Does a bungee-aware lookup to resolve the specified names to a PlayerDefinitions.
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
 	 * <li>A player is required to be on this server to perform this lookup</li>
 	 * </ul>
 	 * @param names An Iterable containing the names to resolve
-	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready.  
+	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready.
 	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
 	 */
 	public static ListenableFuture<List<PlayerDefinition>> lookupPlayerNames(Iterable<String> names)
 	{
 		return Monolith.getInstance().getGeSuitHandler().lookupPlayerNames(names);
 	}
-	
+
 	/**
-	 * Does a bungee-aware lookup to resolve the specified names to PlayerDefinitions.  
+	 * Does a bungee-aware lookup to resolve the specified names to PlayerDefinitions.
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
@@ -317,27 +320,27 @@ public class Lookup
 	 */
 	public static void lookupPlayerNames(Iterable<String> names, LookupCallback<List<PlayerDefinition>> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerNames(names), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<List<PlayerDefinition>>(lookupPlayerNames(names), callback, 5, TimeUnit.SECONDS));
 	}
-	
+
 	/**
-	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions.  
+	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions.
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
 	 * <li>A player is required to be on this server to perform this lookup</li>
 	 * </ul>
 	 * @param ids An Iterable containing the uuids to resolve
-	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready.  
+	 * @return A ListenableFuture that can be used to get a list of PlayerDefinitions once ready.
 	 * 		   <b>WARNING</b>: Any listeners will be fired asynchronously to the main thread
 	 */
 	public static ListenableFuture<List<PlayerDefinition>> lookupPlayerUUIDs(Iterable<UUID> ids)
 	{
 		return Monolith.getInstance().getGeSuitHandler().lookupPlayerUUIDs(ids);
 	}
-	
+
 	/**
-	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions.  
+	 * Does a bungee-aware lookup to resolve the specified uuids to PlayerDefinitions.
 	 * <b>NOTES</b>:
 	 * <ul>
 	 * <li>A time limit of 5 seconds has been placed on these lookups in case the proxy is unavailable. </li>
@@ -348,7 +351,7 @@ public class Lookup
 	 */
 	public static void lookupPlayerUUIDs(Iterable<UUID> ids, LookupCallback<List<PlayerDefinition>> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerUUIDs(ids), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<List<PlayerDefinition>>(lookupPlayerUUIDs(ids), callback, 5, TimeUnit.SECONDS));
 	}
 	
 	/**

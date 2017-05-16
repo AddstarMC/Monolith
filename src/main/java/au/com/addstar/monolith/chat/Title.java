@@ -20,12 +20,12 @@ public class Title
 {
 	private ChatMessage mTitle;
 	private ChatMessage mSubtitle;
-	
+
 	private int mFadeInTime;
 	private int mFadeOutTime;
 	private int mDisplayTime;
-	
-	/**
+
+    /**
 	 * Sets the amount of time to fade in
 	 * @param time The time in {@code unit}
 	 * @param unit The time unit for {@code time}
@@ -34,8 +34,8 @@ public class Title
 	{
 		mFadeInTime = (int)(unit.toMillis(time) / 50);
 	}
-	
-	/**
+
+    /**
 	 * Sets the amount of time to fade out
 	 * @param time The time in {@code unit}
 	 * @param unit The time unit for {@code time}
@@ -44,8 +44,8 @@ public class Title
 	{
 		mFadeOutTime = (int)(unit.toMillis(time) / 50);
 	}
-	
-	/**
+
+    /**
 	 * Sets the amount of time to display the title for (not including fades)
 	 * @param time The time in {@code unit}
 	 * @param unit The time unit for {@code time}
@@ -54,8 +54,8 @@ public class Title
 	{
 		mDisplayTime = (int)(unit.toMillis(time) / 50);
 	}
-	
-	/**
+
+    /**
 	 * Sets the amount of time to display the title. No fades will be used
 	 * @param time The total time in {@code unit}
 	 * @param unit The time unit for {@code time}
@@ -65,8 +65,8 @@ public class Title
 		mDisplayTime = (int)(unit.toMillis(time) / 50);
 		mFadeInTime = mFadeOutTime = 0;
 	}
-	
-	/**
+
+    /**
 	 * Sets display and fade times at once
 	 * @param fadeIn The time to fade in the message in {@code unit}
 	 * @param display The time to display the message in {@code unit}
@@ -79,8 +79,8 @@ public class Title
 		mDisplayTime = (int)(unit.toMillis(display) / 50);
 		mFadeOutTime = (int)(unit.toMillis(fadeOut) / 50);
 	}
-	
-	/**
+
+    /**
 	 * Sets the title line
 	 * @param message The message to display
 	 */
@@ -88,8 +88,8 @@ public class Title
 	{
 		mTitle = ChatMessage.begin(message);
 	}
-	
-	/**
+
+    /**
 	 * Sets the title line
 	 * @param message The message to display
 	 */
@@ -97,8 +97,8 @@ public class Title
 	{
 		mTitle = message;
 	}
-	
-	/**
+
+    /**
 	 * Sets the subtitle line
 	 * @param message The message to display
 	 */
@@ -106,8 +106,8 @@ public class Title
 	{
 		mSubtitle = ChatMessage.begin(message);
 	}
-	
-	/**
+
+    /**
 	 * Sets the subtitle line
 	 * @param message The message to display
 	 */
@@ -115,18 +115,18 @@ public class Title
 	{
 		mSubtitle = message;
 	}
-	
-	private Set<Player> shownPlayers = Collections.emptySet();
-	
-	/**
+
+    private Set<Player> shownPlayers = Collections.emptySet();
+
+    /**
 	 * Shows this title to all players on the server
 	 */
 	public void showAll()
 	{
 		show(Bukkit.getOnlinePlayers());
 	}
-	
-	/**
+
+    /**
 	 * Shows this title to a specific player
 	 * @param player The player to show to
 	 */
@@ -134,8 +134,8 @@ public class Title
 	{
 		show(Arrays.asList(player));
 	}
-	
-	/**
+
+    /**
 	 * Shows this title to a bunch of players
 	 * @param players The players to show
 	 */
@@ -143,25 +143,25 @@ public class Title
 	{
 		final Set<Player> playerSet = Sets.newHashSet(players);
 		shownPlayers = playerSet;
-		
-		// Prepare packets to send
+
+        // Prepare packets to send
 		PacketPlayOutTitle setupTitle;
 		PacketPlayOutTitle setupSubtitle;
 		PacketPlayOutTitle setupTime;
-		
-		if (mTitle != null)
+
+        if (mTitle != null)
 			setupTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE, mTitle.toComponents()[0]);
 		else
 			setupTitle = null;
-		
-		if (mSubtitle != null)
+
+        if (mSubtitle != null)
 			setupSubtitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, mSubtitle.toComponents()[0]);
 		else
 			setupSubtitle = null;
-		
-		setupTime = new PacketPlayOutTitle(EnumTitleAction.TIMES, null, mFadeInTime, mDisplayTime, mFadeOutTime);
-		
-		// Send the packets
+
+        setupTime = new PacketPlayOutTitle(EnumTitleAction.TIMES, null, mFadeInTime, mDisplayTime, mFadeOutTime);
+
+        // Send the packets
 		for (Player player : shownPlayers)
 		{
 			PlayerConnection connection = ((CraftPlayer)player).getHandle().playerConnection;
@@ -169,14 +169,19 @@ public class Title
 				connection.sendPacket(setupTitle);
 			if (setupSubtitle != null)
 				connection.sendPacket(setupSubtitle);
-			
-			// This will display it
+
+            // This will display it
 			connection.sendPacket(setupTime);
 		}
-		
-		// Clean up the player set, use the specific instance so we dont clear overriding invoks
-		Bukkit.getScheduler().runTaskLater(Monolith.getInstance(), () -> playerSet.clear(), mFadeInTime + mDisplayTime + mFadeOutTime);
-	}
+
+        // Clean up the player set, use the specific instance so we dont clear overriding invoks
+        Bukkit.getScheduler().runTaskLater(Monolith.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                playerSet.clear();
+            }
+        }, mFadeInTime + mDisplayTime + mFadeOutTime);
+    }
 	
 	/**
 	 * Hides this title immediately from anyone it was shown to

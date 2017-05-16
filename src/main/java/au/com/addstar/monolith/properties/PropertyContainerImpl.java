@@ -139,13 +139,28 @@ public class PropertyContainerImpl implements PropertyContainer
 	@Override
 	public Iterable<PropertyBase<?>> getAllProperties(final UUID owner)
 	{
-		return () -> Iterators.filter(new PropertyIterator(), property -> property.getOwner().equals(owner));
+		return new Iterable<PropertyBase<?>>() {
+			@Override
+			public Iterator<PropertyBase<?>> iterator() {
+				return Iterators.filter(new PropertyIterator(), new Predicate<PropertyBase<?>>() {
+					@Override
+					public boolean apply(PropertyBase<?> property) {
+						return property.getOwner().equals(owner);
+					}
+				});
+			}
+		};
 	}
 
 	@Override
 	public Iterable<PropertyBase<?>> getAllProperties()
 	{
-		return () -> new PropertyIterator();
+		return new Iterable<PropertyBase<?>>() {
+			@Override
+			public Iterator<PropertyBase<?>> iterator() {
+				return new PropertyIterator();
+			}
+		};
 	}
 	
 	@Override
