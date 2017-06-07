@@ -39,14 +39,14 @@ public class Monolith extends JavaPlugin
 		}
 		getLogger().info("Your server is running version " + version);
 
-        if (version != null && version.equals("v1_11_R1")) {
+        if (version != null && version.equals("v1_12_R1")) {
             mInstance = this;
 			Lookup.initialize(this);
 			Bukkit.getPluginManager().registerEvents(new Listeners(), this);
 			mGeSuitHandler = new GeSuitHandler(this);
 			getLogger().info("enabled");
 		} else {
-			getLogger().severe("This plugin is for NMS Version 1.11.R2 or Server Version 1.11.2. Disabled");
+			getLogger().severe("This plugin is for NMS Version 1.12.R1 or Server Version 1.12 Disabled");
 		}
 	}
 
