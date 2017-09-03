@@ -34,7 +34,7 @@ public class MonoVillager
 	
 	private CraftVillager mHandle;
 	private Village mVillage;
-	
+
 	private MonoVillager(Villager villager)
 	{
 		mHandle = (CraftVillager)villager;
@@ -108,7 +108,7 @@ public class MonoVillager
 	
 	public HumanEntity getTradingWith()
 	{
-		if (!mHandle.getHandle().dl()) // Has no trading player
+		if (!mHandle.getHandle().do_()) // Has no trading player
 			return null;
 		
 		// EntityVillager.getTradingPlayer() : EntityHuman
