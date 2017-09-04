@@ -6,7 +6,7 @@
   <name>Monolith</name>
   <description>A utility plugin for Spigot - ${spigot.version}</description>
   <properties>
-    <pluginversion>${project.version}-${buildnumber}</pluginversion>
+    <plugin.version>${project.version}-${buildnumber}</plugin.version>
     <!-- so as to allow local declaration when building locally-->
     <buildnumber />
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
