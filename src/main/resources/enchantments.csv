@@ -1,4 +1,4 @@
-#version: 2.0.0
+#version: ${plugin.version}
 #If you change this file, it will not be automatically updated after the next release.
 #name,id
 Sharpness,DAMAGE_ALL

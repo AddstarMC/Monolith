@@ -8,15 +8,9 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionEffectType;
 
 import au.com.addstar.monolith.lookup.Lookup;
@@ -24,9 +18,11 @@ import au.com.addstar.monolith.lookup.Lookup;
 public class ItemMetaBuilder
 {
 	private ItemMeta mMeta;
+	private ItemStack item;
 	
 	public ItemMetaBuilder(ItemStack item)
 	{
+		this.item = item;
 		mMeta = item.getItemMeta();
 	}
 	
@@ -71,7 +67,7 @@ public class ItemMetaBuilder
 		
 		if(decodeEnchants(name, value))
 			return;
-		
+		if(decodeSpawnEgg(name,value))return;
 		throw new IllegalArgumentException("Unknown meta id: " + name);
 	}
 	
@@ -458,5 +454,31 @@ public class ItemMetaBuilder
 		}
 		
 		return false;
+	}
+
+    /**
+     * This method needs to be watched is it used magic values to determine an entityType
+     *
+     * @param name
+     * @param content
+     * @return boolean if is a spawnEgg
+     */
+    @SuppressWarnings("deprecation")
+	private boolean decodeSpawnEgg(String name, String content){
+		if(mMeta instanceof SpawnEggMeta){
+			if(item.getData() !=null){
+				Byte data = item.getData().getData();
+				if(data!=null){
+                    EntityType type = EntityType.fromId(data);
+                    if(type != null){
+                        ((SpawnEggMeta) mMeta).setSpawnedType(type);
+                    }
+
+				}
+			}
+			return true;
+		}else{
+            return false;
+        }
 	}
 }
