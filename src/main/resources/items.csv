@@ -1,4 +1,4 @@
-#version: Dev2.14.28
+#version: ${plugin.version}
 #If you change this file, it will not be automatically updated after the next release.
 #item,id,metadata
 Stone,1,0
