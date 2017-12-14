@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.addstar</groupId>
   <artifactId>Monolith</artifactId>
-  <version>1.4.7</version>
+  <version>1.4.8-SNAPSHOT</version>
   <name>Monolith</name>
   <description>A utility plugin for Spigot - ${spigot.version}</description>
   <properties>
@@ -16,7 +16,7 @@
     <connection>scm:git:git@github.com:AddstarMC/Monolith.git</connection>
     <developerConnection>scm:git:git@github.com:AddstarMC/Monolith.git</developerConnection>
     <url>https://github.com/AddstarMC/monolith</url>
-    <tag>Monolith-1.4.7</tag>
+    <tag>master</tag>
   </scm>
   <distributionManagement>
     <repository>
