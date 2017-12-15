@@ -2,6 +2,9 @@ package au.com.addstar.monolith;
 
 import java.util.ArrayList;
 
+import au.com.addstar.monolith.util.nbtapi.NBTCompound;
+import au.com.addstar.monolith.util.nbtapi.NBTItem;
+import au.com.addstar.monolith.util.nbtapi.NBTReflectionUtil;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -19,6 +22,7 @@ public class ItemMetaBuilder
 {
 	private ItemMeta mMeta;
 	private ItemStack item;
+	private boolean hasNBT;
 	
 	public ItemMetaBuilder(ItemStack item)
 	{
@@ -75,10 +79,19 @@ public class ItemMetaBuilder
 	{
 		if(mMeta instanceof FireworkMeta)
 			completeFirework(null);
-		
 		return mMeta;
 	}
-	
+
+	public ItemStack getItemStack(){
+		if(hasNBT) {
+			return item;
+		}else{
+			build();
+			item.setItemMeta(mMeta);
+			return item;
+		}
+
+	}
 	private int getInt(String string, int def)
 	{
 		try
@@ -456,6 +469,27 @@ public class ItemMetaBuilder
 		return false;
 	}
 
+	private boolean decodeNBTString(String name, String content){
+		if(name.equalsIgnoreCase("nbt")){
+			String[] parts = content.split(":", 2);
+			if(parts.length==2){
+				String key = parts[0];
+				String value = parts[1];
+				Object object = NBTReflectionUtil.parseNBT(value);
+				try{
+					NBTCompound nbtTag = (NBTCompound) object;
+				}catch (ClassCastException e){
+					return false;
+				}
+				NBTItem nItem = new NBTItem(item);
+				NBTReflectionUtil.setEntityNBTTag(object,nItem);
+				item = nItem.getItem();
+			}
+			hasNBT = true;
+			return true;
+		}
+		return false;
+	}
     /**
      * This method needs to be watched is it used magic values to determine an entityType
      *
