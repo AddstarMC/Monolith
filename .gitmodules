@@ -1,6 +1,3 @@
-[submodule "src/main/java/au/com/addstar/monolith/util/nbtUtils/Item-NBT-API"]
-	path = src/main/java/au/com/addstar/monolith/util/nbtUtils/Item-NBT-API
-	url = https://github.com/addstarmc/Item-NBT-API.git
 [submodule "src/main/java/au/com/addstar/monolith/util/nbtapi"]
 	path = src/main/java/au/com/addstar/monolith/util/nbtapi
 	url = https://github.com/addstarmc/Item-NBT-API.git
