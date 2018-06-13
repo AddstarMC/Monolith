@@ -1,10 +1,11 @@
 package au.com.addstar.monolith;
 
-import java.util.ArrayList;
-
+import au.com.addstar.monolith.lookup.EntityDefinition;
+import au.com.addstar.monolith.lookup.Lookup;
 import au.com.addstar.monolith.util.nbtapi.NBTCompound;
 import au.com.addstar.monolith.util.nbtapi.NBTItem;
 import au.com.addstar.monolith.util.nbtapi.NBTReflectionUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -16,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionEffectType;
 
-import au.com.addstar.monolith.lookup.Lookup;
+import java.util.ArrayList;
 
 public class ItemMetaBuilder
 {
@@ -497,18 +498,28 @@ public class ItemMetaBuilder
      * @param content
      * @return boolean if is a spawnEgg
      */
-    @SuppressWarnings("deprecation")
 	private boolean decodeSpawnEgg(String name, String content){
 		if(mMeta instanceof SpawnEggMeta){
-			if(item.getData() !=null){
-				Byte data = item.getData().getData();
-				if(data!=null){
-                    EntityType type = EntityType.fromId(data);
-                    if(type != null){
-                        ((SpawnEggMeta) mMeta).setSpawnedType(type);
-                    }
 
-				}
+			SpawnEggMeta smeta = (SpawnEggMeta)mMeta;
+			switch (StringUtils.lowerCase(name)){
+				case "spawneggmeta":
+					if (item.getData() != null) {
+						Byte data = item.getData().getData();
+						if (data != null) {
+							EntityType type = EntityType.fromId(data);
+							if (type != null) {
+								smeta.setSpawnedType(type);
+							}
+						}
+					}
+				case "entitytype":
+					EntityDefinition edef = Lookup.findEntityByName(content);
+					if (edef != null)
+						smeta.setSpawnedType(edef.getType());
+					return true;
+				default:
+					break;
 			}
 			return true;
 		}else{
