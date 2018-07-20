@@ -22,7 +22,7 @@ public class EnumFlag<T extends Enum<T>> extends Flag<T>
 	{
 		mEnumClass = clazz;
 		mEnum = EnumSet.allOf(clazz);
-		mNameList = new ArrayList<String>(mEnum.size());
+		mNameList = new ArrayList<>(mEnum.size());
 		for(T e : mEnum)
 			mNameList.add(e.name());
 	}
@@ -72,7 +72,7 @@ public class EnumFlag<T extends Enum<T>> extends Flag<T>
 		{
 			mEnumClass = (Class<T>)Class.forName(section.getString("enum"));
 			mEnum = EnumSet.allOf(mEnumClass);
-			mNameList = new ArrayList<String>(mEnum.size());
+			mNameList = new ArrayList<>(mEnum.size());
 			for(T e : mEnum)
 				mNameList.add(e.name());
 		}

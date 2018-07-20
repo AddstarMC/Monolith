@@ -6,19 +6,19 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 public interface PropertyContainer extends Cloneable
 {
-	public PropertyBase<?> get(String name, UUID owner);
-	public String getString(String name, UUID owner) throws ClassCastException;
-	public Integer getInt(String name, UUID owner) throws ClassCastException;
-	public Double getFloat(String name, UUID owner) throws ClassCastException;
-	public ConfigurationSerializable getCustom(String name, UUID owner) throws ClassCastException;
+	 PropertyBase<?> get(String name, UUID owner) throws PropertyClassException;
+	 String getString(String name, UUID owner) throws ClassCastException;
+	 Integer getInt(String name, UUID owner) throws ClassCastException;
+	 Double getFloat(String name, UUID owner) throws ClassCastException;
+	 ConfigurationSerializable getCustom(String name, UUID owner) throws ClassCastException;
 	
-	public void add(PropertyBase<?> property);
-	public void remove(String name, UUID owner);
-	public void clear(UUID owner);
-	public void clear();
+	 void add(PropertyBase<?> property);
+	 void remove(String name, UUID owner);
+	 void clear(UUID owner);
+	 void clear();
 	
-	public Iterable<PropertyBase<?>> getAllProperties(UUID owner);
-	public Iterable<PropertyBase<?>> getAllProperties();
+	 Iterable<PropertyBase<?>> getAllProperties(UUID owner);
+	 Iterable<PropertyBase<?>> getAllProperties();
 	
-	public PropertyContainer clone();
+	 PropertyContainer clone();
 }

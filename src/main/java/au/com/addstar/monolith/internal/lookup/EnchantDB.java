@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 
 import com.google.common.collect.HashMultimap;
@@ -16,12 +17,12 @@ import com.google.common.collect.HashMultimap;
 public class EnchantDB
 {
 	private HashMap<String, Enchantment> mNameMap;
-	private HashMultimap<Enchantment, String> mIdMap;
+	private HashMultimap<Enchantment, String> mEnchantMap;
 	
 	public EnchantDB()
 	{
-		mNameMap = new HashMap<String, Enchantment>();
-		mIdMap = HashMultimap.create();
+		mNameMap = new HashMap<>();
+		mEnchantMap = HashMultimap.create();
 	}
 	
 	public Enchantment getByName(String name)
@@ -31,20 +32,14 @@ public class EnchantDB
 	
 	public Set<String> getByEnchant(Enchantment item)
 	{
-		return mIdMap.get(item);
+		return mEnchantMap.get(item);
 	}
 	
 	public void load(File file) throws IOException
 	{
-		FileInputStream stream = new FileInputStream(file);
 		
-		try
-		{
+		try (FileInputStream stream = new FileInputStream(file)) {
 			load(stream);
-		}
-		finally
-		{
-			stream.close();
 		}
 	}
 	
@@ -53,7 +48,7 @@ public class EnchantDB
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		
 		mNameMap.clear();
-		mIdMap.clear();
+		mEnchantMap.clear();
 		
 		while(reader.ready())
 		{
@@ -66,12 +61,21 @@ public class EnchantDB
 				continue;
 			
 			String name = parts[0];
-			Enchantment enchant = Enchantment.getByName(parts[1]);
+			String key = parts[1];
+			String[] keyparts = key.split(":");
+			NamespacedKey namekey;
+			if (keyparts.length == 2){
+				 namekey = new NamespacedKey(keyparts[0],keyparts[1]);
+			}else{
+				namekey = NamespacedKey.minecraft(keyparts[0]);
+			}
+			
+			Enchantment enchant = Enchantment.getByKey(namekey);
 			if(enchant == null)
 				continue;
 			
 			mNameMap.put(name.toLowerCase(), enchant);
-			mIdMap.put(enchant, name);
+			mEnchantMap.put(enchant, name);
 		}
 	}
 }

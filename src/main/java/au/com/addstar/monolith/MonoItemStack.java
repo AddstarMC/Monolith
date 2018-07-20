@@ -4,19 +4,18 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 
 import au.com.addstar.monolith.attributes.ItemAttributes;
 import au.com.addstar.monolith.attributes.MonoItemAttributes;
 import au.com.addstar.monolith.properties.PropertyContainer;
 import au.com.addstar.monolith.properties.PropertyContainerImpl;
-import net.minecraft.server.v1_12_R1.NBTBase;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.NBTTagList;
+import net.minecraft.server.v1_13_R1.NBTBase;
+import net.minecraft.server.v1_13_R1.NBTTagCompound;
+import net.minecraft.server.v1_13_R1.NBTTagList;
 
 /**
  * This class is a type of ItemStack that provides extra
@@ -209,12 +208,11 @@ public class MonoItemStack extends ItemStack
 		return item.getType();
 	}
 	
-	@Override
 	@Deprecated
 	@SuppressWarnings("deprecation")
 	public int getTypeId()
 	{
-		return item.getTypeId();
+		return item.getType().getId();
 	}
 	
 	@Override
@@ -276,15 +274,7 @@ public class MonoItemStack extends ItemStack
 	{
 		item.setType(type);
 	}
-	
-	@Override
-	@Deprecated
-	@SuppressWarnings("deprecation")
-	public void setTypeId(int type)
-	{
-		item.setTypeId(type);
-	}
-	
+
 	@Override
 	public void addEnchantment(Enchantment ench, int level)
 	{
@@ -339,9 +329,4 @@ public class MonoItemStack extends ItemStack
 		return item.isSimilar(stack);
 	}
 	
-	@Override
-	public void setData(MaterialData data)
-	{
-		item.setData(data);
-	}
 }

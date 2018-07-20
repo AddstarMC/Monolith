@@ -1,14 +1,13 @@
 package au.com.addstar.monolith.util;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.server.v1_12_R1.AxisAlignedBB;
-import net.minecraft.server.v1_12_R1.BlockPosition;
-import net.minecraft.server.v1_12_R1.MovingObjectPosition;
-import net.minecraft.server.v1_12_R1.Vec3D;
+import net.minecraft.server.v1_13_R1.AxisAlignedBB;
+import net.minecraft.server.v1_13_R1.BlockPosition;
+import net.minecraft.server.v1_13_R1.MovingObjectPosition;
+import net.minecraft.server.v1_13_R1.Vec3D;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
@@ -17,7 +16,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.material.MaterialData;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
@@ -36,9 +34,9 @@ public class Raytrace
 	private Set<EntityDefinition> mIncludeEntities;
 	private boolean mIgnoreAllEntities;
 	
-	private Set<MaterialData> mIgnoreBlocks;
+	private Set<Material> mIgnoreBlocks;
 	private Set<Block> mIgnoreSpecificBlocks;
-	private Set<MaterialData> mIncludeBlocks;
+	private Set<Material> mIncludeBlocks;
 	
 	private boolean mIgnoreAllBlocks;
 	
@@ -151,13 +149,7 @@ public class Raytrace
 		return this;
 	}
 	
-	@SuppressWarnings( "deprecation" )
 	public Raytrace ignoreBlock(Material type)
-	{
-		return ignoreBlock(type.getNewData((byte)0));
-	}
-	
-	public Raytrace ignoreBlock(MaterialData type)
 	{
 		mIncludeBlocks.remove(type);
 		mIgnoreBlocks.add(type);
@@ -168,15 +160,8 @@ public class Raytrace
 	
 	public Raytrace ignoreBlocks(Material... types)
 	{
-		for (Material type : types)
-			ignoreBlock(type);
 		
-		return this;
-	}
-	
-	public Raytrace ignoreBlocks(MaterialData... types)
-	{
-		for (MaterialData type : types)
+		for (Material type : types)
 			ignoreBlock(type);
 		
 		return this;
@@ -198,15 +183,7 @@ public class Raytrace
 		return this;
 	}
 	
-	@SuppressWarnings( "deprecation" )
 	public Raytrace includeBlock(Material type)
-	{
-		mIncludeBlocks.add(type.getNewData((byte)0));
-		
-		return this;
-	}
-	
-	public Raytrace includeBlock(MaterialData type)
 	{
 		mIncludeBlocks.add(type);
 		
@@ -221,13 +198,6 @@ public class Raytrace
 		return this;
 	}
 	
-	public Raytrace includeBlocks(MaterialData... types)
-	{
-		for (MaterialData type : types)
-			includeBlock(type);
-		
-		return this;
-	}
 	
 	private boolean canHitBlocks()
 	{
@@ -236,13 +206,12 @@ public class Raytrace
 	
 	private boolean canHitBlock(Block block)
 	{
-		MaterialData type = block.getState().getData();
+		Material type = block.getState().getType();
 		
 		if (!mIncludeBlocks.contains(type))
 		{
-			if (mIgnoreAllBlocks || mIgnoreBlocks.contains(type) || mIgnoreSpecificBlocks.contains(block))
-				return false;
-		}
+			return !mIgnoreAllBlocks && !mIgnoreBlocks.contains(type) && !mIgnoreSpecificBlocks.contains(block);
+	}
 		
 		return true;
 	}
@@ -257,8 +226,7 @@ public class Raytrace
 		EntityDefinition type = new EntityDefinition(ent);
 		if (!mIncludeEntities.contains(type))
 		{
-			if (mIgnoreAllEntities || mIgnoreEntities.contains(type) || mIgnoreSpecificEntities.contains(ent))
-				return false;
+			return !mIgnoreAllEntities && !mIgnoreEntities.contains(type) && !mIgnoreSpecificEntities.contains(ent);
 		}
 		
 		return true;
@@ -344,7 +312,7 @@ public class Raytrace
 		else
 		{
 			if (mHitAir)
-				return Arrays.asList(new Hit(endVec.toLocation(start.getWorld()), endVec.distance(startVec)));
+				return Collections.singletonList(new Hit(endVec.toLocation(start.getWorld()), endVec.distance(startVec)));
 			else
 				return Collections.emptyList();
 		}
@@ -360,9 +328,9 @@ public class Raytrace
 		double maxDistance = end.distanceSquared(start.toVector());
 		
 		// Get the sign of the direction
-		int signX = (endVec.getX() > startVec.getX() ? 1 : (endVec.getX() < startVec.getX() ? -1 : 0));
-		int signY = (endVec.getY() > startVec.getY() ? 1 : (endVec.getY() < startVec.getY() ? -1 : 0));
-		int signZ = (endVec.getZ() > startVec.getZ() ? 1 : (endVec.getZ() < startVec.getZ() ? -1 : 0));
+		int signX = (Double.compare(endVec.getX(), startVec.getX()));
+		int signY = (Double.compare(endVec.getY(), startVec.getY()));
+		int signZ = (Double.compare(endVec.getZ(), startVec.getZ()));
 	    
 		// Planes for each axis that we will next cross
 		int planeX = startVec.getBlockX() + (signX > 0 ? 1 : 0);
@@ -601,7 +569,7 @@ public class Raytrace
 		}
 
 		@Override
-		public int compareTo( Hit other )
+		public int compareTo(Hit other )
 		{
 			return Double.compare(mDistance, other.mDistance);
 		}

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.server.v1_13_R1.NBTBase;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.inventory.EquipmentSlot;
@@ -12,8 +13,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import com.google.common.collect.Lists;
 
 import au.com.addstar.monolith.util.Attributes;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.NBTTagList;
+import net.minecraft.server.v1_13_R1.NBTTagCompound;
+import net.minecraft.server.v1_13_R1.NBTTagList;
 
 public class MonoItemAttributes implements ItemAttributes
 {
@@ -35,12 +36,13 @@ public class MonoItemAttributes implements ItemAttributes
 	public void addModifier(Attribute attribute, ItemAttributeModifier modifier)
 	{
 		// Check that the UUID is unique
-		for (int i = 0; i < list.size(); ++i)
-		{
-			NBTTagCompound tag = list.get(i);
-			if (modifier.getUniqueId().equals(tag.a(KeyUUID)))
-				throw new IllegalArgumentException("UUID must be unique across all modifiers");
-		}
+        for (NBTBase aList : list) {
+            if (aList instanceof NBTTagCompound) {
+                NBTTagCompound tag = (NBTTagCompound) aList;
+                if (modifier.getUniqueId().equals(tag.a(KeyUUID)))
+                    throw new IllegalArgumentException("UUID must be unique across all modifiers");
+            }
+        }
 		
 		// Add the modifier
 		NBTTagCompound modifierTag = saveModifier(attribute, modifier);
@@ -53,12 +55,13 @@ public class MonoItemAttributes implements ItemAttributes
 		// Find the modifier
 		for (int i = 0; i < list.size(); ++i)
 		{
-			NBTTagCompound tag = list.get(i);
-			if (modifier.getUniqueId().equals(tag.a(KeyUUID)))
-			{
-				// Remove it
-				list.remove(i);
-				break;
+			if(list.get(i) instanceof NBTTagCompound) {
+				NBTTagCompound tag = (NBTTagCompound) list.get(i);
+				if (modifier.getUniqueId().equals(tag.a(KeyUUID))) {
+					// Remove it
+					list.remove(i);
+					break;
+				}
 			}
 		}
 	}
@@ -70,12 +73,14 @@ public class MonoItemAttributes implements ItemAttributes
 		
 		for (int i = 0; i < list.size(); ++i)
 		{
-			NBTTagCompound tag = list.get(i);
-			if (id.equals(tag.getString(KeyAttributeName)))
-			{
-				// Remove it
-				list.remove(i);
-				--i;
+			if(list.get(i) instanceof NBTTagCompound) {
+
+				NBTTagCompound tag = (NBTTagCompound) list.get(i);
+				if (id.equals(tag.getString(KeyAttributeName))) {
+					// Remove it
+					list.remove(i);
+					--i;
+				}
 			}
 		}
 	}
@@ -90,12 +95,13 @@ public class MonoItemAttributes implements ItemAttributes
 	@Override
 	public ItemAttributeModifier getModifier(UUID id)
 	{
-		for (int i = 0; i < list.size(); ++i)
-		{
-			NBTTagCompound tag = list.get(i);
-			if (id.equals(tag.a(KeyUUID)))
-				return readModifier(tag);
-		}
+        for (NBTBase aList : list) {
+            if (aList instanceof NBTTagCompound) {
+                NBTTagCompound tag = (NBTTagCompound) aList;
+                if (id.equals(tag.a(KeyUUID)))
+                    return readModifier(tag);
+            }
+        }
 		
 		return null;
 	}
@@ -104,14 +110,9 @@ public class MonoItemAttributes implements ItemAttributes
 	public Collection<ItemAttributeModifier> getModifiers(String name)
 	{
 		List<ItemAttributeModifier> modifiers = Lists.newArrayList();
-		
-		for (int i = 0; i < list.size(); ++i)
-		{
-			NBTTagCompound tag = list.get(i);
-			if (name.equals(tag.getString(KeyName)))
-				modifiers.add(readModifier(tag));
-		}
-		
+
+		modifyModifier(name, modifiers, KeyName);
+
 		return Collections.unmodifiableList(modifiers);
 	}
 	
@@ -120,15 +121,20 @@ public class MonoItemAttributes implements ItemAttributes
 	{
 		String id = Attributes.getId(attribute);
 		List<ItemAttributeModifier> modifiers = Lists.newArrayList();
-		
-		for (int i = 0; i < list.size(); ++i)
-		{
-			NBTTagCompound tag = list.get(i);
-			if (id.equals(tag.getString(KeyAttributeName)))
-				modifiers.add(readModifier(tag));
-		}
-		
+
+		modifyModifier(id, modifiers, KeyAttributeName);
+
 		return Collections.unmodifiableList(modifiers);
+	}
+
+	private void modifyModifier(String id, List<ItemAttributeModifier> modifiers, String keyAttributeName) {
+        for (NBTBase aList : list) {
+            if (aList instanceof NBTTagCompound) {
+                NBTTagCompound tag = (NBTTagCompound) aList;
+                if (id.equals(tag.getString(keyAttributeName)))
+                    modifiers.add(readModifier(tag));
+            }
+        }
 	}
 
 	private static ItemAttributeModifier readModifier(NBTTagCompound tag)

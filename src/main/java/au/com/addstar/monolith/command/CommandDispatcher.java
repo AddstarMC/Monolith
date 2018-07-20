@@ -1,10 +1,6 @@
 package au.com.addstar.monolith.command;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +28,7 @@ public class CommandDispatcher
 	
 	public CommandDispatcher(String description)
 	{
-		mCommands = new HashMap<String, ICommand>();
+		mCommands = new HashMap<>();
 		
 		mRootCommandDescription = description;
 		
@@ -76,22 +72,7 @@ public class CommandDispatcher
 				com = mCommands.get(subCommand);
 			else
 			{
-				// Check aliases
-	AliasCheck:	for(Entry<String, ICommand> ent : mCommands.entrySet())
-				{
-					if(ent.getValue().getAliases() != null)
-					{
-						String[] aliases = ent.getValue().getAliases();
-						for(String alias : aliases)
-						{
-							if(subCommand.equalsIgnoreCase(alias))
-							{
-								com = ent.getValue();
-								break AliasCheck;
-							}
-						}
-					}
-				}
+			com = getAlias(subCommand);
 			}
 		}
 		
@@ -129,19 +110,19 @@ public class CommandDispatcher
 		}
 		catch(BadArgumentException e)
 		{
-			String cmdString = ChatColor.GRAY + parent;
+			StringBuilder cmdString = new StringBuilder(ChatColor.GRAY + parent);
 			for(int i = 0; i < args.length; ++i)
 			{
 				if(i == e.getArgument() + 1)
-					cmdString += ChatColor.RED + args[i] + ChatColor.GRAY;
+					cmdString.append(ChatColor.RED).append(args[i]).append(ChatColor.GRAY);
 				else
-					cmdString += args[i];
+					cmdString.append(args[i]);
 				
-				cmdString += " ";
+				cmdString.append(" ");
 			}
 			
 			if(e.getArgument() >= args.length - 1)
-				cmdString += ChatColor.RED + "?";
+				cmdString.append(ChatColor.RED + "?");
 			
 			sender.sendMessage(ChatColor.RED + "Error in command: " + cmdString);
 			sender.sendMessage(ChatColor.RED + " " + e.getMessage());
@@ -149,11 +130,7 @@ public class CommandDispatcher
 			for(String line : e.getInfoLines())
 				sender.sendMessage(ChatColor.GRAY + " " + line);
 		}
-		catch(IllegalArgumentException e)
-		{
-			sender.sendMessage(ChatColor.RED + e.getMessage());
-		}
-		catch(IllegalStateException e)
+		catch(IllegalArgumentException | IllegalStateException e)
 		{
 			sender.sendMessage(ChatColor.RED + e.getMessage());
 		}
@@ -162,7 +139,7 @@ public class CommandDispatcher
 	}
 	private void displayUsage(CommandSender sender, String parent, String label, String subcommand)
 	{
-		String usage = "";
+		StringBuilder usage = new StringBuilder();
 		
 		boolean first = true;
 		boolean odd = true;
@@ -178,15 +155,15 @@ public class CommandDispatcher
 				continue;
 			
 			if(odd)
-				usage += ChatColor.WHITE;
+				usage.append(ChatColor.WHITE);
 			else
-				usage += ChatColor.GRAY;
+				usage.append(ChatColor.GRAY);
 			odd = !odd;
 			
 			if(first)
-				usage += command.getName();
+				usage.append(command.getName());
 			else
-				usage += ", " + command.getName();
+				usage.append(", ").append(command.getName());
 			
 			first = false;
 		}
@@ -199,7 +176,7 @@ public class CommandDispatcher
 		if(!first)
 		{
 			sender.sendMessage("Valid commands are:");
-			sender.sendMessage(usage);
+			sender.sendMessage(usage.toString());
 		}
 		else
 			sender.sendMessage("There are no commands available to you");
@@ -211,7 +188,7 @@ public class CommandDispatcher
 	{
 		parent += label + " ";
 		
-		List<String> results = new ArrayList<String>();
+		List<String> results = new ArrayList<>();
 		if(args.length == 1) // Tab completing the sub command
 		{
 			for(ICommand registeredCommand : mCommands.values())
@@ -244,21 +221,7 @@ public class CommandDispatcher
 			else
 			{
 				// Check aliases
-	AliasCheck:	for(Entry<String, ICommand> ent : mCommands.entrySet())
-				{
-					if(ent.getValue().getAliases() != null)
-					{
-						String[] aliases = ent.getValue().getAliases();
-						for(String alias : aliases)
-						{
-							if(subCommand.equalsIgnoreCase(alias))
-							{
-								com = ent.getValue();
-								break AliasCheck;
-							}
-						}
-					}
-				}
+				com = getAlias(subCommand);
 			}
 			
 			// Was not found
@@ -277,9 +240,27 @@ public class CommandDispatcher
 			
 			results = com.onTabComplete(sender, parent, subCommand, subArgs);
 			if(results == null)
-				return new ArrayList<String>();
+				return new ArrayList<>();
 		}
 		return results;
+	}
+	
+	private ICommand getAlias(String subCommand) {
+		for(Entry<String, ICommand> ent : mCommands.entrySet())
+	 {
+		 if(ent.getValue().getAliases() != null)
+		 {
+			 String[] aliases = ent.getValue().getAliases();
+			 for(String alias : aliases)
+			 {
+				 if(subCommand.equalsIgnoreCase(alias))
+				 {
+					 return ent.getValue();
+				 }
+			 }
+		 }
+	 }
+	 return null;
 	}
 	
 	public static String colorUsage(String usage)

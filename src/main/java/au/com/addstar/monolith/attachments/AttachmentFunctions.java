@@ -18,7 +18,7 @@ public final class AttachmentFunctions
 	 */
 	public static <T extends LivingEntity> Function<T, Vector> lookRelativeOffset(Vector offset)
 	{
-		return new LookRelativeOffset<T>(offset);
+		return new LookRelativeOffset<>(offset);
 	}
 	
 	private static class LookRelativeOffset<T extends LivingEntity> implements Function<T, Vector>

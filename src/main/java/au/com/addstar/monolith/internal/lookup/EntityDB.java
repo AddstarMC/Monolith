@@ -22,7 +22,7 @@ public class EntityDB
 	
 	public EntityDB()
 	{
-		mNameMap = new HashMap<String, EntityDefinition>();
+		mNameMap = new HashMap<>();
 		mIdMap = HashMultimap.create();
 	}
 	
@@ -38,15 +38,9 @@ public class EntityDB
 	
 	public void load(File file) throws IOException
 	{
-		FileInputStream stream = new FileInputStream(file);
 		
-		try
-		{
+		try (FileInputStream stream = new FileInputStream(file)) {
 			load(stream);
-		}
-		finally
-		{
-			stream.close();
 		}
 	}
 	
@@ -69,9 +63,6 @@ public class EntityDB
 			
 			String name = parts[0];
 			EntityType type = EntityType.valueOf(parts[1].toUpperCase());
-			if(type == null)
-				continue;
-			
 			String subType = null;
 			if (parts.length == 3)
 				subType = parts[2].toUpperCase();

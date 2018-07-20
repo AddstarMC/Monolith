@@ -38,7 +38,7 @@ public class EntityAttachment<T extends Entity> extends Attachment
 		entity.getLocation(locationCache);
 		
 		Vector offset = offsetFunction.apply(entity);
-		locationCache.add(offset);
+		if(offset != null )locationCache.add(offset);
 		return locationCache;
 	}
 }
