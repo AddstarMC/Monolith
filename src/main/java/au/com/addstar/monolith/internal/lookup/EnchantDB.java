@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 
@@ -61,7 +62,7 @@ public class EnchantDB
 				continue;
 			
 			String name = parts[0];
-			String key = parts[1];
+			String key = StringUtils.trim(parts[1]).toLowerCase();
 			String[] keyparts = key.split(":");
 			NamespacedKey namekey;
 			if (keyparts.length == 2){
@@ -76,6 +77,13 @@ public class EnchantDB
 			
 			mNameMap.put(name.toLowerCase(), enchant);
 			mEnchantMap.put(enchant, name);
+		}
+		for(Enchantment enchant: Enchantment.values()){
+			String name = enchant.getName();
+			mNameMap.put(name,enchant);
+			if(!mEnchantMap.containsValue(name)) {
+				mEnchantMap.put(enchant, name);
+			}
 		}
 	}
 }
