@@ -20,14 +20,15 @@ public class GeSuitHandler
 	private MessageWaiter mWaiter;
 	private Random mRand;
 	private Plugin mPlugin;
+	private String geSuitChannel = "gesuit:api";
 	
 	public GeSuitHandler(Plugin plugin)
 	{
 		mWaiter = new MessageWaiter();
 		mPlugin = plugin;
 		mRand = new Random();
-		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, "geSuitAPI", mWaiter);
-		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, "geSuitAPI");
+		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, geSuitChannel, mWaiter);
+		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, geSuitChannel);
 	}
 	
 	public ListenableFuture<List<PlayerDefinition>> lookupPlayerNames(Iterable<String> names)
@@ -43,7 +44,7 @@ public class GeSuitHandler
 
 		int requestId = mRand.nextInt();
 		MessageResolvePlayer message = new MessageResolvePlayer(requestId, names);
-		toSend.sendPluginMessage(mPlugin, "geSuitAPI", Message.save(message));
+		toSend.sendPluginMessage(mPlugin, geSuitChannel, Message.save(message));
 
 		return mWaiter.waitForReply(message);
 	}
@@ -61,7 +62,7 @@ public class GeSuitHandler
 
 		int requestId = mRand.nextInt();
 		MessageResolveUUID message = new MessageResolveUUID(requestId, ids);
-		toSend.sendPluginMessage(mPlugin, "geSuitAPI", Message.save(message));
+		toSend.sendPluginMessage(mPlugin, geSuitChannel, Message.save(message));
 
 		return mWaiter.waitForReply(message);
 	}
