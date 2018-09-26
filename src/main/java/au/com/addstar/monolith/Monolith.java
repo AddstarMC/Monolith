@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import au.com.addstar.monolith.util.nbtapi.ItemNBTAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,7 @@ public class Monolith extends JavaPlugin
 {
 	private static Monolith mInstance;
 	private GeSuitHandler mGeSuitHandler;
+	private ItemNBTAPI api;
 	
 	public static Monolith getInstance()
 	{
@@ -44,6 +46,8 @@ public class Monolith extends JavaPlugin
 			Lookup.initialize(this);
 			Bukkit.getPluginManager().registerEvents(new Listeners(), this);
 			mGeSuitHandler = new GeSuitHandler(this);
+			api = new ItemNBTAPI();
+			api.onEnable();
 			getLogger().info("enabled");
 		} else {
 			getLogger().severe("This plugin is for NMS Version 1.12.R1 or Server Version 1.12 Disabled");
