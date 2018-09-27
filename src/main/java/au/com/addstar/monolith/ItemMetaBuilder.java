@@ -3,8 +3,8 @@ package au.com.addstar.monolith;
 import au.com.addstar.monolith.lookup.EntityDefinition;
 import au.com.addstar.monolith.lookup.Lookup;
 import au.com.addstar.monolith.util.nbtapi.NBTCompound;
+import au.com.addstar.monolith.util.nbtapi.NBTContainer;
 import au.com.addstar.monolith.util.nbtapi.NBTItem;
-import au.com.addstar.monolith.util.nbtapi.NBTReflectionUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
@@ -46,33 +46,17 @@ public class ItemMetaBuilder
 	
 	public void accept(String name, String value) throws IllegalArgumentException
 	{
-		if(decodeDefault(name, value))
-			return;
-		
-		if(decodeBook(name, value))
-			return;
-		
-		if(decodeFirework(name, value))
-			return;
-		
-		if(decodeLeatherArmor(name, value))
-			return;
-		
-		if(decodeMap(name, value))
-			return;
-		
-		if(decodePotion(name, value))
-			return;
-		
-		if(decodeSkull(name, value))
-			return;
-		
-		if(decodeStoredEnchants(name, value))
-			return;
-		
-		if(decodeEnchants(name, value))
-			return;
+		if(decodeDefault(name, value))return;
+		if(decodeBook(name, value))	return;
+		if(decodeFirework(name, value))	return;
+		if(decodeLeatherArmor(name, value))	return;
+		if(decodeMap(name, value))return;
+		if(decodePotion(name, value))return;
+		if(decodeSkull(name, value))return;
+		if(decodeStoredEnchants(name, value))return;
+		if(decodeEnchants(name, value))return;
 		if(decodeSpawnEgg(name,value))return;
+		if(decodeNBTString(name,value))return;
 		throw new IllegalArgumentException("Unknown meta id: " + name);
 	}
 	
@@ -476,15 +460,21 @@ public class ItemMetaBuilder
 			if(parts.length==2){
 				String key = parts[0];
 				String value = parts[1];
-				Object object = NBTReflectionUtil.parseNBT(value);
-				try{
-					NBTCompound nbtTag = (NBTCompound) object;
-				}catch (ClassCastException e){
-					return false;
-				}
-				NBTItem nItem = new NBTItem(item);
-				NBTReflectionUtil.setEntityNBTTag(object,nItem);
-				item = nItem.getItem();
+				try {
+                    NBTContainer container = new NBTContainer(value);
+                    NBTItem nItem = new NBTItem(item);
+                    NBTCompound compound = nItem.getCompound(key);
+                    if (compound == null) {
+                        compound = nItem.addCompound(key);
+                        compound.mergeCompound(container);
+                    }
+                    compound.mergeCompound(container);
+                    item = nItem.getItem();
+                }catch (Exception e){
+				    e.printStackTrace();
+				    hasNBT = false;
+				    return false;
+                }
 			}
 			hasNBT = true;
 			return true;
