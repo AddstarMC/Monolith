@@ -19,7 +19,7 @@ public class EntityTemplateSetting<V> extends MethodLinkedTemplateSetting<Entity
 	{
 		MethodHandle handle = getHandle(forClass, setter, type);
 		
-		return new EntityTemplateSetting<V>(name, aliases, def, (Class<Object>)forClass, type, handle);
+		return new EntityTemplateSetting<>(name, aliases, def, (Class<Object>) forClass, type, handle);
 	}
 	
 	@SuppressWarnings("unchecked")

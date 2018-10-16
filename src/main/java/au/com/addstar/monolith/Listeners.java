@@ -10,29 +10,9 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class Listeners implements Listener
 {
+
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	private void onPlayerMove(PlayerMoveEvent event)
-	{
-		MonoPlayer player = MonoPlayer.getPlayer(event.getPlayer());
-		player.onUpdate();
-	}
-	
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	private void onPlayerTeleport(PlayerTeleportEvent event)
-	{
-		MonoPlayer player = MonoPlayer.getPlayer(event.getPlayer());
-		player.onUpdate();
-	}
-	
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	private void onPlayerRespawn(PlayerRespawnEvent event)
-	{
-		MonoPlayer player = MonoPlayer.getPlayer(event.getPlayer());
-		player.onRespawn();
-	}
-	
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	private void onPlayerRespawn(PlayerQuitEvent event)
+	private void onPlayerQuit(PlayerQuitEvent event)
 	{
 		MonoPlayer player = MonoPlayer.getPlayer(event.getPlayer());
 		player.onDestroy();

@@ -2,8 +2,7 @@ package au.com.addstar.monolith;
 
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import au.com.addstar.monolith.chat.ChatMessage;
 import au.com.addstar.monolith.chat.ChatMessageType;
@@ -11,7 +10,7 @@ import au.com.addstar.monolith.chat.Title;
 
 public class MonoPlayer
 {
-	private static final HashMap<Player, MonoPlayer> mPlayers = new HashMap<Player, MonoPlayer>();
+	private static final HashMap<Player, MonoPlayer> mPlayers = new HashMap<>();
 	
 	public static MonoPlayer getPlayer(Player player)
 	{
@@ -26,8 +25,6 @@ public class MonoPlayer
 	}
 	
 	private Player mPlayer;
-
-	private BossDisplay mBossDisplay;
 	
 	private MonoPlayer(Player player)
 	{
@@ -41,26 +38,9 @@ public class MonoPlayer
 	
 	public String getLocale()
 	{
-		return ((CraftPlayer)mPlayer).getHandle().locale;
+		return mPlayer.getLocale();
 	}
 	
-	@Deprecated
-	public BossDisplay getBossBarDisplay()
-	{
-		return mBossDisplay;
-	}
-	
-	@Deprecated
-	public void setBossBarDisplay(BossDisplay display)
-	{
-		if(mBossDisplay != null)
-			mBossDisplay.onPlayerRemove(this);
-		
-		mBossDisplay = display;
-		
-		if(mBossDisplay != null)
-			mBossDisplay.onPlayerAdd(this);
-	}
 	
 	public void sendMessage(ChatMessage... message)
 	{
@@ -79,27 +59,6 @@ public class MonoPlayer
 		ChatMessage.begin(message).send(mPlayer, type);
 	}
 	
-	protected void onUpdate()
-	{
-		if(mBossDisplay != null)
-			mBossDisplay.update(this);
-	}
-	
-	protected void onRespawn()
-	{
-		if(mBossDisplay != null)
-		{
-			Bukkit.getScheduler().runTaskLater(Monolith.getInstance(), new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					if(mBossDisplay != null)
-						mBossDisplay.refresh(MonoPlayer.this);
-				}
-			}, 5);
-		}
-	}
 	
 	protected void onDestroy()
 	{
@@ -120,7 +79,8 @@ public class MonoPlayer
 	@Override
 	public boolean equals( Object obj )
 	{
-		return mPlayer.equals(obj);
+		if (obj instanceof MonoPlayer)return mPlayer.equals(obj);
+		return false;
 	}
 	
 	@Override

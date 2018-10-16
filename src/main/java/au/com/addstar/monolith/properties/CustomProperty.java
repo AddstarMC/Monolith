@@ -10,16 +10,16 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraft.server.v1_12_R1.NBTBase;
-import net.minecraft.server.v1_12_R1.NBTTagByte;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.NBTTagDouble;
-import net.minecraft.server.v1_12_R1.NBTTagFloat;
-import net.minecraft.server.v1_12_R1.NBTTagInt;
-import net.minecraft.server.v1_12_R1.NBTTagList;
-import net.minecraft.server.v1_12_R1.NBTTagLong;
-import net.minecraft.server.v1_12_R1.NBTTagShort;
-import net.minecraft.server.v1_12_R1.NBTTagString;
+import net.minecraft.server.v1_13_R1.NBTBase;
+import net.minecraft.server.v1_13_R1.NBTTagByte;
+import net.minecraft.server.v1_13_R1.NBTTagCompound;
+import net.minecraft.server.v1_13_R1.NBTTagDouble;
+import net.minecraft.server.v1_13_R1.NBTTagFloat;
+import net.minecraft.server.v1_13_R1.NBTTagInt;
+import net.minecraft.server.v1_13_R1.NBTTagList;
+import net.minecraft.server.v1_13_R1.NBTTagLong;
+import net.minecraft.server.v1_13_R1.NBTTagShort;
+import net.minecraft.server.v1_13_R1.NBTTagString;
 
 /**
  * Represents a property that holds any object that implements the
@@ -151,7 +151,7 @@ public class CustomProperty extends PropertyBase<ConfigurationSerializable>
 	{
 		Map<String, Object> values = Maps.newHashMap();
 		
-		for (String key : tag.c())
+		for (String key : tag.getKeys())
 		{
 			NBTBase value = tag.get(key);
 			values.put(key, fromNBT(value));
@@ -166,7 +166,7 @@ public class CustomProperty extends PropertyBase<ConfigurationSerializable>
 		
 		for (int i = 0; i < tag.size(); ++i)
 		{
-			values.add(fromNBT(tag.i(i)));
+			values.add(fromNBT(tag.c(i)));
 		}
 		
 		return values;
@@ -189,7 +189,7 @@ public class CustomProperty extends PropertyBase<ConfigurationSerializable>
 		else if (tag instanceof NBTTagDouble)
             return ((NBTTagDouble) tag).asDouble();
         else if (tag instanceof NBTTagString)
-			return ((NBTTagString)tag).c_();
+			return tag.b_();
 		else if (tag instanceof NBTTagList)
 			return fromNBTList((NBTTagList)tag);
 		else

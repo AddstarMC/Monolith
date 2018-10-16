@@ -25,7 +25,7 @@ public class MessageWaiter implements PluginMessageListener
 
 	public <T> ListenableFuture<T> waitForReply( Message<T> source )
 	{
-		WaitFuture<T> future = new WaitFuture<T>(source);
+		WaitFuture<T> future = new WaitFuture<>(source);
 		mWaiting.add(future);
 
 		return future;

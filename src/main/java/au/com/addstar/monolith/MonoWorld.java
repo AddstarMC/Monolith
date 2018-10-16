@@ -7,7 +7,7 @@ import au.com.addstar.monolith.chat.Title;
 
 public class MonoWorld
 {
-	private static WeakHashMap<World, MonoWorld> mWorlds = new WeakHashMap<World, MonoWorld>();
+	private static WeakHashMap<World, MonoWorld> mWorlds = new WeakHashMap<>();
 	
 	public static MonoWorld getWorld(World world)
 	{

@@ -11,47 +11,36 @@ import java.util.Set;
 
 import org.bukkit.Material;
 
-import au.com.addstar.monolith.lookup.MaterialDefinition;
 
 import com.google.common.collect.HashMultimap;
 
 public class ItemDB
 {
-	private HashMap<String, MaterialDefinition> mNameMap;
-	private HashMultimap<MaterialDefinition, String> mIdMap;
+	private HashMap<String, Material> mNameMap;
+	private HashMultimap<Material, String> mIdMap;
 	
 	public ItemDB()
 	{
-		mNameMap = new HashMap<String, MaterialDefinition>();
+		mNameMap = new HashMap<>();
 		mIdMap = HashMultimap.create();
 	}
 	
-	public MaterialDefinition getByName(String name)
+	public Material getByName(String name)
 	{
 		return mNameMap.get(name.toLowerCase());
 	}
 	
-	public Set<String> getById(MaterialDefinition item)
+	public Set<String> getbyMaterial(Material mat)
 	{
-		return mIdMap.get(item);
+		return mIdMap.get(mat);
 	}
 	
-	public Set<String> getById(Material material, int data)
-	{
-		return getById(new MaterialDefinition(material, (short)data));
-	}
 	
 	public void load(File file) throws IOException
 	{
-		FileInputStream stream = new FileInputStream(file);
 		
-		try
-		{
+		try (FileInputStream stream = new FileInputStream(file)) {
 			load(stream);
-		}
-		finally
-		{
-			stream.close();
 		}
 	}
 	
@@ -68,43 +57,16 @@ public class ItemDB
 			String line = reader.readLine();
 			if(line.startsWith("#"))
 				continue;
-			
 			String[] parts = line.split(",");
-			if(parts.length != 3)
+			if(parts.length != 2)
 				continue;
-			
 			String name = parts[0];
-			Material material = null;
-			try
-			{
-				int id = Integer.parseInt(parts[1]);
-				material = Material.getMaterial(id);
-			}
-			catch(NumberFormatException e)
-			{
-			}
-			
-			if(material == null)
-				material = Material.getMaterial(parts[1]);
-			
+			Material material;
+			material = Material.getMaterial(parts[1]);
 			if(material == null)
 				continue;
-			
-			short data = 0;
-			try
-			{
-				data = Short.parseShort(parts[2]);
-				if(data < 0)
-					continue;
-			}
-			catch(NumberFormatException e)
-			{
-				continue;
-			}
-			
-			MaterialDefinition def = new MaterialDefinition(material, data);
-			mNameMap.put(name.toLowerCase(), def);
-			mIdMap.put(def, name);
+			mNameMap.put(name.toLowerCase(), material);
+			mIdMap.put(material, name);
 		}
 	}
 }

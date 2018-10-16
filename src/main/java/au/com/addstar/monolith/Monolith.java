@@ -41,7 +41,7 @@ public class Monolith extends JavaPlugin
 		}
 		getLogger().info("Your server is running version " + version);
 
-        if (version != null && version.equals("v1_12_R1")) {
+        if (version != null && version.equals("v1_13_R1")) {
             mInstance = this;
 			Lookup.initialize(this);
 			Bukkit.getPluginManager().registerEvents(new Listeners(), this);

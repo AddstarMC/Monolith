@@ -9,10 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_12_R1.Block;
-import net.minecraft.server.v1_12_R1.Blocks;
-import net.minecraft.server.v1_12_R1.Item;
-import net.minecraft.server.v1_12_R1.MinecraftKey;
+import net.minecraft.server.v1_13_R1.MinecraftKey;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -110,7 +107,6 @@ public class Lookup
 		}
 	}
 
-	@SuppressWarnings( "deprecation" )
 	/**
 	 * Gets a material using the minecraft name.
 	 * @param name The id of the object eg. minecraft:stone
@@ -119,18 +115,8 @@ public class Lookup
 	public static Material findByMinecraftName(String name)
 	{
 		MinecraftKey key = new MinecraftKey(name);
-		Item item = Item.REGISTRY.get(key);
-		if(item == null)
-		{
-			// Attempt blocks that dont have items
-			Block block = Block.REGISTRY.get(key);
-			if (block == null || block == Blocks.AIR)
-				return null;
-
-			return Material.getMaterial(Block.getId(block));
-		}
-
-		return Material.getMaterial(Item.getId(item));
+		Material material =  Material.matchMaterial(key.b());
+		return material;
 	}
 
 	/**
@@ -138,7 +124,7 @@ public class Lookup
 	 * @param name The name to search for
 	 * @return An MaterialDefinition object, or null
 	 */
-	public static MaterialDefinition findItemByName(String name)
+	public static Material findItemByName(String name)
 	{
 		return mNameDB.getByName(name);
 	}
@@ -150,9 +136,9 @@ public class Lookup
 	 * @param material The material to look for
 	 * @return The names this item is registered against, or an empty set
 	 */
-	public static Set<String> findNameByItem(MaterialDefinition material)
+	public static Set<String> findNameByItem(Material material)
 	{
-		Set<String> names = mNameDB.getById(material);
+		Set<String> names = mNameDB.getbyMaterial(material);
 		if(names == null)
 			return Collections.emptySet();
 		else
@@ -166,13 +152,7 @@ public class Lookup
 	 */
 	public static String findMinecraftNameByItem(Material material)
 	{
-		@SuppressWarnings( "deprecation" )
-        Item item = Item.getById(material.getId());
-		if (item == null)
-			return null;
-
-		MinecraftKey key = Item.REGISTRY.b(item);
-		return key.toString();
+		return material.getKey().toString();
 	}
 
 	/**
@@ -225,14 +205,11 @@ public class Lookup
 	 */
 	public static ListenableFuture<PlayerDefinition> lookupPlayerName(String name)
 	{
-		return Futures.transform(lookupPlayerNames(Arrays.asList(name)), new Function<List<PlayerDefinition>, PlayerDefinition>() {
-			@Override
-			public PlayerDefinition apply(List<PlayerDefinition> list) {
-				if (list.isEmpty())
-					return null;
-				else
-					return list.get(0);
-			}
+		return Futures.transform(lookupPlayerNames(Collections.singletonList(name)), list -> {
+			if (list == null || list.isEmpty())
+				return null;
+			else
+				return list.get(0);
 		});
 	}
 
@@ -248,7 +225,7 @@ public class Lookup
 	 */
 	public static void lookupPlayerName(String name, LookupCallback<PlayerDefinition> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<PlayerDefinition>(lookupPlayerName(name), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerName(name), callback, 5, TimeUnit.SECONDS));
 	}
 
 	/**
@@ -264,16 +241,11 @@ public class Lookup
 	 */
 	public static ListenableFuture<PlayerDefinition> lookupPlayerUUID(UUID id)
 	{
-		return Futures.transform(lookupPlayerUUIDs(Arrays.asList(id)), new Function<List<PlayerDefinition>, PlayerDefinition>()
-		{
-			@Override
-			public PlayerDefinition apply( List<PlayerDefinition> list )
-			{
-				if (list.isEmpty())
-					return null;
-				else
-					return list.get(0);
-			}
+		return Futures.transform(lookupPlayerUUIDs(Collections.singletonList(id)), list -> {
+			if (list == null || list.isEmpty())
+				return null;
+			else
+				return list.get(0);
 		});
 	}
 
@@ -289,7 +261,7 @@ public class Lookup
 	 */
 	public static void lookupPlayerUUID(UUID id, LookupCallback<PlayerDefinition> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<PlayerDefinition>(lookupPlayerUUID(id), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerUUID(id), callback, 5, TimeUnit.SECONDS));
 	}
 
 	/**
@@ -320,7 +292,7 @@ public class Lookup
 	 */
 	public static void lookupPlayerNames(Iterable<String> names, LookupCallback<List<PlayerDefinition>> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<List<PlayerDefinition>>(lookupPlayerNames(names), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerNames(names), callback, 5, TimeUnit.SECONDS));
 	}
 
 	/**
@@ -351,7 +323,7 @@ public class Lookup
 	 */
 	public static void lookupPlayerUUIDs(Iterable<UUID> ids, LookupCallback<List<PlayerDefinition>> callback)
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<List<PlayerDefinition>>(lookupPlayerUUIDs(ids), callback, 5, TimeUnit.SECONDS));
+		Bukkit.getScheduler().runTaskAsynchronously(Monolith.getInstance(), new FutureWaiter<>(lookupPlayerUUIDs(ids), callback, 5, TimeUnit.SECONDS));
 	}
 	
 	/**

@@ -2,5 +2,5 @@ name: Monolith
 description: A custom API for handling many common tasks as well as some more unique ones. NMS Version ${spigot.version}
 author: Schmoller, Narimm
 version: ${plugin.version}
-
+api-version: ${api.version}
 main: au.com.addstar.monolith.Monolith

@@ -1,5 +1,5 @@
-#version: 1.0.0
-#If you change this file, it will not be automatically updated after the next release.
+#version: ${plugin.version}
+#If you change this file it will not be automatically updated after the next release.
 #name,id
 Speed,SPEED
 Fast,SPEED
@@ -42,9 +42,9 @@ Resistance,DAMAGE_RESISTANCE
 DMGResist,DAMAGE_RESISTANCE
 Armor,DAMAGE_RESISTANCE
 Armour,DAMAGE_RESISTANCE
-FireResist,FIRE_RESIST
-FireResistance,FIRE_RESIST
-ResistFire,FIRE_RESIST
+FireResist,FIRE_RESISTANCE
+FireResistance,FIRE_RESISTANCE
+ResistFire,FIRE_RESISTANCE
 WaterBreath,WATER_BREATHING
 WaterBreathing,WATER_BREATHING
 Invisibility,INVISIBILITY
@@ -78,3 +78,9 @@ Unlucky,UNLUCK
 BadLuck,UNLUCK
 Levitation,LEVITATION
 Hover,LEVITATION
+SlowFalling,SLOW_FALLING
+Slowfall,SLOW_FALLING
+Conduit,CONDUIT_POWER
+ConduitPower,CONDUIT_POWER
+DolphinsGrace,DOLPHINS_GRACE
+FastSwim,DOLPHINS_GRACE

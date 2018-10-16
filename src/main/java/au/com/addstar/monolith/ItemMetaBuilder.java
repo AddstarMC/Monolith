@@ -1,18 +1,16 @@
 package au.com.addstar.monolith;
 
-import au.com.addstar.monolith.lookup.EntityDefinition;
 import au.com.addstar.monolith.lookup.Lookup;
 import au.com.addstar.monolith.util.nbtapi.NBTCompound;
 import au.com.addstar.monolith.util.nbtapi.NBTContainer;
 import au.com.addstar.monolith.util.nbtapi.NBTItem;
-import org.apache.commons.lang.StringUtils;
+import au.com.addstar.monolith.util.nbtapi.NBTReflectionUtil;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionEffectType;
@@ -108,7 +106,7 @@ public class ItemMetaBuilder
 		}
 		else if(name.equalsIgnoreCase("lore"))
 		{
-			ArrayList<String> lore = new ArrayList<String>();
+			ArrayList<String> lore = new ArrayList<>();
 			for(String line : content.split("\\|"))
 				lore.add(ChatColor.translateAlternateColorCodes('&', line));
 			
@@ -127,6 +125,14 @@ public class ItemMetaBuilder
 		
 		int level;
 		
+		level = getLevel(name, content);
+
+		mMeta.addEnchant(enchant, level, true);
+		return true;
+	}
+
+	private int getLevel(String name, String content) {
+		int level;
 		try
 		{
 			level = Integer.parseInt(content);
@@ -137,9 +143,7 @@ public class ItemMetaBuilder
 		{
 			throw new IllegalArgumentException("Invalid level for enchantment " + name + ". Expected number between 1 and 127");
 		}
-		
-		mMeta.addEnchant(enchant, level, true);
-		return true;
+		return level;
 	}
 	
 	private boolean decodeBook(String name, String content)
@@ -175,18 +179,7 @@ public class ItemMetaBuilder
 		if(enchant == null)
 			return false;
 		
-		int level;
-		
-		try
-		{
-			level = Integer.parseInt(content);
-			if(level <= 0 || level > 127)
-				throw new IllegalArgumentException("Invalid level for enchantment " + name + ". Level must be between 1 and 127");
-		}
-		catch(NumberFormatException e)
-		{
-			throw new IllegalArgumentException("Invalid level for enchantment " + name + ". Expected number between 1 and 127");
-		}
+		int level = getLevel(name, content);
 		
 		((EnchantmentStorageMeta)mMeta).addStoredEnchant(enchant, level, true);
 		return true;
@@ -447,7 +440,12 @@ public class ItemMetaBuilder
 		
 		if(name.equalsIgnoreCase("player") || name.equalsIgnoreCase("owner"))
 		{
-			((SkullMeta)mMeta).setOwner(content);
+			OfflinePlayer player = Bukkit.getOfflinePlayer(content);
+			if(player == null){
+				throw new IllegalArgumentException("Invalid value for '" + name + "'. Player " +
+						"named:" + content + " not found");
+			}
+			((SkullMeta)mMeta).setOwningPlayer(player);
 			return true;
 		}
 		

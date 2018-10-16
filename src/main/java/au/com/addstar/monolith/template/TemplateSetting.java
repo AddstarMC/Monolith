@@ -27,8 +27,7 @@ public abstract class TemplateSetting<HolderType, Holder, V>
 	{
 		mNames = new String[aliases.length+1];
 		mNames[0] = name;
-		for (int i = 0; i < aliases.length; ++i)
-			mNames[1+i] = aliases[i];
+		System.arraycopy(aliases, 0, mNames, 1, aliases.length);
 		mClass = type;
 		mDefault = def;
 	}

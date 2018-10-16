@@ -6,15 +6,15 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.Sets;
 
 import au.com.addstar.monolith.Monolith;
-import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
-import net.minecraft.server.v1_12_R1.PacketPlayOutTitle.EnumTitleAction;
-import net.minecraft.server.v1_12_R1.PlayerConnection;
+import net.minecraft.server.v1_13_R1.PacketPlayOutTitle;
+import net.minecraft.server.v1_13_R1.PacketPlayOutTitle.EnumTitleAction;
+import net.minecraft.server.v1_13_R1.PlayerConnection;
 
 public class Title
 {
@@ -132,7 +132,7 @@ public class Title
 	 */
 	public void show(Player player)
 	{
-		show(Arrays.asList(player));
+		show(Collections.singletonList(player));
 	}
 
     /**
@@ -175,12 +175,7 @@ public class Title
 		}
 
         // Clean up the player set, use the specific instance so we dont clear overriding invoks
-        Bukkit.getScheduler().runTaskLater(Monolith.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                playerSet.clear();
-            }
-        }, mFadeInTime + mDisplayTime + mFadeOutTime);
+        Bukkit.getScheduler().runTaskLater(Monolith.getInstance(), playerSet::clear, mFadeInTime + mDisplayTime + mFadeOutTime);
     }
 	
 	/**

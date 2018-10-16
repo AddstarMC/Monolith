@@ -3,21 +3,21 @@ package au.com.addstar.monolith.villagers;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import net.minecraft.server.v1_12_R1.BlockPosition;
-import net.minecraft.server.v1_12_R1.EntityVillager;
-import net.minecraft.server.v1_12_R1.VillageDoor;
+import net.minecraft.server.v1_13_R1.BlockPosition;
+import net.minecraft.server.v1_13_R1.EntityVillager;
+import net.minecraft.server.v1_13_R1.VillageDoor;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftIronGolem;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftVillager;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftIronGolem;
+import org.bukkit.craftbukkit.v1_13_R1.entity.CraftVillager;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Villager;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 public class Village
@@ -29,7 +29,7 @@ public class Village
 	{
 		try
 		{
-			mFieldWorld = net.minecraft.server.v1_12_R1.Village.class.getDeclaredField("a");
+			mFieldWorld = net.minecraft.server.v1_13_R1.Village.class.getDeclaredField("a");
 			mFieldWorld.setAccessible(true);
 			
 			mFieldVillage = EntityVillager.class.getDeclaredField("village");
@@ -41,9 +41,9 @@ public class Village
 		}
 	}
 
-	private net.minecraft.server.v1_12_R1.Village mHandle;
+	private net.minecraft.server.v1_13_R1.Village mHandle;
 
-	private Village(net.minecraft.server.v1_12_R1.Village handle)
+	private Village(net.minecraft.server.v1_13_R1.Village handle)
 	{
 		mHandle = handle;
 	}
@@ -67,7 +67,7 @@ public class Village
 	{
 		try
 		{
-			net.minecraft.server.v1_12_R1.World world = (net.minecraft.server.v1_12_R1.World) mFieldWorld.get(mHandle);
+			net.minecraft.server.v1_13_R1.World world = (net.minecraft.server.v1_13_R1.World) mFieldWorld.get(mHandle);
 			return world.getWorld();
 		}
 		catch(Exception e)
@@ -82,13 +82,10 @@ public class Village
 		List<VillageDoor> doors = mHandle.f();
 		
 		final World world = getWorld();
-		List<BlockState> states = Lists.transform(doors, new Function<VillageDoor, BlockState>() {
-			@Override
-			public BlockState apply(VillageDoor door) {
-				BlockPosition pos = door.d();
-				return world.getBlockAt(pos.getX(), pos.getY(), pos.getZ()).getState();
-			}
-		});
+		List<BlockState> states = doors.stream().map(door -> {
+			BlockPosition pos = door.d();
+			return world.getBlockAt(pos.getX(), pos.getY(), pos.getZ()).getState();
+		}).collect(Collectors.toList());
 
 		return Collections.unmodifiableList(states);
 	}
@@ -113,7 +110,7 @@ public class Village
 	{
 		try
 		{
-			net.minecraft.server.v1_12_R1.Village handle = (net.minecraft.server.v1_12_R1.Village) mFieldVillage.get(((CraftVillager) villager).getHandle());
+			net.minecraft.server.v1_13_R1.Village handle = (net.minecraft.server.v1_13_R1.Village) mFieldVillage.get(((CraftVillager) villager).getHandle());
 			if (handle == null)
 				return null;
 			
@@ -133,7 +130,7 @@ public class Village
 	{
 		try
 		{
-			net.minecraft.server.v1_12_R1.Village handle = (net.minecraft.server.v1_12_R1.Village) mFieldVillage.get(((CraftVillager) villager).getHandle());
+			net.minecraft.server.v1_13_R1.Village handle = (net.minecraft.server.v1_13_R1.Village) mFieldVillage.get(((CraftVillager) villager).getHandle());
 			if (handle == null)
 				return null;
 			
@@ -148,7 +145,7 @@ public class Village
 	
 	public static Village getVillage(IronGolem golem)
 	{
-		net.minecraft.server.v1_12_R1.Village handle = ((CraftIronGolem) golem).getHandle().p();
+		net.minecraft.server.v1_13_R1.Village handle = ((CraftIronGolem) golem).getHandle().l();
 		if (handle == null)
 			return null;
 		

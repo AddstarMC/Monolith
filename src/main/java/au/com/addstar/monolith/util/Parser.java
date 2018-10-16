@@ -7,14 +7,12 @@ import java.util.EnumSet;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import au.com.addstar.monolith.lookup.EntityDefinition;
 import au.com.addstar.monolith.lookup.Lookup;
-import au.com.addstar.monolith.lookup.MaterialDefinition;
 
 /**
  * A utility class for parsing many different values from strings
@@ -59,7 +57,7 @@ public class Parser
 		else
 		{
 			if (value.matches("[0-9]+"))
-				return Boolean.valueOf(Integer.parseInt(value) != 0);
+				return Integer.parseInt(value) != 0;
 		}
 		throw new IllegalArgumentException("Expected true, false, 1, or 0");
 	}
@@ -131,38 +129,28 @@ public class Parser
 	 * @return The parsed MaterialDefinition
 	 * @throws IllegalArgumentException Thrown if the value cannot be parsed as a material
 	 */
-	public static MaterialDefinition parseMaterialDefinition(String value) throws IllegalArgumentException
+	public static Material parseMaterialName(String value) throws IllegalArgumentException
 	{
-		MaterialDefinition def = Lookup.findItemByName(value);
+		Material mat = Lookup.findItemByName(value);
 		
-		if (def != null)
-			return def;
+		if (mat != null)
+			return mat;
 		
 		String[] parts = value.split(":");
 		
 		// Try by MC name
-		short data = 0;
-		Material mat;
-		
+		short data;
 		try
 		{
 			// With data value and prefix
-			if (parts.length == 3)
+			if (parts.length > 2)
 			{
-				mat = Lookup.findByMinecraftName(parts[0] + ":" + parts[1]);
-				data = Short.parseShort(parts[2]);
+				throw new IllegalArgumentException("Unknown input value. Expected a String ");
 			// Either data value, or prefix
 			}
 			else if (parts.length == 2)
 			{
-				if (parts[1].matches("[0-9]+"))
-				{
-					mat = Lookup.findByMinecraftName(parts[0]);
-					data = Short.parseShort(parts[1]);
-				}
-				else
-					mat = Lookup.findByMinecraftName(parts[0] + ":" + parts[1]);
-			// No data value or prefix
+				mat = Lookup.findByMinecraftName(parts[0] + ":" + parts[1]);
 			}
 			else
 			{
@@ -177,7 +165,7 @@ public class Parser
 		
 		// MC name lookup success
 		if (mat != null)
-			return new MaterialDefinition(mat, data);
+			return mat;
 		
 		// Try by Bukkit name
 		mat = Material.getMaterial(parts[0].toUpperCase());
@@ -197,7 +185,7 @@ public class Parser
 		
 		// Bukkit lookup success
 		if (mat != null)
-			return new MaterialDefinition(mat, data);
+			return mat;
 		
 		throw new IllegalArgumentException("Unknown material " + value);
 	}
@@ -205,7 +193,7 @@ public class Parser
 	/**
 	 * Parse an ItemStack from a string. <br>
 	 * The expected format is '{count}x{type}' <br>
-	 * Count must be a positive integer, type will be parsed with {@link #parseMaterialDefinition(String)}
+	 * Count must be a positive integer, type will be parsed with {@link #parseMaterialName(String)}
 	 * 
 	 * @param value The string to parse
 	 * @return The parsed ItemStack
@@ -223,12 +211,13 @@ public class Parser
 		else
 			count = -1;
 		
-		MaterialDefinition def = parseMaterialDefinition(value);
+		Material def = parseMaterialName(value);
 		
 		if (count == -1)
-			return def.asItemStack(def.asItemStack(1).getMaxStackSize());
+
+			return new ItemStack(def,new ItemStack(def).getMaxStackSize());
 		else
-			return def.asItemStack(count);
+			return new ItemStack(def,count);
 	}
 	
 	/**
@@ -292,11 +281,7 @@ public class Parser
 		else if (type.equals(String.class))
 			return (T)value;
 		else if (type.equals(Material.class))
-			return (T)(parseMaterialDefinition(value).getMaterial());
-		else if (type.equals(MaterialData.class))
-			return (T)(parseMaterialDefinition(value).asMaterialData());
-		else if (type.equals(MaterialDefinition.class))
-			return (T)(parseMaterialDefinition(value));
+			return (T)(parseMaterialName(value));
 		else if (type.equals(ItemStack.class))
 			return (T)parseItemStack(value);
 		else if (type.equals(EntityType.class))

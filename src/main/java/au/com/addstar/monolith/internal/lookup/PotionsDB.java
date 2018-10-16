@@ -20,7 +20,7 @@ public class PotionsDB
 	
 	public PotionsDB()
 	{
-		mNameMap = new HashMap<String, PotionEffectType>();
+		mNameMap = new HashMap<>();
 		mIdMap = HashMultimap.create();
 	}
 	
@@ -36,15 +36,9 @@ public class PotionsDB
 	
 	public void load(File file) throws IOException
 	{
-		FileInputStream stream = new FileInputStream(file);
 		
-		try
-		{
+		try (FileInputStream stream = new FileInputStream(file)) {
 			load(stream);
-		}
-		finally
-		{
-			stream.close();
 		}
 	}
 	

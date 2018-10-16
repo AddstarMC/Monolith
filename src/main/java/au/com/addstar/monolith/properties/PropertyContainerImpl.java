@@ -8,8 +8,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.NBTTagList;
+import net.minecraft.server.v1_13_R1.NBTBase;
+import net.minecraft.server.v1_13_R1.NBTTagCompound;
+import net.minecraft.server.v1_13_R1.NBTTagList;
 
 public class PropertyContainerImpl implements PropertyContainer
 {
@@ -26,16 +27,19 @@ public class PropertyContainerImpl implements PropertyContainer
 	}
 	
 	@Override
-	public PropertyBase<?> get(String name, UUID owner)
-	{
-		for (int i = 0; i < root.size(); ++i)
-		{
-			NBTTagCompound raw = root.get(i);
-			PropertyBase<?> property = loadProperty(raw);
-			if (property.getName() != null) {
-			if (property.getName().equals(name) && property.getOwner().equals(owner))
-				return property;
-		}
+	public PropertyBase<?> get(String name, UUID owner) throws PropertyClassException {
+		for (NBTBase aRoot : root) {
+			if (aRoot instanceof NBTTagCompound) {
+				NBTTagCompound raw = (NBTTagCompound) aRoot;
+				PropertyBase<?> property = loadProperty(raw);
+				if (property != null && property.getName() != null) {
+					if (property.getName().equals(name) && property.getOwner().equals(owner))
+						return property;
+				}
+			} else {
+				throw new PropertyClassException(aRoot.toString() + " is not a Compound " +
+						"tag");
+			}
 		}
 		
 		return null;
@@ -101,12 +105,14 @@ public class PropertyContainerImpl implements PropertyContainer
 	public void remove(String name, UUID owner)
 	{
 		for (int i = 0; i < root.size(); ++i) {
-			NBTTagCompound raw = root.get(i);
-			PropertyBase<?> property = loadProperty(raw);
-			if (property.getName() != null) {
-				if (property.getName().equals(name) && property.getOwner().equals(owner)) {
-					root.remove(i);
-					break;
+			if(root.get(i) instanceof NBTTagCompound) {
+				NBTTagCompound raw = (NBTTagCompound) root.get(i);
+				PropertyBase<?> property = loadProperty(raw);
+				if (property.getName() != null) {
+					if (property.getName().equals(name) && property.getOwner().equals(owner)) {
+						root.remove(i);
+						break;
+					}
 				}
 			}
 
@@ -118,12 +124,14 @@ public class PropertyContainerImpl implements PropertyContainer
 	{
 		for (int i = 0; i < root.size(); ++i)
 		{
-			NBTTagCompound raw = root.get(i);
-			PropertyBase<?> property = loadProperty(raw);
-			if (property.getOwner() != null) {
-				if (property.getOwner().equals(owner)) {
-					root.remove(i);
-					--i;
+			if(root.get(i) instanceof NBTTagCompound) {
+				NBTTagCompound raw = (NBTTagCompound) root.get(i);
+				PropertyBase<?> property = loadProperty(raw);
+				if (property.getOwner() != null) {
+					if (property.getOwner().equals(owner)) {
+						root.remove(i);
+						--i;
+					}
 				}
 			}
 		}
@@ -139,28 +147,13 @@ public class PropertyContainerImpl implements PropertyContainer
 	@Override
 	public Iterable<PropertyBase<?>> getAllProperties(final UUID owner)
 	{
-		return new Iterable<PropertyBase<?>>() {
-			@Override
-			public Iterator<PropertyBase<?>> iterator() {
-				return Iterators.filter(new PropertyIterator(), new Predicate<PropertyBase<?>>() {
-					@Override
-					public boolean apply(PropertyBase<?> property) {
-						return property.getOwner().equals(owner);
-					}
-				});
-			}
-		};
+		return () -> Iterators.filter(new PropertyIterator(), property -> property.getOwner().equals(owner));
 	}
 
 	@Override
 	public Iterable<PropertyBase<?>> getAllProperties()
 	{
-		return new Iterable<PropertyBase<?>>() {
-			@Override
-			public Iterator<PropertyBase<?>> iterator() {
-				return new PropertyIterator();
-			}
-		};
+		return PropertyIterator::new;
 	}
 	
 	@Override
@@ -199,8 +192,15 @@ public class PropertyContainerImpl implements PropertyContainer
 		@Override
 		public PropertyBase<?> next()
 		{
-			NBTTagCompound raw = root.get(index++);
-			return loadProperty(raw);
+		    NBTBase base = root.get(index++);
+		    if(base instanceof NBTTagCompound) {
+                NBTTagCompound raw = (NBTTagCompound) base;
+                return loadProperty(raw);
+            }else{
+		        throw new PropertyClassException(base.toString() + " is not a compound tag " +
+                        "compatible" +
+                        " with properties");
+            }
 		}
 		
 		@Override

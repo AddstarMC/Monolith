@@ -44,15 +44,7 @@ public class FutureWaiter<V> implements Runnable
 			else
 				onSuccess(value);
 		}
-		catch (ExecutionException e)
-		{
-			onFailure(e);
-		}
-		catch (TimeoutException e)
-		{
-			onFailure(e);
-		}
-		catch (InterruptedException e)
+		catch (ExecutionException | InterruptedException | TimeoutException e)
 		{
 			onFailure(e);
 		}
@@ -60,25 +52,11 @@ public class FutureWaiter<V> implements Runnable
 
 	private void onSuccess(final V value)
 	{
-		Bukkit.getScheduler().runTask(Monolith.getInstance(), new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				mCallback.onResult(true, value, null);
-			}
-		});
+		Bukkit.getScheduler().runTask(Monolith.getInstance(), () -> mCallback.onResult(true, value, null));
 	}
 	
 	private void onFailure(final Throwable error)
 	{
-		Bukkit.getScheduler().runTask(Monolith.getInstance(), new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				mCallback.onResult(false, null, error);
-			}
-		});
+		Bukkit.getScheduler().runTask(Monolith.getInstance(), () -> mCallback.onResult(false, null, error));
 	}
 }

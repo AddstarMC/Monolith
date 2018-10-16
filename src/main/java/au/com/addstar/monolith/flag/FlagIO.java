@@ -49,7 +49,7 @@ public class FlagIO
 	@SuppressWarnings( { "rawtypes" } )
 	public static Map<String, Flag<?>> loadFlags(ConfigurationSection root, Map<String, Flag<?>> existing) throws InvalidConfigurationException
 	{
-		HashMap<String, Flag<?>> flags = new HashMap<String, Flag<?>>();
+		HashMap<String, Flag<?>> flags = new HashMap<>();
 		
 		for(String key : root.getKeys(false))
 		{
@@ -66,7 +66,7 @@ public class FlagIO
 				if(mKnownTypes.containsKey(type))
 					clazz = mKnownTypes.get(type);
 				else
-					clazz = (Class<? extends Flag>)Class.forName(type).asSubclass(Flag.class);
+					clazz = Class.forName(type).asSubclass(Flag.class);
 				
 				Flag<?> eFlag = existing.get(key);
 				if(eFlag != null && eFlag.getClass() == clazz)
@@ -76,20 +76,19 @@ public class FlagIO
 				}
 				else
 				{
-					Flag<?> flag = clazz.newInstance();
-					flag.read(section);
-					flags.put(key, flag);
+					
+					if(clazz != null) {
+						Flag<?> flag = clazz.newInstance();
+						flag.read(section);
+						flags.put(key, flag);
+					}
 				}
 			}
 			catch(ClassNotFoundException e)
 			{
 				System.err.println("Flag Load: Unknown class name " + type);
 			}
-			catch ( InstantiationException e )
-			{
-				e.printStackTrace();
-			}
-			catch ( IllegalAccessException e )
+			catch ( InstantiationException | IllegalAccessException e )
 			{
 				e.printStackTrace();
 			}

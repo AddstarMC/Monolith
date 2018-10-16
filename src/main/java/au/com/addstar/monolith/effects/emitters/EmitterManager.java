@@ -28,14 +28,7 @@ public class EmitterManager
 
 	public void launchTickTask()
 	{
-		task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				doTick();
-			}
-		}, 1, 1);
+		task = Bukkit.getScheduler().runTaskTimer(plugin, this::doTick, 1, 1);
 	}
 
 	public void stopTickTask()
