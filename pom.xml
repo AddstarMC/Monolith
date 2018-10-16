@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.addstar</groupId>
   <artifactId>Monolith</artifactId>
-  <version>1.5.0-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
   <name>Monolith</name>
   <description>A utility plugin for Spigot - ${spigot.version}</description>
   <properties>
@@ -11,7 +11,7 @@
     <!-- so as to allow local declaration when building locally-->
     <buildnumber />
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spigot.version>1.13-R0.1-SNAPSHOT</spigot.version>
+    <spigot.version>1.13.1-R0.1-SNAPSHOT</spigot.version>
   </properties>
   <scm>
     <connection>scm:git:git@github.com:AddstarMC/Monolith.git</connection>

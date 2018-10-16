@@ -6,15 +6,15 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.google.common.collect.Sets;
 
 import au.com.addstar.monolith.Monolith;
-import net.minecraft.server.v1_13_R1.PacketPlayOutTitle;
-import net.minecraft.server.v1_13_R1.PacketPlayOutTitle.EnumTitleAction;
-import net.minecraft.server.v1_13_R1.PlayerConnection;
+import net.minecraft.server.v1_13_R2.PacketPlayOutTitle;
+import net.minecraft.server.v1_13_R2.PacketPlayOutTitle.EnumTitleAction;
+import net.minecraft.server.v1_13_R2.PlayerConnection;
 
 public class Title
 {

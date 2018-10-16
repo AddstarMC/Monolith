@@ -2,7 +2,7 @@ package au.com.addstar.monolith;
 
 import java.util.HashMap;
 
-import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import au.com.addstar.monolith.chat.ChatMessage;
 import au.com.addstar.monolith.chat.ChatMessageType;

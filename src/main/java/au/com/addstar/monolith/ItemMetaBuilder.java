@@ -4,12 +4,8 @@ import au.com.addstar.monolith.lookup.Lookup;
 import au.com.addstar.monolith.util.nbtapi.NBTCompound;
 import au.com.addstar.monolith.util.nbtapi.NBTContainer;
 import au.com.addstar.monolith.util.nbtapi.NBTItem;
-import au.com.addstar.monolith.util.nbtapi.NBTReflectionUtil;
 import org.apache.commons.lang.Validate;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.FireworkEffect;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
@@ -53,7 +49,6 @@ public class ItemMetaBuilder
 		if(decodeSkull(name, value))return;
 		if(decodeStoredEnchants(name, value))return;
 		if(decodeEnchants(name, value))return;
-		if(decodeSpawnEgg(name,value))return;
 		if(decodeNBTString(name,value))return;
 		throw new IllegalArgumentException("Unknown meta id: " + name);
 	}
@@ -486,32 +481,5 @@ public class ItemMetaBuilder
      * @param content
      * @return boolean if is a spawnEgg
      */
-	private boolean decodeSpawnEgg(String name, String content){
-		if(mMeta instanceof SpawnEggMeta){
-
-			SpawnEggMeta smeta = (SpawnEggMeta)mMeta;
-			switch (StringUtils.lowerCase(name)){
-				case "spawneggmeta":
-					if (item.getData() != null) {
-						Byte data = item.getData().getData();
-						if (data != null) {
-							EntityType type = EntityType.fromId(data);
-							if (type != null) {
-								smeta.setSpawnedType(type);
-							}
-						}
-					}
-				case "entitytype":
-					EntityDefinition edef = Lookup.findEntityByName(content);
-					if (edef != null)
-						smeta.setSpawnedType(edef.getType());
-					return true;
-				default:
-					break;
-			}
-			return true;
-		}else{
-            return false;
-        }
-	}
+	
 }

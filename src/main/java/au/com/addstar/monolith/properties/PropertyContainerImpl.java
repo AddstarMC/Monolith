@@ -8,9 +8,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 
-import net.minecraft.server.v1_13_R1.NBTBase;
-import net.minecraft.server.v1_13_R1.NBTTagCompound;
-import net.minecraft.server.v1_13_R1.NBTTagList;
+import net.minecraft.server.v1_13_R2.NBTBase;
+import net.minecraft.server.v1_13_R2.NBTTagCompound;
+import net.minecraft.server.v1_13_R2.NBTTagList;
 
 public class PropertyContainerImpl implements PropertyContainer
 {
