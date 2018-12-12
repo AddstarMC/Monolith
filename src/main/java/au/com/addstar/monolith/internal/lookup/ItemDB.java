@@ -8,11 +8,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.Material;
 
 
 import com.google.common.collect.HashMultimap;
+
+import au.com.addstar.monolith.Monolith;
 
 public class ItemDB
 {
@@ -44,14 +47,13 @@ public class ItemDB
 		}
 	}
 	
-	@SuppressWarnings( "deprecation" )
 	public void load(InputStream stream) throws IOException
 	{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		
 		mNameMap.clear();
 		mIdMap.clear();
-		
+		int count  = 0;
 		while(reader.ready())
 		{
 			String line = reader.readLine();
@@ -67,6 +69,8 @@ public class ItemDB
 				continue;
 			mNameMap.put(name.toLowerCase(), material);
 			mIdMap.put(material, name);
+			count++;
 		}
+		Monolith.getInstance().getLogger().log(Level.INFO,"ItemDB added " +count+ " search items" );
 	}
 }
