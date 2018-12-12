@@ -13,7 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.google.common.collect.HashMultimap;
 
-public class PotionsDB
+public class PotionsDB extends FlatDb<PotionEffectType>
 {
 	private HashMap<String, PotionEffectType> mNameMap;
 	private HashMultimap<PotionEffectType, String> mIdMap;
@@ -33,39 +33,15 @@ public class PotionsDB
 	{
 		return mIdMap.get(item);
 	}
-	
-	public void load(File file) throws IOException
-	{
-		
-		try (FileInputStream stream = new FileInputStream(file)) {
-			load(stream);
-		}
+
+	@Override
+	PotionEffectType getObject(String... string) {
+		return PotionEffectType.getByName(string[0]);
 	}
-	
-	public void load(InputStream stream) throws IOException
-	{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		
-		mNameMap.clear();
-		mIdMap.clear();
-		
-		while(reader.ready())
-		{
-			String line = reader.readLine();
-			if(line.startsWith("#"))
-				continue;
-			
-			String[] parts = line.split(",");
-			if(parts.length != 2)
-				continue;
-			
-			String name = parts[0];
-			PotionEffectType enchant = PotionEffectType.getByName(parts[1]);
-			if(enchant == null)
-				continue;
-			
-			mNameMap.put(name.toLowerCase(), enchant);
-			mIdMap.put(enchant, name);
-		}
+
+	@Override
+	void saveObject(String string, PotionEffectType object) {
+		mNameMap.put(string.toLowerCase(), object);
+		mIdMap.put(object, string);
 	}
 }

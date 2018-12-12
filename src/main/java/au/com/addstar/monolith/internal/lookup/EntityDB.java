@@ -15,7 +15,7 @@ import au.com.addstar.monolith.lookup.EntityDefinition;
 
 import com.google.common.collect.HashMultimap;
 
-public class EntityDB
+public class EntityDB extends FlatDb<EntityDefinition>
 {
 	private HashMap<String, EntityDefinition> mNameMap;
 	private HashMultimap<EntityDefinition, String> mIdMap;
@@ -35,41 +35,21 @@ public class EntityDB
 	{
 		return mIdMap.get(item);
 	}
-	
-	public void load(File file) throws IOException
-	{
-		
-		try (FileInputStream stream = new FileInputStream(file)) {
-			load(stream);
-		}
+
+	@Override
+	EntityDefinition getObject(String... string) {
+		EntityType type = EntityType.valueOf(string[0].toUpperCase());
+		String subType = null;
+		if (string.length == 2)
+			subType = string[1].toUpperCase();
+
+		EntityDefinition def = new EntityDefinition(type, subType);
+		return def;
 	}
-	
-	public void load(InputStream stream) throws IOException
-	{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		
-		mNameMap.clear();
-		mIdMap.clear();
-		
-		while(reader.ready())
-		{
-			String line = reader.readLine();
-			if(line.startsWith("#"))
-				continue;
-			
-			String[] parts = line.split(",");
-			if(parts.length != 2 && parts.length != 3)
-				continue;
-			
-			String name = parts[0];
-			EntityType type = EntityType.valueOf(parts[1].toUpperCase());
-			String subType = null;
-			if (parts.length == 3)
-				subType = parts[2].toUpperCase();
-			
-			EntityDefinition def = new EntityDefinition(type, subType);
-			mNameMap.put(name.toLowerCase(), def);
-			mIdMap.put(def, name);
-		}
+
+	@Override
+	void saveObject(String string, EntityDefinition object) {
+		mNameMap.put(string.toLowerCase(), object);
+		mIdMap.put(object, string);
 	}
 }

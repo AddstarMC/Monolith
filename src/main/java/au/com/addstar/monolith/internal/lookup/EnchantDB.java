@@ -1,11 +1,7 @@
 package au.com.addstar.monolith.internal.lookup;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -15,7 +11,7 @@ import org.bukkit.enchantments.Enchantment;
 
 import com.google.common.collect.HashMultimap;
 
-public class EnchantDB
+public class EnchantDB extends FlatDb<Enchantment>
 {
 	private HashMap<String, Enchantment> mNameMap;
 	private HashMultimap<Enchantment, String> mEnchantMap;
@@ -35,55 +31,37 @@ public class EnchantDB
 	{
 		return mEnchantMap.get(item);
 	}
-	
-	public void load(File file) throws IOException
-	{
-		
-		try (FileInputStream stream = new FileInputStream(file)) {
-			load(stream);
-		}
-	}
-	
+
 	public void load(InputStream stream) throws IOException
 	{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		
-		mNameMap.clear();
-		mEnchantMap.clear();
-		
-		while(reader.ready())
-		{
-			String line = reader.readLine();
-			if(line.startsWith("#"))
-				continue;
-			
-			String[] parts = line.split(",");
-			if(parts.length != 2)
-				continue;
-			
-			String name = parts[0];
-			String key = StringUtils.trim(parts[1]).toLowerCase();
-			String[] keyparts = key.split(":");
-			NamespacedKey namekey;
-			if (keyparts.length == 2){
-				 namekey = new NamespacedKey(keyparts[0],keyparts[1]);
-			}else{
-				namekey = NamespacedKey.minecraft(keyparts[0]);
-			}
-			
-			Enchantment enchant = Enchantment.getByKey(namekey);
-			if(enchant == null)
-				continue;
-			
-			mNameMap.put(name.toLowerCase(), enchant);
-			mEnchantMap.put(enchant, name);
-		}
+		super.load(stream);
 		for(Enchantment enchant: Enchantment.values()){
-			String name = enchant.getName();
+			String name = enchant.getKey().getKey();
 			mNameMap.put(name,enchant);
 			if(!mEnchantMap.containsValue(name)) {
 				mEnchantMap.put(enchant, name);
 			}
 		}
+	}
+
+	@Override
+	Enchantment getObject(String... string) {
+		String key = StringUtils.trim(string[0]).toLowerCase();
+		String[] keyparts = key.split(":");
+		NamespacedKey namekey;
+		if (keyparts.length == 2){
+			namekey = new NamespacedKey(keyparts[0],keyparts[1]);
+		}else{
+			namekey = NamespacedKey.minecraft(keyparts[0]);
+		}
+
+		Enchantment enchant = Enchantment.getByKey(namekey);
+		return enchant;
+	}
+
+	@Override
+	void saveObject(String string, Enchantment object) {
+		mNameMap.put(string.toLowerCase(), object);
+		mEnchantMap.put(object, string);
 	}
 }
