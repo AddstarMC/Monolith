@@ -5567,10 +5567,10 @@ sealedbook,written_book
 diary,written_book
 ownedbook,written_book
 Emerald,emerald
-Itemframe,emerald
-pictureframe,emerald
-iframe,emerald
-pframe,emerald
+Itemframe,item_frame
+pictureframe,item_frame
+iframe,item_frame
+pframe,item_frame
 Flowerpot,flower_pot
 pot,flower_pot
 carrot,carrot
