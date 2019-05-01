@@ -6,6 +6,10 @@ package au.com.addstar.monolith.chat;
  * System appears just like normal chat, but players can choose to show this while hiding standard chat.
  * ActionBar shows the message above their hotbar.
  */
+/**
+ * @Deprecated use BukkitPlayer#spigot()
+ */
+@Deprecated
 public enum ChatMessageType
 {
 	Standard,

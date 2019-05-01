@@ -564,7 +564,7 @@ public class PotionUtil {
                 if (type.equals(PotionType.AWKWARD)) {
                     type = PotionType.NIGHT_VISION;
                 }
-            } else if (ingredient.getType().equals(Material.SALMON) && ingredient.getDurability() == 3) {
+            } else if (ingredient.getType().equals(Material.PUFFERFISH)) {
                 if (type.equals(PotionType.AWKWARD)) {
                     type = PotionType.WATER_BREATHING;
                 }

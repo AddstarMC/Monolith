@@ -51,12 +51,11 @@ public class EntityDefinition
 	{
 		switch (mType)
 		{
-		case COMPLEX_PART:
 		case UNKNOWN:
 		case PLAYER:
-		case WEATHER:
 		case FISHING_HOOK:
 		case SPLASH_POTION:
+		case DROPPED_ITEM:
 			return false;
 		default:
 			return true;

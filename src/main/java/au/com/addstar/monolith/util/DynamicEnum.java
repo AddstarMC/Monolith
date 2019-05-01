@@ -5,7 +5,7 @@ import java.lang.reflect.Modifier;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang.Validate;
 
 import com.google.common.collect.HashBiMap;
 

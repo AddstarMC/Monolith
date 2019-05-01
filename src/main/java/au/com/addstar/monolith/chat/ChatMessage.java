@@ -1,16 +1,14 @@
 package au.com.addstar.monolith.chat;
 
 import net.minecraft.server.v1_13_R2.ChatClickable;
-import net.minecraft.server.v1_13_R2.ChatClickable.EnumClickAction;
 import net.minecraft.server.v1_13_R2.ChatComponentText;
 import net.minecraft.server.v1_13_R2.ChatHoverable;
-import net.minecraft.server.v1_13_R2.ChatHoverable.EnumHoverAction;
+import net.minecraft.server.v1_13_R2.ChatMessageType;
 import net.minecraft.server.v1_13_R2.ChatModifier;
 import net.minecraft.server.v1_13_R2.EnumChatFormat;
 import net.minecraft.server.v1_13_R2.IChatBaseComponent;
 import net.minecraft.server.v1_13_R2.NBTTagCompound;
 import net.minecraft.server.v1_13_R2.PacketPlayOutChat;
-import net.minecraft.server.v1_13_R2.ChatMessageType;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,6 +26,10 @@ import org.bukkit.inventory.ItemStack;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
+/**
+ * @Deprecated use BukkitPlayer#spigot()
+ */
+@Deprecated
 public class ChatMessage
 {
 	// TODO: Incorporate new features from http://wiki.vg/Chat
@@ -188,13 +190,13 @@ public class ChatMessage
 
 	public ChatMessage click( String url )
 	{
-		mCurrentModifier.setChatClickable(new ChatClickable(EnumClickAction.OPEN_URL, url));
+		mCurrentModifier.setChatClickable(new ChatClickable(ChatClickable.EnumClickAction.OPEN_URL, url));
 		return this;
 	}
 
 	public ChatMessage click( String command, boolean suggest )
 	{
-		mCurrentModifier.setChatClickable(new ChatClickable((suggest ? EnumClickAction.SUGGEST_COMMAND : EnumClickAction.RUN_COMMAND), command));
+		mCurrentModifier.setChatClickable(new ChatClickable((suggest ? ChatClickable.EnumClickAction.SUGGEST_COMMAND : ChatClickable.EnumClickAction.RUN_COMMAND), command));
 		return this;
 	}
 
@@ -206,7 +208,7 @@ public class ChatMessage
 
 	public ChatMessage hover( String text )
 	{
-		mCurrentModifier.setChatHoverable(new ChatHoverable(EnumHoverAction.SHOW_TEXT, Parser.fromStringBasic(text)));
+		mCurrentModifier.setChatHoverable(new ChatHoverable(ChatHoverable.EnumHoverAction.SHOW_TEXT, Parser.fromStringBasic(text)));
 		return this;
 	}
 
@@ -216,7 +218,7 @@ public class ChatMessage
 		Validate.notNull(nmsItem, "The item " + item.toString() + " cannot be used in a chat hover");
 		NBTTagCompound tag = new NBTTagCompound();
         nmsItem.save(tag);
-        mCurrentModifier.setChatHoverable(new ChatHoverable(EnumHoverAction.SHOW_ITEM, new ChatComponentText(tag.toString())));
+        mCurrentModifier.setChatHoverable(new ChatHoverable(ChatHoverable.EnumHoverAction.SHOW_ITEM, new ChatComponentText(tag.toString())));
 		return this;
 	}
 

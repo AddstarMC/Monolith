@@ -4,11 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.server.v1_13_R2.AxisAlignedBB;
-import net.minecraft.server.v1_13_R2.BlockPosition;
-import net.minecraft.server.v1_13_R2.MovingObjectPosition;
-import net.minecraft.server.v1_13_R2.Vec3D;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,6 +25,7 @@ import net.minecraft.server.v1_13_R2.BlockPosition;
 import net.minecraft.server.v1_13_R2.MovingObjectPosition;
 import net.minecraft.server.v1_13_R2.Vec3D;
 
+@Deprecated
 public class Raytrace
 {
 	private boolean mHitAir;
