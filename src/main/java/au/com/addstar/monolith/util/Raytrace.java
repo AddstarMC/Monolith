@@ -25,6 +25,11 @@ import com.google.common.collect.Sets;
 import au.com.addstar.monolith.BoundingBox;
 import au.com.addstar.monolith.lookup.EntityDefinition;
 
+import net.minecraft.server.v1_13_R2.AxisAlignedBB;
+import net.minecraft.server.v1_13_R2.BlockPosition;
+import net.minecraft.server.v1_13_R2.MovingObjectPosition;
+import net.minecraft.server.v1_13_R2.Vec3D;
+
 public class Raytrace
 {
 	private boolean mHitAir;

@@ -16,6 +16,8 @@ import com.google.common.collect.Lists;
 
 import au.com.addstar.monolith.BoundingBox;
 
+import net.minecraft.server.v1_13_R2.AxisAlignedBB;
+
 public class EntityUtil
 {
 	public static BoundingBox getBoundingBox(Entity entity)

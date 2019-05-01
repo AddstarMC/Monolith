@@ -13,6 +13,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import com.google.common.collect.Lists;
 
 import au.com.addstar.monolith.util.Attributes;
+import net.minecraft.server.v1_13_R2.NBTBase;
 import net.minecraft.server.v1_13_R2.NBTTagCompound;
 import net.minecraft.server.v1_13_R2.NBTTagList;
 
