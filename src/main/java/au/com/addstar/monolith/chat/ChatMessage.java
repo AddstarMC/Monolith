@@ -27,7 +27,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 /**
- * @Deprecated use BukkitPlayer#spigot()
+ * @deprecated use BukkitPlayer#spigot()
  */
 @Deprecated
 public class ChatMessage
@@ -267,7 +267,7 @@ public class ChatMessage
 	
 	IChatBaseComponent[] toComponents()
 	{
-		return mComponents.toArray(new IChatBaseComponent[mComponents.size()]);
+		return mComponents.toArray(new IChatBaseComponent[0]);
 	}
 	
 	private String[] toPlain()

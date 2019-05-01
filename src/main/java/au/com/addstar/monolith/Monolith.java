@@ -58,8 +58,8 @@ public class Monolith extends JavaPlugin
 
 	/**
 	 *
-	 * @param message
-	 * @Deprecated use {@link Monolith#broadcastMessage(BaseComponent[])}
+	 * @param message the message to broadcast
+	 * @deprecated use {@link Monolith#broadcastMessage(BaseComponent[])}
 	 */
 	@Deprecated
 	public static void broadcastMessage(ChatMessage message)
@@ -72,9 +72,9 @@ public class Monolith extends JavaPlugin
 	}
 	/**
 	 *
-	 * @param message
-	 * @param permission
-	 * @Deprecated use {@link Monolith#broadcast(BaseComponent[], String)}
+	 * @param message the message
+	 * @param permission the perm
+	 * @deprecated use {@link Monolith#broadcast(BaseComponent[], String)}
 	 */
 	@Deprecated
 	public static void broadcast(ChatMessage message, String permission)
@@ -86,6 +86,11 @@ public class Monolith extends JavaPlugin
 		}
 	}
 
+	/**
+	 *
+	 * @param message the message
+	 * @param permission the permission
+	 */
 	public static void broadcast(BaseComponent[] message, String permission){
 		for(Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission))
 		{

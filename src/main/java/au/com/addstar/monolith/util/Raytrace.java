@@ -303,8 +303,9 @@ public class Raytrace
 				Collections.sort(hits);
 				
 				// Trim to size
-				for (int i = hits.size() - 1; i >= maxHits; --i)
-					hits.remove(i);
+				if (hits.size() > maxHits) {
+					hits.subList(maxHits, hits.size()).clear();
+				}
 				return hits;
 			}
 		}

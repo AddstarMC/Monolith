@@ -1,8 +1,8 @@
 package au.com.addstar.monolith.util;
 
-/**
- * Created for use for the Add5tar MC Minecraft server
- * Created by benjamincharlton on 27/11/2016.
+/*
+  Created for use for the Add5tar MC Minecraft server
+  Created by benjamincharlton on 27/11/2016.
  */
 
 
@@ -79,11 +79,11 @@ public class PotionUtil {
     /**
      * This constructs an instance of PotionInfo.
      *
-     * @param type
-     * @param strong
-     * @param extended
-     * @param linger
-     * @param splash
+     * @param type PotionType
+     * @param strong boolean
+     * @param extended is exteneded
+     * @param linger will linger
+     * @param splash is splash
      */
     public PotionUtil(PotionType type, boolean strong, boolean extended, boolean linger, boolean splash) {
         this.type = type;
@@ -153,7 +153,7 @@ public class PotionUtil {
      * This converts PotionInfo to an ItemStack
      * NOTICE: This does not allow a way to change the level of the potion. This will work for only default minecraft potions.
      *
-     * @param amount
+     * @param amount how many
      * @return ItemStack of a potion. NULL if it fails.
      */
     public ItemStack toItemStack(int amount) {
@@ -245,7 +245,7 @@ public class PotionUtil {
      * This lets you get the potion type, if the potion is strong, if the potion is long,
      * if the potion is lingering, and if the potion is a splash potion.
      *
-     * @param item
+     * @param item create from this stack
      * @return PotionInfo. If it fails to parse, or the item argument is not a valid potion this will return null.
      */
     public static PotionUtil fromItemStack(ItemStack item) {
@@ -375,7 +375,7 @@ public class PotionUtil {
     /**
      * Sets the PotionType for this PotionInfo
      *
-     * @param type
+     * @param type type
      */
     public void setType(PotionType type) {
         this.type = type;
@@ -393,7 +393,7 @@ public class PotionUtil {
     /**
      * This sets if the PotionInfo is strong.
      *
-     * @param strong
+     * @param strong is strong
      */
     public void setStrong(boolean strong) {
         this.strong = strong;
@@ -429,7 +429,7 @@ public class PotionUtil {
     /**
      * Set linger to true or false.
      *
-     * @param linger
+     * @param linger will linger
      */
     public void setLinger(boolean linger) {
         this.linger = linger;
@@ -447,7 +447,7 @@ public class PotionUtil {
     /**
      * This sets this PotionInfo to a splash potion.
      *
-     * @param splash
+     * @param splash is splash
      */
     public void setSplash(boolean splash) {
         this.splash = splash;
@@ -468,7 +468,7 @@ public class PotionUtil {
     /**
      * This will make this instance of PotionInfo act as if it was brewed with an ingredient.
      *
-     * @param ingredient
+     * @param ingredient brew from this ingredient
      */
     public void brew(ItemStack ingredient) {
         if (ingredient != null) {
