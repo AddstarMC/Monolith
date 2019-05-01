@@ -1,6 +1,6 @@
 package au.com.addstar.monolith.template;
 
-import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang.Validate;
 
 public abstract class TemplateSetting<HolderType, Holder, V>
 {

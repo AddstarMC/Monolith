@@ -5,10 +5,11 @@ package au.com.addstar.monolith.util;
  * Created by benjamincharlton on 27/11/2016.
  */
 
-import net.minecraft.server.v1_13_R2.NBTTagCompound;
+
+import net.minecraft.server.v1_14_R1.NBTTagCompound;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -162,7 +163,7 @@ public class PotionUtil {
         } else if (linger) {
             item = new ItemStack(Material.LINGERING_POTION, amount);
         }
-        net.minecraft.server.v1_13_R2.ItemStack stack = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_14_R1.ItemStack stack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound tagCompound = stack.getTag();
         if (tagCompound == null) {
             tagCompound = new NBTTagCompound();
@@ -257,7 +258,7 @@ public class PotionUtil {
                 item.getType() != Material.LINGERING_POTION) {
             throw new IllegalArgumentException("item is not a potion");
         }
-        net.minecraft.server.v1_13_R2.ItemStack stack = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_14_R1.ItemStack stack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound tagCompound = stack.getTag();
         if (tagCompound != null && !tagCompound.getString("Potion").isEmpty()) {
 
@@ -563,7 +564,7 @@ public class PotionUtil {
                 if (type.equals(PotionType.AWKWARD)) {
                     type = PotionType.NIGHT_VISION;
                 }
-            } else if (ingredient.getType().equals(Material.SALMON) && ingredient.getDurability() == 3) {
+            } else if (ingredient.getType().equals(Material.PUFFERFISH)) {
                 if (type.equals(PotionType.AWKWARD)) {
                     type = PotionType.WATER_BREATHING;
                 }

@@ -4,12 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.server.v1_13_R2.AxisAlignedBB;
-import net.minecraft.server.v1_13_R2.BlockPosition;
-import net.minecraft.server.v1_13_R2.MovingObjectPosition;
-import net.minecraft.server.v1_13_R2.Vec3D;
-
 import org.apache.commons.lang.Validate;
+import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,6 +13,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.BlockVector;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import com.google.common.collect.Lists;
@@ -25,6 +22,7 @@ import com.google.common.collect.Sets;
 import au.com.addstar.monolith.BoundingBox;
 import au.com.addstar.monolith.lookup.EntityDefinition;
 
+@Deprecated
 public class Raytrace
 {
 	private boolean mHitAir;
@@ -362,7 +360,7 @@ public class Raytrace
 		{
 			Block block = start.getWorld().getBlockAt(current.getBlockX(), current.getBlockY(), current.getBlockZ());
 			
-			Hit hit = tryHitBlock(block, start, end);
+			Hit hit = tryHitBlock(block, start, end,maxDistance);
 			if (hit != null)
 			{
 				hits.add(hit);
@@ -402,56 +400,21 @@ public class Raytrace
 		return hits;
 	}
 
-	private Hit tryHitBlock(Block block, Location start, Vector end)
+	private Hit tryHitBlock(Block block, Location start, Vector end, Double distance)
 	{
-		if (block.getType() == Material.AIR)
+		if (block.getType() == Material.AIR || !canHitBlock(block))
 			return null;
-		
-		// Check that we are allowed to hit this type
-		if (!canHitBlock(block))
+		RayTraceResult result;
+		if(mIncludeBlocks.contains(Material.WATER))
+			 result = block.rayTrace(start,end,distance,FluidCollisionMode.ALWAYS);
+		else
+			result = block.rayTrace(start,end,distance,FluidCollisionMode.NEVER);
+		if(result !=null) {
+			Hit hit = new Hit(result.getHitBlock().getLocation(), result.getHitBlock(), result.getHitBlockFace(), result.getHitPosition().distance(start.toVector()));
+			return hit;
+		} else
 			return null;
-		
-		// We are allowed to hit this type, begin
-		BlockPosition pos = new BlockPosition(block.getX(), block.getY(), block.getZ());
-		// Expand the search area around the block to ensure that it passes completely through the block
-		Vec3D srcVec = new Vec3D(start.getX(), start.getY(), start.getZ());
-		Vec3D dstVec = new Vec3D(end.getX(), end.getY(), end.getZ());
-		AxisAlignedBB bb = new AxisAlignedBB(pos);
-		// Do the trace
-		MovingObjectPosition hitPos = bb.b(srcVec, dstVec);
-		if (hitPos == null)
-			return null;
-		
-		// Translate the hit face
-		BlockFace hitFace;
-		switch (hitPos.direction)
-		{
-		case DOWN:
-			hitFace = BlockFace.DOWN;
-			break;
-		case EAST:
-			hitFace = BlockFace.EAST;
-			break;
-		case NORTH:
-			hitFace = BlockFace.NORTH;
-			break;
-		case SOUTH:
-			hitFace = BlockFace.SOUTH;
-			break;
-		case UP:
-			hitFace = BlockFace.UP;
-			break;
-		case WEST:
-			hitFace = BlockFace.WEST;
-			break;
-		default:
-			hitFace = BlockFace.SELF;
-			break;
-		}
-		
-		// Find the exact hit location
-		Location translatedPos = new Location(block.getWorld(), hitPos.pos.x, hitPos.pos.y, hitPos.pos.z);
-		return new Hit(translatedPos, block, hitFace, translatedPos.distance(start));
+
 	}
 	
 	private List<Hit> traceEntities(Location start, Vector end, int maxHits)

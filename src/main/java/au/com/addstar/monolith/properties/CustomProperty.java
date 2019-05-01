@@ -10,16 +10,16 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraft.server.v1_13_R2.NBTBase;
-import net.minecraft.server.v1_13_R2.NBTTagByte;
-import net.minecraft.server.v1_13_R2.NBTTagCompound;
-import net.minecraft.server.v1_13_R2.NBTTagDouble;
-import net.minecraft.server.v1_13_R2.NBTTagFloat;
-import net.minecraft.server.v1_13_R2.NBTTagInt;
-import net.minecraft.server.v1_13_R2.NBTTagList;
-import net.minecraft.server.v1_13_R2.NBTTagLong;
-import net.minecraft.server.v1_13_R2.NBTTagShort;
-import net.minecraft.server.v1_13_R2.NBTTagString;
+import net.minecraft.server.v1_14_R1.NBTBase;
+import net.minecraft.server.v1_14_R1.NBTTagByte;
+import net.minecraft.server.v1_14_R1.NBTTagCompound;
+import net.minecraft.server.v1_14_R1.NBTTagDouble;
+import net.minecraft.server.v1_14_R1.NBTTagFloat;
+import net.minecraft.server.v1_14_R1.NBTTagInt;
+import net.minecraft.server.v1_14_R1.NBTTagList;
+import net.minecraft.server.v1_14_R1.NBTTagLong;
+import net.minecraft.server.v1_14_R1.NBTTagShort;
+import net.minecraft.server.v1_14_R1.NBTTagString;
 
 /**
  * Represents a property that holds any object that implements the
@@ -166,7 +166,7 @@ public class CustomProperty extends PropertyBase<ConfigurationSerializable>
 		
 		for (int i = 0; i < tag.size(); ++i)
 		{
-			values.add(fromNBT(tag.c(i)));
+			values.add(fromNBT(tag.b(i)));
 		}
 		
 		return values;
@@ -177,19 +177,19 @@ public class CustomProperty extends PropertyBase<ConfigurationSerializable>
 		if (tag instanceof NBTTagCompound)
 			return fromNBTCompound((NBTTagCompound)tag);
 		else if (tag instanceof NBTTagByte)
-			return ((NBTTagByte)tag).g();
+			return ((NBTTagByte)tag).asByte();
 		else if (tag instanceof NBTTagShort)
-			return ((NBTTagShort)tag).f();
+			return ((NBTTagShort)tag).asShort();
 		else if (tag instanceof NBTTagInt)
-			return ((NBTTagInt)tag).e();
+			return ((NBTTagInt)tag).asInt();
 		else if (tag instanceof NBTTagLong)
-			return ((NBTTagLong)tag).d();
+			return ((NBTTagLong)tag).asLong();
 		else if (tag instanceof NBTTagFloat)
-			return ((NBTTagFloat)tag).i();
+			return ((NBTTagFloat)tag).asFloat();
 		else if (tag instanceof NBTTagDouble)
             return ((NBTTagDouble) tag).asDouble();
         else if (tag instanceof NBTTagString)
-			return tag.b_();
+			return tag.asString();
 		else if (tag instanceof NBTTagList)
 			return fromNBTList((NBTTagList)tag);
 		else

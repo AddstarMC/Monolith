@@ -1,15 +1,15 @@
 package au.com.addstar.monolith;
 
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
-import net.minecraft.server.v1_13_R2.BlockPosition;
-import net.minecraft.server.v1_13_R2.IBlockData;
+import net.minecraft.server.v1_14_R1.BlockPosition;
+import net.minecraft.server.v1_14_R1.IBlockData;
 
 public class StringTranslator
 {
@@ -17,7 +17,7 @@ public class StringTranslator
 	
 	public static String getName(ItemStack item)
 	{
-		net.minecraft.server.v1_13_R2.ItemStack base = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_14_R1.ItemStack base = CraftItemStack.asNMSCopy(item);
 		if(base != null && base.getItem() != null)
 			return base.getName().getText();
 		return "Unknown";
@@ -25,7 +25,7 @@ public class StringTranslator
 	
 	public static String getName(Entity entity)
 	{
-		net.minecraft.server.v1_13_R2.Entity base = ((CraftEntity) entity).getHandle();
+		net.minecraft.server.v1_14_R1.Entity base = ((CraftEntity) entity).getHandle();
 		return base.getName();
 	}
 
@@ -38,6 +38,6 @@ public class StringTranslator
 	{
 		BlockPosition pos = new BlockPosition(block.getX(), block.getY(), block.getZ());
 		IBlockData type = ((CraftWorld)block.getWorld()).getHandle().getType(pos);
-		return type.getBlock().m();
+		return type.getBlock().l();
 	}
 }

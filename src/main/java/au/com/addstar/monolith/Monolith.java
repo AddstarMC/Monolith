@@ -15,6 +15,8 @@ import au.com.addstar.monolith.chat.ChatMessage;
 import au.com.addstar.monolith.internal.GeSuitHandler;
 import au.com.addstar.monolith.lookup.Lookup;
 
+import net.md_5.bungee.api.chat.BaseComponent;
+
 public class Monolith extends JavaPlugin
 {
 	private static Monolith mInstance;
@@ -54,17 +56,41 @@ public class Monolith extends JavaPlugin
 		}
 	}
 
+	/**
+	 *
+	 * @param message
+	 * @Deprecated use {@link Monolith#broadcastMessage(BaseComponent[])}
+	 */
+	@Deprecated
 	public static void broadcastMessage(ChatMessage message)
 	{
 		broadcast(message, Server.BROADCAST_CHANNEL_USERS);
 	}
-	
+
+	public static void broadcastMessage(BaseComponent[] message){
+		broadcast(message,Server.BROADCAST_CHANNEL_USERS);
+	}
+	/**
+	 *
+	 * @param message
+	 * @param permission
+	 * @Deprecated use {@link Monolith#broadcast(BaseComponent[], String)}
+	 */
+	@Deprecated
 	public static void broadcast(ChatMessage message, String permission)
 	{
 		for(Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission))
 		{
 			if(perm instanceof CommandSender && perm.hasPermission(permission))
 				message.send((CommandSender)perm);
+		}
+	}
+
+	public static void broadcast(BaseComponent[] message, String permission){
+		for(Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission))
+		{
+			if(perm instanceof CommandSender && perm.hasPermission(permission))
+				((CommandSender) perm).spigot().sendMessage(message);
 		}
 	}
 

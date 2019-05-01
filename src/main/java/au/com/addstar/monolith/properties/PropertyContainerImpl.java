@@ -5,27 +5,26 @@ import java.util.UUID;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 
-import net.minecraft.server.v1_13_R2.NBTBase;
-import net.minecraft.server.v1_13_R2.NBTTagCompound;
-import net.minecraft.server.v1_13_R2.NBTTagList;
+import net.minecraft.server.v1_14_R1.NBTBase;
+import net.minecraft.server.v1_14_R1.NBTTagCompound;
+import net.minecraft.server.v1_14_R1.NBTTagList;
 
 public class PropertyContainerImpl implements PropertyContainer
 {
 	private NBTTagList root;
-	
+
 	public PropertyContainerImpl(NBTTagList root)
 	{
 		this.root = root;
 	}
-	
+
 	public NBTTagList getRoot()
 	{
 		return root;
 	}
-	
+
 	@Override
 	public PropertyBase<?> get(String name, UUID owner) throws PropertyClassException {
 		for (NBTBase aRoot : root) {
@@ -41,10 +40,10 @@ public class PropertyContainerImpl implements PropertyContainer
 						"tag");
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public String getString(String name, UUID owner) throws ClassCastException
 	{
@@ -56,7 +55,7 @@ public class PropertyContainerImpl implements PropertyContainer
 		else
 			throw new ClassCastException("Property type does not match");
 	}
-	
+
 	@Override
 	public Integer getInt(String name, UUID owner) throws ClassCastException
 	{
@@ -68,7 +67,7 @@ public class PropertyContainerImpl implements PropertyContainer
 		else
 			throw new ClassCastException("Property type does not match");
 	}
-	
+
 	@Override
 	public Double getFloat(String name, UUID owner) throws ClassCastException
 	{
@@ -80,7 +79,7 @@ public class PropertyContainerImpl implements PropertyContainer
 		else
 			throw new ClassCastException("Property type does not match");
 	}
-	
+
 	@Override
 	public ConfigurationSerializable getCustom(String name, UUID owner) throws ClassCastException
 	{
@@ -155,13 +154,13 @@ public class PropertyContainerImpl implements PropertyContainer
 	{
 		return PropertyIterator::new;
 	}
-	
+
 	@Override
 	public PropertyContainerImpl clone()
 	{
 		return new PropertyContainerImpl((NBTTagList)root.clone());
 	}
-	
+
 	private static PropertyBase<?> loadProperty(NBTTagCompound tag)
 	{
 		switch (tag.getByte("type"))
@@ -178,11 +177,11 @@ public class PropertyContainerImpl implements PropertyContainer
 			return null;
 		}
 	}
-	
+
 	private class PropertyIterator implements Iterator<PropertyBase<?>>
 	{
 		private int index = 0;
-		
+
 		@Override
 		public boolean hasNext()
 		{
@@ -202,7 +201,7 @@ public class PropertyContainerImpl implements PropertyContainer
                         " with properties");
             }
 		}
-		
+
 		@Override
 		public void remove()
 		{

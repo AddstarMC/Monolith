@@ -27,7 +27,8 @@ public class MonoWorld
 	{
 		mWorld = world;
 	}
-	
+
+	@Deprecated
 	public void showTitle(Title title)
 	{
 		title.show(mWorld.getPlayers());

@@ -1,11 +1,12 @@
 package au.com.addstar.monolith.properties;
 
+import net.minecraft.server.v1_14_R1.NBTTagCompound;
+
 import java.util.Objects;
 import java.util.UUID;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import net.minecraft.server.v1_13_R2.NBTTagCompound;
 
 /**
  * Properties are pieces of data that you can attach onto various objects.

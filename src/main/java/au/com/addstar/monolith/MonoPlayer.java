@@ -2,7 +2,6 @@ package au.com.addstar.monolith;
 
 import java.util.HashMap;
 
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import au.com.addstar.monolith.chat.ChatMessage;
 import au.com.addstar.monolith.chat.ChatMessageType;
@@ -41,19 +40,22 @@ public class MonoPlayer
 		return mPlayer.getLocale();
 	}
 	
-	
+	@Deprecated
 	public void sendMessage(ChatMessage... message)
 	{
 		for(ChatMessage m : message)
+
 			m.send(mPlayer);
 	}
-	
+
+	@Deprecated
 	public void sendMessage(ChatMessageType type, ChatMessage... message)
 	{
 		for(ChatMessage m : message)
 			m.send(mPlayer, type);
 	}
-	
+
+	@Deprecated
 	public void sendMessage(ChatMessageType type, String message)
 	{
 		ChatMessage.begin(message).send(mPlayer, type);
@@ -64,7 +66,8 @@ public class MonoPlayer
 	{
 		mPlayers.remove(mPlayer);
 	}
-	
+
+	@Deprecated
 	public void showTitle(Title title)
 	{
 		title.show(mPlayer);
