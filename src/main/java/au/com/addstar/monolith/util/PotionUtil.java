@@ -138,6 +138,7 @@ public class PotionUtil {
      * ItemStack must be a potion.
      *
      * @param to The itemstack to apply to
+     * @throws Exception if stack is null or not a potion
      */
     public void apply(ItemStack to) throws Exception {
         if (to == null) {
@@ -411,7 +412,7 @@ public class PotionUtil {
     /**
      * This changes the extended value for PotionInfo.
      *
-     * @param extended
+     * @param extended if extended
      */
     public void setHasExtendedDuration(boolean extended) {
         this.extended = extended;

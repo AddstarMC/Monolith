@@ -31,8 +31,8 @@ public class StringTranslator
 
 	/**
 	 * REturns the minecraft name of a block as per the interal registry
-	 * @param block
-	 * @return
+	 * @param block the block to test
+	 * @return the minecraft name of the block
 	 */
 	public static String getName(Block block)
 	{
