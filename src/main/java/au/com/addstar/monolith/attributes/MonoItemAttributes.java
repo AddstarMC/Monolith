@@ -88,8 +88,9 @@ public class MonoItemAttributes implements ItemAttributes
 	@Override
 	public void clearModifiers()
 	{
-		for (int i = 0; i < list.size(); ++i)
-			list.remove(0);
+        if (list.size() > 0) {
+            list.subList(0, list.size()).clear();
+        }
 	}
 
 	@Override

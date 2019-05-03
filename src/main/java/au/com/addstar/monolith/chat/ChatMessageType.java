@@ -7,7 +7,7 @@ package au.com.addstar.monolith.chat;
  * ActionBar shows the message above their hotbar.
  */
 /**
- * @Deprecated use BukkitPlayer#spigot()
+ * @deprecated use BukkitPlayer#spigot()
  */
 @Deprecated
 public enum ChatMessageType

@@ -474,12 +474,5 @@ public class ItemMetaBuilder
 		}
 		return false;
 	}
-    /**
-     * This method needs to be watched is it used magic values to determine an entityType
-     *
-     * @param name
-     * @param content
-     * @return boolean if is a spawnEgg
-     */
 	
 }
