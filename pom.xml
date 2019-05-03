@@ -11,7 +11,7 @@
     <!-- so as to allow local declaration when building locally-->
     <buildnumber />
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spigot.version>1.14-pre5-SNAPSHOT</spigot.version>
+    <spigot.version>1.14-R0.1-SNAPSHOT</spigot.version>
   </properties>
   <scm>
     <connection>scm:git:git@github.com:AddstarMC/Monolith.git</connection>
