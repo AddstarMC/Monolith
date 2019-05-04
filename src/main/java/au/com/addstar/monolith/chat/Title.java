@@ -16,7 +16,7 @@ import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle;
 import net.minecraft.server.v1_14_R1.PlayerConnection;
 /**
- * @Deprecated use PaperMC Title Api
+ * @deprecated use PaperMC Title Api
  */
 @Deprecated
 public class Title
