@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class PlayerDefinition

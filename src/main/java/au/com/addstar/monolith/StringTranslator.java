@@ -14,7 +14,7 @@ import net.minecraft.server.v1_14_R1.IBlockData;
 public class StringTranslator
 {
 
-	
+
 	public static String getName(ItemStack item)
 	{
 		net.minecraft.server.v1_14_R1.ItemStack base = CraftItemStack.asNMSCopy(item);
@@ -22,7 +22,7 @@ public class StringTranslator
 			return base.getName().getText();
 		return "Unknown";
 	}
-	
+
 	public static String getName(Entity entity)
 	{
 		net.minecraft.server.v1_14_R1.Entity base = ((CraftEntity) entity).getHandle();

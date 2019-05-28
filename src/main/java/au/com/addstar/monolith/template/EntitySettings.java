@@ -206,12 +206,11 @@ public final class EntitySettings
 						BlockData.class);
 		
 		public static final EntityTemplateSetting<Boolean> Zombie_Baby = create("baby", org.bukkit.entity.Zombie.class, "setBaby", Boolean.class);
-		public static final EntityTemplateSetting<Boolean> Zombie_Villager = create("villager", org.bukkit.entity.Zombie.class, "setVillager", Boolean.class);
-		public static final EntityTemplateSetting<Profession> Zombie_Villager_Profession = create("profession", org.bukkit.entity.Zombie.class, "setVillagerProfession", Profession.class);
+		public static final EntityTemplateSetting<Boolean> Zombie_Villager = create("villager", org.bukkit.entity.ZombieVillager.class, "setVillager", Boolean.class);
+		public static final EntityTemplateSetting<Profession> Zombie_Villager_Profession = create("profession", org.bukkit.entity.ZombieVillager.class, "setVillagerProfession", Profession.class);
 		
 		public static final EntityTemplateSetting<Profession> Villager_Profession = create("profession", org.bukkit.entity.Villager.class, "setProfession", Profession.class);
-		public static final EntityTemplateSetting<Integer> Villager_Riches = create("riches", org.bukkit.entity.Villager.class, "setRiches", Integer.class);
-		
+
 		public static final EntityTemplateSetting<Color> Horse_Color = create("color", Horse.class, "setColor", Color.class, "colour");
 		public static final EntityTemplateSetting<Integer> Horse_Domestication = create("domestication", Horse.class, "setDomestication", Integer.class);
 		public static final EntityTemplateSetting<Double> Horse_JumpStrength = create("jumpStrength", Horse.class, "setJumpStrength", Double.class);
@@ -242,7 +241,7 @@ public final class EntitySettings
 		public static final EntityTemplateSetting<Boolean> Bat_Awake = create("awake", Bat.class, "setAwake", Boolean.class);
 		
 		public static final EntityTemplateSetting<Boolean> Ocelot_Sitting = createWithDefault("sitting", Ocelot.class, "setSitting", Boolean.class, false);
-		public static final EntityTemplateSetting<Ocelot.Type> Ocelot_Type = create("type", Ocelot.class, "setCatType", Ocelot.Type.class);
+		public static final EntityTemplateSetting<Cat.Type> Cat_Type = create("type", Cat.class, "setCatType", Cat.Type.class);
 		
 		public static final EntityTemplateSetting<Rabbit.Type> Rabbit_Type = create("type", Rabbit.class, "setRabbitType", Rabbit.Type.class);
 		

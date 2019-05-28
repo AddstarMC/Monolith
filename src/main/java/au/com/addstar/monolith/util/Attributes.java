@@ -22,6 +22,8 @@ public class Attributes
 		ids.put(Attribute.GENERIC_MOVEMENT_SPEED, "generic.movementSpeed");
 		ids.put(Attribute.HORSE_JUMP_STRENGTH, "horse.jumpStrength");
 		ids.put(Attribute.ZOMBIE_SPAWN_REINFORCEMENTS, "zombie.spawnReinforcements");
+		ids.put(Attribute.GENERIC_FLYING_SPEED,"generic.flySpeed");
+		ids.put(Attribute.GENERIC_ARMOR_TOUGHNESS,"generic.armorToughness");
 	}
 	
 	public static Attribute fromId(String id)
