@@ -35,7 +35,7 @@ public class EntityDB extends FlatDb<EntityDefinition>
 	@Override
 	EntityDefinition getObject(String... string) {
 		try {
-			EntityType type = EntityType.valueOf(string[0].toUpperCase());
+			EntityType type = EntityType.valueOf(string[0].toUpperCase().trim());
 			String subType = null;
 			if (string.length == 2)
 				subType = string[1].toUpperCase();
