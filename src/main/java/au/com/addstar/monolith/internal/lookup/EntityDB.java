@@ -1,14 +1,10 @@
 package au.com.addstar.monolith.internal.lookup;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.EntityType;
 
 import au.com.addstar.monolith.lookup.EntityDefinition;
@@ -38,13 +34,19 @@ public class EntityDB extends FlatDb<EntityDefinition>
 
 	@Override
 	EntityDefinition getObject(String... string) {
-		EntityType type = EntityType.valueOf(string[0].toUpperCase());
-		String subType = null;
-		if (string.length == 2)
-			subType = string[1].toUpperCase();
+		try {
+			EntityType type = EntityType.valueOf(string[0].toUpperCase());
+			String subType = null;
+			if (string.length == 2)
+				subType = string[1].toUpperCase();
 
-		EntityDefinition def = new EntityDefinition(type, subType);
-		return def;
+			return new EntityDefinition(type, subType);
+		}
+		catch(IllegalArgumentException e){
+			Logger.getLogger(this.getClass().getCanonicalName()).warning(StringUtils.join(string,",")+" cannot be parsed to an entity");
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
