@@ -147,11 +147,19 @@
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.2.1</version>
         <configuration>
+            <artifactSet>
+                <excludes>
+                    <exclude>com.github.tr7zw.item-nbt-api:item-nbt-api-plugin</exclude>
+                    <exclude>com.github.tr7zw.item-nbt-api:nbt-injector</exclude>
+                    <exclude>org.javassist:javassist</exclude>
+                </excludes>
+            </artifactSet>
           <createDependencyReducedPom>false</createDependencyReducedPom>
           <relocations>
             <relocation>
               <pattern>de.tr7zw.changeme.nbtapi</pattern>
               <shadedPattern>au.com.addstar.monolith.util.nbtapi</shadedPattern>
+
             </relocation>
           </relocations>
         </configuration>
