@@ -114,7 +114,7 @@ public class Monolith extends JavaPlugin
     /**
      * Use to retrieve the now defunct servername from server.properties.  However you should just use
      * this method to write to a local config -
-     * @return Servername
+     * @return String Servername
      */
 	@Deprecated
 	public static String getServerName(){
