@@ -113,8 +113,7 @@ public class Lookup
 	public static Material findByMinecraftName(String name)
 	{
 		MinecraftKey key = new MinecraftKey(name);
-		Material material =  Material.matchMaterial(key.b());
-		return material;
+    return Material.matchMaterial(key.getKey());
 	}
 
 	/**

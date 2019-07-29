@@ -39,27 +39,7 @@ public class MonoPlayer
 	{
 		return mPlayer.getLocale();
 	}
-	
-	@Deprecated
-	public void sendMessage(ChatMessage... message)
-	{
-		for(ChatMessage m : message)
 
-			m.send(mPlayer);
-	}
-
-	@Deprecated
-	public void sendMessage(ChatMessageType type, ChatMessage... message)
-	{
-		for(ChatMessage m : message)
-			m.send(mPlayer, type);
-	}
-
-	@Deprecated
-	public void sendMessage(ChatMessageType type, String message)
-	{
-		ChatMessage.begin(message).send(mPlayer, type);
-	}
 	
 	
 	protected void onDestroy()

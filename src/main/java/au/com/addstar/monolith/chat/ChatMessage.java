@@ -146,7 +146,7 @@ public class ChatMessage
 	private ChatModifier resetFormat()
 	{
 		ChatModifier old = mCurrentModifier;
-		return mCurrentModifier = new ChatModifier().setChatClickable(old.h()).setChatHoverable(old.i()).setChatModifier(old.clone());
+		return mCurrentModifier = new ChatModifier().setChatClickable(old.getClickEvent()).setChatHoverable(old.getHoverEvent()).setChatModifier(old.clone());
 	}
 
 	private void format(ChatColor color)
