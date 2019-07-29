@@ -208,7 +208,7 @@ public final class EntitySettings
 		public static final EntityTemplateSetting<Boolean> Zombie_Baby = create("baby", org.bukkit.entity.Zombie.class, "setBaby", Boolean.class);
 		public static final EntityTemplateSetting<Boolean> Zombie_Villager = create("villager", org.bukkit.entity.ZombieVillager.class, "setVillager", Boolean.class);
 		public static final EntityTemplateSetting<Profession> Zombie_Villager_Profession = create("profession", org.bukkit.entity.ZombieVillager.class, "setVillagerProfession", Profession.class);
-		
+		//Villager Stuff
 		public static final EntityTemplateSetting<Profession> Villager_Profession = create("profession", org.bukkit.entity.Villager.class, "setProfession", Profession.class);
 
 		public static final EntityTemplateSetting<Color> Horse_Color = create("color", Horse.class, "setColor", Color.class, "colour");
@@ -240,7 +240,7 @@ public final class EntitySettings
 		
 		public static final EntityTemplateSetting<Boolean> Bat_Awake = create("awake", Bat.class, "setAwake", Boolean.class);
 		
-		public static final EntityTemplateSetting<Boolean> Ocelot_Sitting = createWithDefault("sitting", Ocelot.class, "setSitting", Boolean.class, false);
+		public static final EntityTemplateSetting<Boolean> Sitting = createWithDefault("sitting", Sittable.class, "setSitting", Boolean.class, false);
 		public static final EntityTemplateSetting<Cat.Type> Cat_Type = create("type", Cat.class, "setCatType", Cat.Type.class);
 		
 		public static final EntityTemplateSetting<Rabbit.Type> Rabbit_Type = create("type", Rabbit.class, "setRabbitType", Rabbit.Type.class);

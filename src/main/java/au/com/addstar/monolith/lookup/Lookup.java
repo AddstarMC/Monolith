@@ -142,6 +142,9 @@ public class Lookup
 			return names;
 	}
 
+	public static Set<String> getAllEntityNames(){
+		return mEntityDB.getAllTypes();
+	}
 	/**
 	 * Finds the minecraft name of the specified material
 	 * @param material The material to look for

@@ -32,6 +32,10 @@ public class EntityDB extends FlatDb<EntityDefinition>
 		return mIdMap.get(item);
 	}
 
+	public Set<String> getAllTypes(){
+		return mNameMap.keySet();
+	}
+
 	@Override
 	EntityDefinition getObject(String... string) {
 		try {

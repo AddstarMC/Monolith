@@ -1,9 +1,11 @@
 package au.com.addstar.monolith;
 
 import au.com.addstar.monolith.lookup.Lookup;
-import au.com.addstar.monolith.util.nbtapi.NBTCompound;
-import au.com.addstar.monolith.util.nbtapi.NBTContainer;
-import au.com.addstar.monolith.util.nbtapi.NBTItem;
+
+import de.tr7zw.changeme.nbtapi.NBTCompound;
+import de.tr7zw.changeme.nbtapi.NBTContainer;
+import de.tr7zw.changeme.nbtapi.NBTItem;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;

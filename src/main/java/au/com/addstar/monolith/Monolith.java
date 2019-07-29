@@ -1,13 +1,16 @@
 package au.com.addstar.monolith;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import au.com.addstar.monolith.util.nbtapi.ItemNBTAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,13 +19,14 @@ import au.com.addstar.monolith.internal.GeSuitHandler;
 import au.com.addstar.monolith.lookup.Lookup;
 
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.minecraft.server.v1_14_R1.DedicatedServer;
+import net.minecraft.server.v1_14_R1.DedicatedServerProperties;
 
 public class Monolith extends JavaPlugin
 {
 	private static Monolith mInstance;
 	private GeSuitHandler mGeSuitHandler;
-	private ItemNBTAPI api;
-	
+
 	public static Monolith getInstance()
 	{
 		return mInstance;
@@ -46,8 +50,6 @@ public class Monolith extends JavaPlugin
 		Lookup.initialize(this);
 		Bukkit.getPluginManager().registerEvents(new Listeners(), this);
 		mGeSuitHandler = new GeSuitHandler(this);
-		api = new ItemNBTAPI();
-		api.onEnable();
 		getLogger().info("enabled");
 
 	}
@@ -108,7 +110,30 @@ public class Monolith extends JavaPlugin
 		
 		return matches;
 	}
-	
+
+    /**
+     * Use to retrieve the now defunct servername from server.properties.  However you should just use
+     * this method to write to a local config -
+     * @return String Servername
+     */
+	@Deprecated
+	public static String getServerName(){
+		CraftServer server =  ((CraftServer) Bukkit.getServer());
+		String result;
+		try {
+			Field field = server.getClass().getDeclaredField("console");
+			field.setAccessible(true);
+			DedicatedServer dserver = (DedicatedServer) field.get(server);
+			DedicatedServerProperties props = dserver.getDedicatedServerProperties();
+			Method getString = props.getClass().getMethod("getString", String.class,String.class);
+			result = (String) getString.invoke(props,"server-name","");
+		} catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+			e.printStackTrace();
+			return "";
+		}
+		return result;
+	}
+
 	public GeSuitHandler getGeSuitHandler()
 	{
 		return mGeSuitHandler;
