@@ -26,6 +26,7 @@ public class Monolith extends JavaPlugin
 {
 	private static Monolith mInstance;
 	private GeSuitHandler mGeSuitHandler;
+	public Boolean DebugMode = false;
 
 	public static Monolith getInstance()
 	{
@@ -49,6 +50,7 @@ public class Monolith extends JavaPlugin
 		mInstance = this;
 		Lookup.initialize(this);
 		Bukkit.getPluginManager().registerEvents(new Listeners(), this);
+		getCommand("monolith").setExecutor(new MonolithCommand(this));
 		mGeSuitHandler = new GeSuitHandler(this);
 		getLogger().info("enabled");
 
@@ -137,5 +139,11 @@ public class Monolith extends JavaPlugin
 	public GeSuitHandler getGeSuitHandler()
 	{
 		return mGeSuitHandler;
+	}
+
+	public void DebugMsg (String msg) {
+		if (DebugMode) {
+			Bukkit.getLogger().info("[Monolith] " + msg);
+		}
 	}
 }

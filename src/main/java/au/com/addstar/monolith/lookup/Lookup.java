@@ -113,7 +113,8 @@ public class Lookup
 	public static Material findByMinecraftName(String name)
 	{
 		MinecraftKey key = new MinecraftKey(name);
-    return Material.matchMaterial(key.getKey());
+		Monolith.getInstance().DebugMsg("findByMinecraftName(" + name + ") = " + key.getKey());
+		return Material.matchMaterial(key.getKey());
 	}
 
 	/**

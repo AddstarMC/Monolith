@@ -4,3 +4,7 @@ author: Schmoller, Narimm
 version: ${plugin.version}
 api-version: ${api.version}
 main: au.com.addstar.monolith.Monolith
+
+commands:
+  monolith:
+    description: Management commands for Monolith

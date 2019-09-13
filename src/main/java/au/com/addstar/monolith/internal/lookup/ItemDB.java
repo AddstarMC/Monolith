@@ -3,6 +3,7 @@ package au.com.addstar.monolith.internal.lookup;
 import java.util.HashMap;
 import java.util.Set;
 
+import au.com.addstar.monolith.Monolith;
 import org.bukkit.Material;
 
 
@@ -21,7 +22,9 @@ public class ItemDB extends FlatDb<Material>
 	
 	public Material getByName(String name)
 	{
-		return mNameMap.get(name.toLowerCase());
+		Material mat = mNameMap.get(name.toLowerCase());
+		Monolith.getInstance().DebugMsg("getByName(" + name + ") = " + mat);
+		return mat;
 	}
 	
 	public Set<String> getbyMaterial(Material mat)
