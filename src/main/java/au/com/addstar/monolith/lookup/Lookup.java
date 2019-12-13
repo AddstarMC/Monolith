@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_14_R1.MinecraftKey;
+import net.minecraft.server.v1_15_R1.MinecraftKey;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

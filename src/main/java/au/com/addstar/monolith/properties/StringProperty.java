@@ -2,7 +2,7 @@ package au.com.addstar.monolith.properties;
 
 import java.util.UUID;
 
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
+import net.minecraft.server.v1_15_R1.NBTTagCompound;
 
 /**
  * Represents a property that holds a String

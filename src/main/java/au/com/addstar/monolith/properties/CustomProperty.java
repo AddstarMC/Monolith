@@ -10,16 +10,16 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraft.server.v1_14_R1.NBTBase;
-import net.minecraft.server.v1_14_R1.NBTTagByte;
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
-import net.minecraft.server.v1_14_R1.NBTTagDouble;
-import net.minecraft.server.v1_14_R1.NBTTagFloat;
-import net.minecraft.server.v1_14_R1.NBTTagInt;
-import net.minecraft.server.v1_14_R1.NBTTagList;
-import net.minecraft.server.v1_14_R1.NBTTagLong;
-import net.minecraft.server.v1_14_R1.NBTTagShort;
-import net.minecraft.server.v1_14_R1.NBTTagString;
+import net.minecraft.server.v1_15_R1.NBTBase;
+import net.minecraft.server.v1_15_R1.NBTTagByte;
+import net.minecraft.server.v1_15_R1.NBTTagCompound;
+import net.minecraft.server.v1_15_R1.NBTTagDouble;
+import net.minecraft.server.v1_15_R1.NBTTagFloat;
+import net.minecraft.server.v1_15_R1.NBTTagInt;
+import net.minecraft.server.v1_15_R1.NBTTagList;
+import net.minecraft.server.v1_15_R1.NBTTagLong;
+import net.minecraft.server.v1_15_R1.NBTTagShort;
+import net.minecraft.server.v1_15_R1.NBTTagString;
 
 /**
  * Represents a property that holds any object that implements the
@@ -50,8 +50,7 @@ public class CustomProperty extends PropertyBase<ConfigurationSerializable>
 	{
 		NBTTagCompound root = tag.getCompound("value");
 		Map<String, ?> values = fromNBTCompound(root);
-		
-		
+
 		if (values.containsKey("=="))
 		{
 			try
@@ -123,27 +122,27 @@ public class CustomProperty extends PropertyBase<ConfigurationSerializable>
 		else if (value instanceof ConfigurationSerializable)
 			return toNBT(((ConfigurationSerializable)value).serialize());
 		else if (value instanceof Byte)
-			return new NBTTagByte((Byte)value);
+			return NBTTagByte.a((Byte)value);
 		else if (value instanceof Short)
-			return new NBTTagShort((Short)value);
+			return NBTTagShort.a((Short)value);
 		else if (value instanceof Integer)
-			return new NBTTagInt((Integer)value);
+			return  NBTTagInt.a((Integer)value);
 		else if (value instanceof Float)
-			return new NBTTagFloat((Float)value);
+			return  NBTTagFloat.a((Float)value);
 		else if (value instanceof Double)
-			return new NBTTagDouble((Double)value);
+			return NBTTagDouble.a((Double)value);
 		else if (value instanceof Long)
-			return new NBTTagLong((Long)value);
+			return NBTTagLong.a((Long)value);
 		else if (value instanceof Boolean)
-			return new NBTTagByte((Boolean)value ? (byte)1 : (byte)0);
+			return  NBTTagByte.a((Boolean)value ? (byte)1 : (byte)0);
 		else if (value instanceof String)
-			return new NBTTagString((String)value);
+			return  NBTTagString.a((String)value);
 		else if (value instanceof List<?>)
 			return toNBT((List<?>)value);
 		else
 		{
 			System.out.println("Serialize warning!: Unknown serialize type: " + value + " " + value.getClass());
-			return new NBTTagString(value.toString()); 
+			return NBTTagString.a(value.toString());
 		}
 	}
 	

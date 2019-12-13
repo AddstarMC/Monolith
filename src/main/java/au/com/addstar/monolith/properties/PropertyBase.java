@@ -1,6 +1,6 @@
 package au.com.addstar.monolith.properties;
 
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
+import net.minecraft.server.v1_15_R1.NBTTagCompound;
 
 import java.util.Objects;
 import java.util.UUID;

@@ -1,14 +1,14 @@
 package au.com.addstar.monolith.chat;
 
-import net.minecraft.server.v1_14_R1.ChatClickable;
-import net.minecraft.server.v1_14_R1.ChatComponentText;
-import net.minecraft.server.v1_14_R1.ChatHoverable;
-import net.minecraft.server.v1_14_R1.ChatMessageType;
-import net.minecraft.server.v1_14_R1.ChatModifier;
-import net.minecraft.server.v1_14_R1.EnumChatFormat;
-import net.minecraft.server.v1_14_R1.IChatBaseComponent;
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
-import net.minecraft.server.v1_14_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_15_R1.ChatClickable;
+import net.minecraft.server.v1_15_R1.ChatComponentText;
+import net.minecraft.server.v1_15_R1.ChatHoverable;
+import net.minecraft.server.v1_15_R1.ChatMessageType;
+import net.minecraft.server.v1_15_R1.ChatModifier;
+import net.minecraft.server.v1_15_R1.EnumChatFormat;
+import net.minecraft.server.v1_15_R1.IChatBaseComponent;
+import net.minecraft.server.v1_15_R1.NBTTagCompound;
+import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -214,7 +214,7 @@ public class ChatMessage
 
 	public ChatMessage hover( ItemStack item )
 	{
-		net.minecraft.server.v1_14_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_15_R1.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 		Validate.notNull(nmsItem, "The item " + item.toString() + " cannot be used in a chat hover");
 		NBTTagCompound tag = new NBTTagCompound();
         nmsItem.save(tag);

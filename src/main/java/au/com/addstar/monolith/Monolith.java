@@ -10,7 +10,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,8 +19,8 @@ import au.com.addstar.monolith.internal.GeSuitHandler;
 import au.com.addstar.monolith.lookup.Lookup;
 
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.minecraft.server.v1_14_R1.DedicatedServer;
-import net.minecraft.server.v1_14_R1.DedicatedServerProperties;
+import net.minecraft.server.v1_15_R1.DedicatedServer;
+import net.minecraft.server.v1_15_R1.DedicatedServerProperties;
 
 public class Monolith extends JavaPlugin
 {
@@ -125,8 +125,8 @@ public class Monolith extends JavaPlugin
 		try {
 			Field field = server.getClass().getDeclaredField("console");
 			field.setAccessible(true);
-			DedicatedServer dserver = (DedicatedServer) field.get(server);
-			DedicatedServerProperties props = dserver.getDedicatedServerProperties();
+			DedicatedServer dServer = (DedicatedServer) field.get(server);
+			DedicatedServerProperties props = dServer.getDedicatedServerProperties();
 			Method getString = props.getClass().getMethod("getString", String.class,String.class);
 			result = (String) getString.invoke(props,"server-name","");
 		} catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
