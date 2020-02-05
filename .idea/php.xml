@@ -12,19 +12,16 @@
       <extension name="SimpleXML" enabled="false" />
       <extension name="SplType" enabled="false" />
       <extension name="Zend OPcache" enabled="false" />
-      <extension name="ZendCache" enabled="false" />
       <extension name="ZendDebugger" enabled="false" />
       <extension name="ZendUtils" enabled="false" />
       <extension name="amqp" enabled="false" />
       <extension name="apache" enabled="false" />
-      <extension name="apc" enabled="false" />
       <extension name="apcu" enabled="false" />
       <extension name="bcmath" enabled="false" />
       <extension name="bz2" enabled="false" />
       <extension name="calendar" enabled="false" />
-      <extension name="com" enabled="false" />
+      <extension name="cassandra" enabled="false" />
       <extension name="couchbase" enabled="false" />
-      <extension name="csprng" enabled="false" />
       <extension name="ctype" enabled="false" />
       <extension name="cubrid" enabled="false" />
       <extension name="curl" enabled="false" />
@@ -37,10 +34,12 @@
       <extension name="ffmpeg" enabled="false" />
       <extension name="fileinfo" enabled="false" />
       <extension name="filter" enabled="false" />
+      <extension name="fpm" enabled="false" />
       <extension name="ftp" enabled="false" />
       <extension name="gd" enabled="false" />
       <extension name="gearman" enabled="false" />
       <extension name="geoip" enabled="false" />
+      <extension name="geos" enabled="false" />
       <extension name="gettext" enabled="false" />
       <extension name="gmagick" enabled="false" />
       <extension name="gmp" enabled="false" />
@@ -62,6 +61,7 @@
       <extension name="libevent" enabled="false" />
       <extension name="libsodium" enabled="false" />
       <extension name="libxml" enabled="false" />
+      <extension name="mailparse" enabled="false" />
       <extension name="mbstring" enabled="false" />
       <extension name="mcrypt" enabled="false" />
       <extension name="memcache" enabled="false" />
@@ -73,6 +73,7 @@
       <extension name="mqseries" enabled="false" />
       <extension name="mssql" enabled="false" />
       <extension name="mysql" enabled="false" />
+      <extension name="mysql_xdevapi" enabled="false" />
       <extension name="mysqli" enabled="false" />
       <extension name="ncurses" enabled="false" />
       <extension name="newrelic" enabled="false" />
@@ -80,9 +81,9 @@
       <extension name="oci8" enabled="false" />
       <extension name="odbc" enabled="false" />
       <extension name="openssl" enabled="false" />
-      <extension name="password" enabled="false" />
       <extension name="pcntl" enabled="false" />
       <extension name="pcre" enabled="false" />
+      <extension name="pdflib" enabled="false" />
       <extension name="pdo_ibm" enabled="false" />
       <extension name="pdo_mysql" enabled="false" />
       <extension name="pdo_pgsql" enabled="false" />
@@ -91,6 +92,7 @@
       <extension name="posix" enabled="false" />
       <extension name="pspell" enabled="false" />
       <extension name="pthreads" enabled="false" />
+      <extension name="radius" enabled="false" />
       <extension name="rar" enabled="false" />
       <extension name="readline" enabled="false" />
       <extension name="recode" enabled="false" />
@@ -120,7 +122,6 @@
       <extension name="wddx" enabled="false" />
       <extension name="win32service" enabled="false" />
       <extension name="wincache" enabled="false" />
-      <extension name="xcache" enabled="false" />
       <extension name="xdebug" enabled="false" />
       <extension name="xhprof" enabled="false" />
       <extension name="xml" enabled="false" />
