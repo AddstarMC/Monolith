@@ -32,6 +32,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.ObjectUtils;
 import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,126 +47,133 @@ import net.minecraft.server.v1_15_R1.DedicatedServerProperties;
 
 public class Monolith extends JavaPlugin
 {
-	private static Monolith mInstance;
-	private GeSuitHandler mGeSuitHandler;
-	public Boolean DebugMode = false;
+    private static Monolith mInstance;
+    private GeSuitHandler mGeSuitHandler;
+    public Boolean DebugMode = false;
 
-	public static Monolith getInstance()
-	{
-		return mInstance;
-	}
-	
-	@Override
-	public void onEnable()
-	{
-		String version;
+    public static Monolith getInstance()
+    {
+        return mInstance;
+    }
 
-		try {
+    @Override
+    public void onEnable()
+    {
+        String version;
 
-			version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        try {
 
-		} catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
-			whatVersionAreYouUsingException.printStackTrace();
-			version = null;
-		}
-		getLogger().info("Your server is running version " + version);
-		mInstance = this;
-		Lookup.initialize(this);
-		Bukkit.getPluginManager().registerEvents(new Listeners(), this);
-		getCommand("monolith").setExecutor(new MonolithCommand(this));
-		mGeSuitHandler = new GeSuitHandler(this);
-		getLogger().info("enabled");
+            version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
 
-	}
+        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
+            whatVersionAreYouUsingException.printStackTrace();
+            version = null;
+        }
+        getLogger().info("Your server is running version " + version);
+        mInstance = this;
+        Lookup.initialize(this);
+        Bukkit.getPluginManager().registerEvents(new Listeners(), this);
+        try {
+            getCommand("monolith").setExecutor(new MonolithCommand(this));
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        mGeSuitHandler = new GeSuitHandler(this);
+        getLogger().info("enabled");
 
-	/**
-	 *
-	 * @param message the message to broadcast
-	 * @deprecated use {@link Monolith#broadcastMessage(BaseComponent[])}
-	 */
-	@Deprecated
-	public static void broadcastMessage(ChatMessage message)
-	{
-		broadcast(message, Server.BROADCAST_CHANNEL_USERS);
-	}
-
-	public static void broadcastMessage(BaseComponent[] message){
-		broadcast(message,Server.BROADCAST_CHANNEL_USERS);
-	}
-	/**
-	 *
-	 * @param message the message
-	 * @param permission the perm
-	 * @deprecated use {@link Monolith#broadcast(BaseComponent[], String)}
-	 */
-	@Deprecated
-	public static void broadcast(ChatMessage message, String permission)
-	{
-		for(Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission))
-		{
-			if(perm instanceof CommandSender && perm.hasPermission(permission))
-				message.send((CommandSender)perm);
-		}
-	}
-
-	/**
-	 *
-	 * @param message the message
-	 * @param permission the permission
-	 */
-	public static void broadcast(BaseComponent[] message, String permission){
-		for(Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission))
-		{
-			if(perm instanceof CommandSender && perm.hasPermission(permission))
-				((CommandSender) perm).spigot().sendMessage(message);
-		}
-	}
-
-	public static List<String> matchStrings(String prefix, Collection<String> values)
-	{
-		ArrayList<String> matches = new ArrayList<>();
-		
-		prefix = prefix.toLowerCase();
-		for(String value : values)
-		{
-			if(value.toLowerCase().startsWith(prefix))
-				matches.add(value);
-		}
-		
-		return matches;
-	}
+    }
 
     /**
-     * Use to retrieve the now defunct servername from server.properties.  However you should just use
-     * this method to write to a local config -
+     *
+     * @param message the message to broadcast
+     * @deprecated use {@link Monolith#broadcastMessage(BaseComponent[])}
+     */
+    @Deprecated
+    public static void broadcastMessage(final ChatMessage message) {
+        broadcast(message, Server.BROADCAST_CHANNEL_USERS);
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public static void broadcastMessage(final BaseComponent[] message) {
+        broadcast(message,Server.BROADCAST_CHANNEL_USERS);
+    }
+    /**
+     *
+     * @param message the message
+     * @param permission the perm
+     * @deprecated use {@link Monolith#broadcast(BaseComponent[], String)}
+     */
+    @Deprecated
+    public static void broadcast(final ChatMessage message, final String permission) {
+        for(Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission)) {
+            if(perm instanceof CommandSender && perm.hasPermission(permission)) {
+                message.send((CommandSender) perm);
+            }
+        }
+    }
+
+    /**
+     * @param message the message
+     * @param permission the permission
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static void broadcast(final BaseComponent[] message, final String permission) {
+        for (Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission)) {
+            if (perm instanceof CommandSender && perm.hasPermission(permission)) {
+                ((CommandSender) perm).spigot().sendMessage(message);
+            }
+        }
+    }
+
+    /**
+     * Matches strings in a Collection and returns those matches.
+     * @param prefix the prefix to match
+     * @param values The values to check
+     * @return a List
+     */
+
+    public static List<String> matchStrings(final String prefix, final Collection<String> values) {
+        ArrayList<String> matches = new ArrayList<>();
+        String checkValue = prefix.toLowerCase();
+        for (String value : values) {
+            if (value.toLowerCase().startsWith(checkValue)) {
+                matches.add(value);
+            }
+        }
+        return matches;
+    }
+
+    /**
+     * Use to retrieve the now defunct servername from server.properties.  However you should just
+     * use this method to write to a local config -
      * @return String Servername
      */
-	@Deprecated
-	public static String getServerName(){
-		CraftServer server =  ((CraftServer) Bukkit.getServer());
-		String result;
-		try {
-			Field field = server.getClass().getDeclaredField("console");
-			field.setAccessible(true);
-			DedicatedServer dServer = (DedicatedServer) field.get(server);
-			DedicatedServerProperties props = dServer.getDedicatedServerProperties();
-			Method getString = props.getClass().getMethod("getString", String.class,String.class);
-			result = (String) getString.invoke(props,"server-name","");
-		} catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-			e.printStackTrace();
-			return "";
-		}
-		return result;
-	}
+    @Deprecated
+    public static String getServerName() {
+        CraftServer server =  ((CraftServer) Bukkit.getServer());
+        String result;
+        try {
+            Field field = server.getClass().getDeclaredField("console");
+            field.setAccessible(true);
+            DedicatedServer dServer = (DedicatedServer) field.get(server);
+            DedicatedServerProperties props = dServer.getDedicatedServerProperties();
+            Method getString = props.getClass().getMethod("getString", String.class,String.class);
+            result = (String) getString.invoke(props,"server-name","");
+        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return result;
+    }
 
-	public GeSuitHandler getGeSuitHandler()
-	{
-		return mGeSuitHandler;
-	}
+    public GeSuitHandler getGeSuitHandler()
+    {
+        return mGeSuitHandler;
+    }
 
-	public void DebugMsg (String msg) {
-		if (DebugMode) {
-			Bukkit.getLogger().info("[Monolith] " + msg);
-		}
-	}
+    public void DebugMsg (String msg) {
+        if (DebugMode) {
+            Bukkit.getLogger().info("[Monolith] " + msg);
+        }
+    }
 }
