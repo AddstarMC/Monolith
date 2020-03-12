@@ -2,10 +2,10 @@
  * Copyright (c) 2020. AddstarMC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
- * and associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute,
- * sublicense, and/or copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ *  and associated documentation files (the "Software"), to deal in the Software without restriction,
+ *  including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ *  sublicense, and/or copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all copies or
  * substantial portions of the Software.
@@ -338,7 +338,7 @@ public abstract class AutoConfig {
     }
 
     /**
-     * Saves the config to a file.
+     * Saves the config to a file. Can be run async
      *
      * @return true on success
      */
@@ -448,11 +448,13 @@ public abstract class AutoConfig {
             }
             StringBuilder output = new StringBuilder(config.saveToString());
             //add a header and description
-            String header = "AutoConfig v" + VERSION + " : " + pluginName;
             List<String> reverse = Lists.reverse(description);
+            output.insert(0,"\n"); // blank line to ensure separate from config.
             for (String desc : reverse) {
                 output.insert(0, "# " + desc);
             }
+            output.insert(0,"\n");
+            String header = "AutoConfig v" + VERSION + " : " + pluginName;
             output.insert(0, "# " + header);
             // Apply comments
             String category = "";
