@@ -22,6 +22,19 @@
 
 package au.com.addstar.monolith;
 
+import au.com.addstar.monolith.chat.ChatMessage;
+import au.com.addstar.monolith.internal.GeSuitHandler;
+import au.com.addstar.monolith.lookup.Lookup;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.minecraft.server.v1_15_R1.DedicatedServer;
+import net.minecraft.server.v1_15_R1.DedicatedServerProperties;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
+import org.bukkit.permissions.Permissible;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,36 +42,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.ObjectUtils;
-import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
-import org.bukkit.permissions.Permissible;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import au.com.addstar.monolith.chat.ChatMessage;
-import au.com.addstar.monolith.internal.GeSuitHandler;
-import au.com.addstar.monolith.lookup.Lookup;
-
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.minecraft.server.v1_15_R1.DedicatedServer;
-import net.minecraft.server.v1_15_R1.DedicatedServerProperties;
-
-public class Monolith extends JavaPlugin
-{
+public class Monolith extends JavaPlugin {
     private static Monolith mInstance;
     private GeSuitHandler mGeSuitHandler;
     public Boolean DebugMode = false;
 
-    public static Monolith getInstance()
-    {
+    public static Monolith getInstance() {
         return mInstance;
     }
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         String version;
 
         try {
@@ -75,7 +69,7 @@ public class Monolith extends JavaPlugin
         Bukkit.getPluginManager().registerEvents(new Listeners(), this);
         try {
             getCommand("monolith").setExecutor(new MonolithCommand(this));
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         mGeSuitHandler = new GeSuitHandler(this);
@@ -84,7 +78,6 @@ public class Monolith extends JavaPlugin
     }
 
     /**
-     *
      * @param message the message to broadcast
      * @deprecated use {@link Monolith#broadcastMessage(BaseComponent[])}
      */
@@ -95,25 +88,25 @@ public class Monolith extends JavaPlugin
 
     @SuppressWarnings("WeakerAccess")
     public static void broadcastMessage(final BaseComponent[] message) {
-        broadcast(message,Server.BROADCAST_CHANNEL_USERS);
+        broadcast(message, Server.BROADCAST_CHANNEL_USERS);
     }
+
     /**
-     *
-     * @param message the message
+     * @param message    the message
      * @param permission the perm
      * @deprecated use {@link Monolith#broadcast(BaseComponent[], String)}
      */
     @Deprecated
     public static void broadcast(final ChatMessage message, final String permission) {
-        for(Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission)) {
-            if(perm instanceof CommandSender && perm.hasPermission(permission)) {
+        for (Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission)) {
+            if (perm instanceof CommandSender && perm.hasPermission(permission)) {
                 message.send((CommandSender) perm);
             }
         }
     }
 
     /**
-     * @param message the message
+     * @param message    the message
      * @param permission the permission
      */
     @SuppressWarnings("WeakerAccess")
@@ -127,6 +120,7 @@ public class Monolith extends JavaPlugin
 
     /**
      * Matches strings in a Collection and returns those matches.
+     *
      * @param prefix the prefix to match
      * @param values The values to check
      * @return a List
@@ -146,19 +140,20 @@ public class Monolith extends JavaPlugin
     /**
      * Use to retrieve the now defunct servername from server.properties.  However you should just
      * use this method to write to a local config -
+     *
      * @return String Servername
      */
     @Deprecated
     public static String getServerName() {
-        CraftServer server =  ((CraftServer) Bukkit.getServer());
+        CraftServer server = ((CraftServer) Bukkit.getServer());
         String result;
         try {
             Field field = server.getClass().getDeclaredField("console");
             field.setAccessible(true);
             DedicatedServer dServer = (DedicatedServer) field.get(server);
             DedicatedServerProperties props = dServer.getDedicatedServerProperties();
-            Method getString = props.getClass().getMethod("getString", String.class,String.class);
-            result = (String) getString.invoke(props,"server-name","");
+            Method getString = props.getClass().getMethod("getString", String.class, String.class);
+            result = (String) getString.invoke(props, "server-name", "");
         } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
             return "";
@@ -166,12 +161,11 @@ public class Monolith extends JavaPlugin
         return result;
     }
 
-    public GeSuitHandler getGeSuitHandler()
-    {
+    public GeSuitHandler getGeSuitHandler() {
         return mGeSuitHandler;
     }
 
-    public void DebugMsg (String msg) {
+    public void DebugMsg(String msg) {
         if (DebugMode) {
             Bukkit.getLogger().info("[Monolith] " + msg);
         }
