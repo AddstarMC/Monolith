@@ -28,7 +28,6 @@ package au.com.addstar.monolith.util;
  */
 
 
-
 import net.minecraft.server.v1_15_R1.NBTTagCompound;
 
 import org.bukkit.Material;
@@ -45,31 +44,6 @@ import org.bukkit.inventory.ItemStack;
 public class PotionUtil {
     private PotionType type;
     private boolean strong, extended, linger, splash;
-
-    public enum PotionType {
-        FIRE_RESISTANCE,
-        INSTANT_DAMAGE,
-        INSTANT_HEAL,
-        INVISIBILITY,
-        JUMP,
-        LUCK,
-        NIGHT_VISION,
-        POISON,
-        REGEN,
-        SLOWNESS,
-        SPEED,
-        STRENGTH,
-        WATER,
-        WATER_BREATHING,
-        WEAKNESS,
-        SLOW_FALLING,
-        TURTLE,
-        EMPTY,
-        MUNDANE,
-        THICK,
-        AWKWARD
-        
-    }
 
     /**
      * Construct a new potion of the given type.
@@ -102,11 +76,11 @@ public class PotionUtil {
     /**
      * This constructs an instance of PotionInfo.
      *
-     * @param type PotionType
-     * @param strong boolean
+     * @param type     PotionType
+     * @param strong   boolean
      * @param extended is exteneded
-     * @param linger will linger
-     * @param splash is splash
+     * @param linger   will linger
+     * @param splash   is splash
      */
     public PotionUtil(PotionType type, boolean strong, boolean extended, boolean linger, boolean splash) {
         this.type = type;
@@ -114,154 +88,6 @@ public class PotionUtil {
         this.extended = extended;
         this.linger = linger;
         this.splash = splash;
-    }
-
-    /**
-     * Chain this to the constructor to make the potion a splash potion.
-     *
-     * @return The potion.
-     */
-    public PotionUtil splash() {
-        setSplash(true);
-        return this;
-    }
-
-    /**
-     * Chain this to the constructor to extend the potion's duration.
-     *
-     * @return The potion.
-     */
-    public PotionUtil extend() {
-        setHasExtendedDuration(true);
-        return this;
-    }
-
-    /**
-     * Chain this to the constructor to make potion a linger potion.
-     *
-     * @return The potion.
-     */
-    public PotionUtil linger() {
-        setLinger(true);
-        return this;
-    }
-
-    /**
-     * Chain this to the constructor to make potion a strong potion.
-     *
-     * @return The potion.
-     */
-    public PotionUtil strong() {
-        setStrong(true);
-        return this;
-    }
-
-    /**
-     * Applies the effects of this potion to the given {@link ItemStack}. The
-     * ItemStack must be a potion.
-     *
-     * @param to The itemstack to apply to
-     * @throws Exception if stack is null or not a potion
-     */
-    public void apply(ItemStack to) throws Exception {
-        if (to == null) {
-            throw new Exception("itemstack cannot be null");
-        }
-        if (to.getType() != Material.POTION) {
-            throw new Exception("given itemstack is not a potion");
-        }
-        to = toItemStack(to.getAmount()).clone();
-    }
-
-    /**
-     * This converts PotionInfo to an ItemStack
-     * NOTICE: This does not allow a way to change the level of the potion. This will work for only default minecraft potions.
-     *
-     * @param amount how many
-     * @return ItemStack of a potion. NULL if it fails.
-     */
-    public ItemStack toItemStack(int amount) {
-        ItemStack item = new ItemStack(Material.POTION, amount);
-        if (splash) {
-            item = new ItemStack(Material.SPLASH_POTION, amount);
-        } else if (linger) {
-            item = new ItemStack(Material.LINGERING_POTION, amount);
-        }
-        net.minecraft.server.v1_15_R1.ItemStack stack = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound tagCompound = stack.getTag();
-        if (tagCompound == null) {
-            tagCompound = new NBTTagCompound();
-        }
-        String tag = "";
-        switch(type){
-            case JUMP:
-                tag =  "leaping";
-                break;
-            case LUCK:
-                tag = "luck";
-                break;
-            case REGEN:
-                tag = "regeneration";
-                break;
-            case SPEED:
-                tag = "swiftness";
-                break;
-            case FIRE_RESISTANCE:
-                tag = "fire_resistance";
-                break;
-            case INSTANT_DAMAGE:
-                tag = "harming";
-                break;
-            case INSTANT_HEAL:
-                tag = "healing";
-                break;
-            case WATER_BREATHING:
-                tag = "water_breathing";
-                break;
-            case SLOW_FALLING:
-                tag = "slow_falling";
-                break;
-            case NIGHT_VISION:
-                tag = "night_vision";
-                break;
-            case INVISIBILITY:
-                tag = "invisibility";
-                break;
-            case WEAKNESS:
-                tag = "weakness";
-                break;
-            case STRENGTH:
-                tag = "strength";
-                break;
-            case SLOWNESS:
-                tag = "slowness";
-                break;
-            case MUNDANE:
-                tag = "mundane";
-                break;
-            case TURTLE:
-                tag = "turtle_master";
-                break;
-            case POISON:
-                tag = "poison";
-                break;
-            case AWKWARD:
-                tag = "awkward";
-            case WATER:
-                tag = "water";
-            case THICK:
-                tag = "thick";
-            case EMPTY:
-                tag = "empty";
-        }
-        if(extended) {
-            tag = "long_"+tag;
-        } else if (strong){
-            tag = "strong_" + tag;
-        }
-        tagCompound.setString("Potion", "minecraft:" + tag);
-        stack.setTag(tagCompound);
-        return CraftItemStack.asBukkitCopy(stack);
     }
 
     /**
@@ -385,6 +211,154 @@ public class PotionUtil {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Chain this to the constructor to make the potion a splash potion.
+     *
+     * @return The potion.
+     */
+    public PotionUtil splash() {
+        setSplash(true);
+        return this;
+    }
+
+    /**
+     * Chain this to the constructor to extend the potion's duration.
+     *
+     * @return The potion.
+     */
+    public PotionUtil extend() {
+        setHasExtendedDuration(true);
+        return this;
+    }
+
+    /**
+     * Chain this to the constructor to make potion a linger potion.
+     *
+     * @return The potion.
+     */
+    public PotionUtil linger() {
+        setLinger(true);
+        return this;
+    }
+
+    /**
+     * Chain this to the constructor to make potion a strong potion.
+     *
+     * @return The potion.
+     */
+    public PotionUtil strong() {
+        setStrong(true);
+        return this;
+    }
+
+    /**
+     * Applies the effects of this potion to the given {@link ItemStack}. The
+     * ItemStack must be a potion.
+     *
+     * @param to The itemstack to apply to
+     * @throws Exception if stack is null or not a potion
+     */
+    public void apply(ItemStack to) throws Exception {
+        if (to == null) {
+            throw new Exception("itemstack cannot be null");
+        }
+        if (to.getType() != Material.POTION) {
+            throw new Exception("given itemstack is not a potion");
+        }
+        to = toItemStack(to.getAmount()).clone();
+    }
+
+    /**
+     * This converts PotionInfo to an ItemStack
+     * NOTICE: This does not allow a way to change the level of the potion. This will work for only default minecraft potions.
+     *
+     * @param amount how many
+     * @return ItemStack of a potion. NULL if it fails.
+     */
+    public ItemStack toItemStack(int amount) {
+        ItemStack item = new ItemStack(Material.POTION, amount);
+        if (splash) {
+            item = new ItemStack(Material.SPLASH_POTION, amount);
+        } else if (linger) {
+            item = new ItemStack(Material.LINGERING_POTION, amount);
+        }
+        net.minecraft.server.v1_15_R1.ItemStack stack = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound tagCompound = stack.getTag();
+        if (tagCompound == null) {
+            tagCompound = new NBTTagCompound();
+        }
+        String tag = "";
+        switch (type) {
+            case JUMP:
+                tag = "leaping";
+                break;
+            case LUCK:
+                tag = "luck";
+                break;
+            case REGEN:
+                tag = "regeneration";
+                break;
+            case SPEED:
+                tag = "swiftness";
+                break;
+            case FIRE_RESISTANCE:
+                tag = "fire_resistance";
+                break;
+            case INSTANT_DAMAGE:
+                tag = "harming";
+                break;
+            case INSTANT_HEAL:
+                tag = "healing";
+                break;
+            case WATER_BREATHING:
+                tag = "water_breathing";
+                break;
+            case SLOW_FALLING:
+                tag = "slow_falling";
+                break;
+            case NIGHT_VISION:
+                tag = "night_vision";
+                break;
+            case INVISIBILITY:
+                tag = "invisibility";
+                break;
+            case WEAKNESS:
+                tag = "weakness";
+                break;
+            case STRENGTH:
+                tag = "strength";
+                break;
+            case SLOWNESS:
+                tag = "slowness";
+                break;
+            case MUNDANE:
+                tag = "mundane";
+                break;
+            case TURTLE:
+                tag = "turtle_master";
+                break;
+            case POISON:
+                tag = "poison";
+                break;
+            case AWKWARD:
+                tag = "awkward";
+            case WATER:
+                tag = "water";
+            case THICK:
+                tag = "thick";
+            case EMPTY:
+                tag = "empty";
+        }
+        if (extended) {
+            tag = "long_" + tag;
+        } else if (strong) {
+            tag = "strong_" + tag;
+        }
+        tagCompound.setString("Potion", "minecraft:" + tag);
+        stack.setTag(tagCompound);
+        return CraftItemStack.asBukkitCopy(stack);
     }
 
     /**
@@ -616,5 +590,30 @@ public class PotionUtil {
             return potionDescription + " (extended)";
         else
             return potionDescription;
+    }
+
+    public enum PotionType {
+        FIRE_RESISTANCE,
+        INSTANT_DAMAGE,
+        INSTANT_HEAL,
+        INVISIBILITY,
+        JUMP,
+        LUCK,
+        NIGHT_VISION,
+        POISON,
+        REGEN,
+        SLOWNESS,
+        SPEED,
+        STRENGTH,
+        WATER,
+        WATER_BREATHING,
+        WEAKNESS,
+        SLOW_FALLING,
+        TURTLE,
+        EMPTY,
+        MUNDANE,
+        THICK,
+        AWKWARD
+
     }
 }

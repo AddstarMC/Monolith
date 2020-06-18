@@ -39,7 +39,9 @@ public class MonolithCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         // Op only for Monolith commands
-        if (!sender.isOp()) { return false; }
+        if (!sender.isOp()) {
+            return false;
+        }
 
         // Show help if nothing no arguments given
         if (args.length == 0) {
@@ -48,7 +50,7 @@ public class MonolithCommand implements CommandExecutor {
         }
 
         // Check arguments (only debug at this stage)
-        switch(args[0].toUpperCase()) {
+        switch (args[0].toUpperCase()) {
             case "DEBUG":
                 plugin.DebugMode = !plugin.DebugMode;
                 sender.sendMessage(ChatColor.RED + "Monolith debugging is now "

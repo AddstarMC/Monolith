@@ -44,37 +44,11 @@ import java.util.List;
 
 public class Monolith extends JavaPlugin {
     private static Monolith mInstance;
-    private GeSuitHandler mGeSuitHandler;
     public Boolean DebugMode = false;
+    private GeSuitHandler mGeSuitHandler;
 
     public static Monolith getInstance() {
         return mInstance;
-    }
-
-    @Override
-    public void onEnable() {
-        String version;
-
-        try {
-
-            version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-
-        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
-            whatVersionAreYouUsingException.printStackTrace();
-            version = null;
-        }
-        getLogger().info("Your server is running version " + version);
-        mInstance = this;
-        Lookup.initialize(this);
-        Bukkit.getPluginManager().registerEvents(new Listeners(), this);
-        try {
-            getCommand("monolith").setExecutor(new MonolithCommand(this));
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        mGeSuitHandler = new GeSuitHandler(this);
-        getLogger().info("enabled");
-
     }
 
     /**
@@ -159,6 +133,32 @@ public class Monolith extends JavaPlugin {
             return "";
         }
         return result;
+    }
+
+    @Override
+    public void onEnable() {
+        String version;
+
+        try {
+
+            version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+
+        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
+            whatVersionAreYouUsingException.printStackTrace();
+            version = null;
+        }
+        getLogger().info("Your server is running version " + version);
+        mInstance = this;
+        Lookup.initialize(this);
+        Bukkit.getPluginManager().registerEvents(new Listeners(), this);
+        try {
+            getCommand("monolith").setExecutor(new MonolithCommand(this));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        mGeSuitHandler = new GeSuitHandler(this);
+        getLogger().info("enabled");
+
     }
 
     public GeSuitHandler getGeSuitHandler() {

@@ -26,8 +26,10 @@ import au.com.addstar.monolith.lookup.Lookup;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTItem;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -55,7 +57,7 @@ public class ItemMetaBuilder {
     /**
      * The Item meta.
      */
-    private ItemMeta meta;
+    private final ItemMeta meta;
     /**
      * The item.
      */
@@ -154,6 +156,7 @@ public class ItemMetaBuilder {
 
     /**
      * Gets the Meta.
+     *
      * @return the ItemMeta
      */
     @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
@@ -166,6 +169,7 @@ public class ItemMetaBuilder {
 
     /**
      * Gets the built stack with the new meta.
+     *
      * @return the ItemStack
      */
     public ItemStack getItemStack() {
@@ -490,7 +494,7 @@ public class ItemMetaBuilder {
         if (metaPotionEffect != null && metaPotionDuration > 0 && metaPotionPower >= 0) {
             PotionMeta meta = (PotionMeta) this.meta;
             meta.addCustomEffect(metaPotionEffect.createEffect(metaPotionDuration,
-                    metaPotionPower),true);
+                    metaPotionPower), true);
             metaPotionEffect = null;
             metaPotionDuration = metaPotionPower = -1;
         }

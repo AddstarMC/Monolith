@@ -33,202 +33,181 @@ import net.minecraft.server.v1_15_R1.NBTBase;
 import net.minecraft.server.v1_15_R1.NBTTagCompound;
 import net.minecraft.server.v1_15_R1.NBTTagList;
 
-public class PropertyContainerImpl implements PropertyContainer
-{
-	private NBTTagList root;
+public class PropertyContainerImpl implements PropertyContainer {
+    private final NBTTagList root;
 
-	public PropertyContainerImpl(NBTTagList root)
-	{
-		this.root = root;
-	}
+    public PropertyContainerImpl(NBTTagList root) {
+        this.root = root;
+    }
 
-	public NBTTagList getRoot()
-	{
-		return root;
-	}
+    private static PropertyBase<?> loadProperty(NBTTagCompound tag) {
+        switch (tag.getByte("type")) {
+            case PropertyBase.TYPE_STRING:
+                return new StringProperty(tag);
+            case PropertyBase.TYPE_INTEGER:
+                return new IntegerProperty(tag);
+            case PropertyBase.TYPE_FLOAT:
+                return new FloatProperty(tag);
+            case PropertyBase.TYPE_CUSTOM:
+                return new CustomProperty(tag);
+            default:
+                return null;
+        }
+    }
 
-	@Override
-	public PropertyBase<?> get(String name, UUID owner) throws PropertyClassException {
-		for (NBTBase aRoot : root) {
-			if (aRoot instanceof NBTTagCompound) {
-				NBTTagCompound raw = (NBTTagCompound) aRoot;
-				PropertyBase<?> property = loadProperty(raw);
-				if (property != null && property.getName() != null) {
-					if (property.getName().equals(name) && property.getOwner().equals(owner))
-						return property;
-				}
-			} else {
-				throw new PropertyClassException(aRoot.toString() + " is not a Compound " +
-						"tag");
-			}
-		}
+    public NBTTagList getRoot() {
+        return root;
+    }
 
-		return null;
-	}
+    @Override
+    public PropertyBase<?> get(String name, UUID owner) throws PropertyClassException {
+        for (NBTBase aRoot : root) {
+            if (aRoot instanceof NBTTagCompound) {
+                NBTTagCompound raw = (NBTTagCompound) aRoot;
+                PropertyBase<?> property = loadProperty(raw);
+                if (property != null && property.getName() != null) {
+                    if (property.getName().equals(name) && property.getOwner().equals(owner))
+                        return property;
+                }
+            } else {
+                throw new PropertyClassException(aRoot.toString() + " is not a Compound " +
+                        "tag");
+            }
+        }
 
-	@Override
-	public String getString(String name, UUID owner) throws ClassCastException
-	{
-		PropertyBase<?> prop = get(name, owner);
-		if (prop instanceof StringProperty)
-			return ((StringProperty)prop).getValue();
-		else if (prop == null)
-			return null;
-		else
-			throw new ClassCastException("Property type does not match");
-	}
+        return null;
+    }
 
-	@Override
-	public Integer getInt(String name, UUID owner) throws ClassCastException
-	{
-		PropertyBase<?> prop = get(name, owner);
-		if (prop instanceof IntegerProperty)
-			return ((IntegerProperty)prop).getValue();
-		else if (prop == null)
-			return null;
-		else
-			throw new ClassCastException("Property type does not match");
-	}
+    @Override
+    public String getString(String name, UUID owner) throws ClassCastException {
+        PropertyBase<?> prop = get(name, owner);
+        if (prop instanceof StringProperty)
+            return ((StringProperty) prop).getValue();
+        else if (prop == null)
+            return null;
+        else
+            throw new ClassCastException("Property type does not match");
+    }
 
-	@Override
-	public Double getFloat(String name, UUID owner) throws ClassCastException
-	{
-		PropertyBase<?> prop = get(name, owner);
-		if (prop instanceof FloatProperty)
-			return ((FloatProperty)prop).getValue();
-		else if (prop == null)
-			return null;
-		else
-			throw new ClassCastException("Property type does not match");
-	}
+    @Override
+    public Integer getInt(String name, UUID owner) throws ClassCastException {
+        PropertyBase<?> prop = get(name, owner);
+        if (prop instanceof IntegerProperty)
+            return ((IntegerProperty) prop).getValue();
+        else if (prop == null)
+            return null;
+        else
+            throw new ClassCastException("Property type does not match");
+    }
 
-	@Override
-	public ConfigurationSerializable getCustom(String name, UUID owner) throws ClassCastException
-	{
-		PropertyBase<?> prop = get(name, owner);
-		if (prop instanceof CustomProperty)
-			return ((CustomProperty)prop).getValue();
-		else if (prop == null)
-			return null;
-		else
-			throw new ClassCastException("Property type does not match");
-	}
+    @Override
+    public Double getFloat(String name, UUID owner) throws ClassCastException {
+        PropertyBase<?> prop = get(name, owner);
+        if (prop instanceof FloatProperty)
+            return ((FloatProperty) prop).getValue();
+        else if (prop == null)
+            return null;
+        else
+            throw new ClassCastException("Property type does not match");
+    }
 
-	@Override
-	public void add(PropertyBase<?> property)
-	{
-		// Remove any existing one if any
-		remove(property.getName(), property.getOwner());
-		root.add(property.getTag());
-	}
+    @Override
+    public ConfigurationSerializable getCustom(String name, UUID owner) throws ClassCastException {
+        PropertyBase<?> prop = get(name, owner);
+        if (prop instanceof CustomProperty)
+            return ((CustomProperty) prop).getValue();
+        else if (prop == null)
+            return null;
+        else
+            throw new ClassCastException("Property type does not match");
+    }
 
-	@Override
-	public void remove(String name, UUID owner)
-	{
-		for (int i = 0; i < root.size(); ++i) {
-			if(root.get(i) instanceof NBTTagCompound) {
-				NBTTagCompound raw = (NBTTagCompound) root.get(i);
-				PropertyBase<?> property = loadProperty(raw);
-				if (property.getName() != null) {
-					if (property.getName().equals(name) && property.getOwner().equals(owner)) {
-						root.remove(i);
-						break;
-					}
-				}
-			}
+    @Override
+    public void add(PropertyBase<?> property) {
+        // Remove any existing one if any
+        remove(property.getName(), property.getOwner());
+        root.add(property.getTag());
+    }
 
-		}
-	}
+    @Override
+    public void remove(String name, UUID owner) {
+        for (int i = 0; i < root.size(); ++i) {
+            if (root.get(i) instanceof NBTTagCompound) {
+                NBTTagCompound raw = (NBTTagCompound) root.get(i);
+                PropertyBase<?> property = loadProperty(raw);
+                if (property.getName() != null) {
+                    if (property.getName().equals(name) && property.getOwner().equals(owner)) {
+                        root.remove(i);
+                        break;
+                    }
+                }
+            }
 
-	@Override
-	public void clear(UUID owner)
-	{
-		for (int i = 0; i < root.size(); ++i)
-		{
-			if(root.get(i) instanceof NBTTagCompound) {
-				NBTTagCompound raw = (NBTTagCompound) root.get(i);
-				PropertyBase<?> property = loadProperty(raw);
-				if (property.getOwner() != null) {
-					if (property.getOwner().equals(owner)) {
-						root.remove(i);
-						--i;
-					}
-				}
-			}
-		}
-	}
+        }
+    }
 
-	@Override
-	public void clear()
-	{
-		while(!root.isEmpty())
-			root.remove(0);
-	}
+    @Override
+    public void clear(UUID owner) {
+        for (int i = 0; i < root.size(); ++i) {
+            if (root.get(i) instanceof NBTTagCompound) {
+                NBTTagCompound raw = (NBTTagCompound) root.get(i);
+                PropertyBase<?> property = loadProperty(raw);
+                if (property.getOwner() != null) {
+                    if (property.getOwner().equals(owner)) {
+                        root.remove(i);
+                        --i;
+                    }
+                }
+            }
+        }
+    }
 
-	@Override
-	public Iterable<PropertyBase<?>> getAllProperties(final UUID owner)
-	{
-		return () -> Iterators.filter(new PropertyIterator(), property -> property.getOwner().equals(owner));
-	}
+    @Override
+    public void clear() {
+        while (!root.isEmpty())
+            root.remove(0);
+    }
 
-	@Override
-	public Iterable<PropertyBase<?>> getAllProperties()
-	{
-		return PropertyIterator::new;
-	}
+    @Override
+    public Iterable<PropertyBase<?>> getAllProperties(final UUID owner) {
+        return () -> Iterators.filter(new PropertyIterator(), property -> property.getOwner().equals(owner));
+    }
 
-	@Override
-	public PropertyContainerImpl clone()
-	{
-		return new PropertyContainerImpl((NBTTagList)root.clone());
-	}
+    @Override
+    public Iterable<PropertyBase<?>> getAllProperties() {
+        return PropertyIterator::new;
+    }
 
-	private static PropertyBase<?> loadProperty(NBTTagCompound tag)
-	{
-		switch (tag.getByte("type"))
-		{
-		case PropertyBase.TYPE_STRING:
-			return new StringProperty(tag);
-		case PropertyBase.TYPE_INTEGER:
-			return new IntegerProperty(tag);
-		case PropertyBase.TYPE_FLOAT:
-			return new FloatProperty(tag);
-		case PropertyBase.TYPE_CUSTOM:
-			return new CustomProperty(tag);
-		default:
-			return null;
-		}
-	}
+    @Override
+    public PropertyContainerImpl clone() {
+        return new PropertyContainerImpl(root.clone());
+    }
 
-	private class PropertyIterator implements Iterator<PropertyBase<?>>
-	{
-		private int index = 0;
+    private class PropertyIterator implements Iterator<PropertyBase<?>> {
+        private int index = 0;
 
-		@Override
-		public boolean hasNext()
-		{
-			return index < root.size();
-		}
+        @Override
+        public boolean hasNext() {
+            return index < root.size();
+        }
 
-		@Override
-		public PropertyBase<?> next()
-		{
-		    NBTBase base = root.get(index++);
-		    if(base instanceof NBTTagCompound) {
+        @Override
+        public PropertyBase<?> next() {
+            NBTBase base = root.get(index++);
+            if (base instanceof NBTTagCompound) {
                 NBTTagCompound raw = (NBTTagCompound) base;
                 return loadProperty(raw);
-            }else{
-		        throw new PropertyClassException(base.toString() + " is not a compound tag " +
+            } else {
+                throw new PropertyClassException(base.toString() + " is not a compound tag " +
                         "compatible" +
                         " with properties");
             }
-		}
+        }
 
-		@Override
-		public void remove()
-		{
-			if (index > 0)
-				root.remove(--index);
-		}
-	}
+        @Override
+        public void remove() {
+            if (index > 0)
+                root.remove(--index);
+        }
+    }
 }

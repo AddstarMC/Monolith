@@ -38,26 +38,94 @@ import net.minecraft.server.v1_15_R1.NBTBase;
 import net.minecraft.server.v1_15_R1.NBTTagCompound;
 import net.minecraft.server.v1_15_R1.NBTTagList;
 
-public class MonoItemAttributes implements ItemAttributes
-{
-	private static final String KeyUUID = "UUID";
-	private static final String KeyAmount = "Amount";
-	private static final String KeyOperation = "Operation";
-	private static final String KeyName = "Name";
-	private static final String KeySlot = "Slot";
-	private static final String KeyAttributeName = "AttributeName";
-	
-	private final NBTTagList list;
-	
-	public MonoItemAttributes(NBTTagList list)
-	{
-		this.list = list;
-	}
-	
-	@Override
-	public void addModifier(Attribute attribute, ItemAttributeModifier modifier)
-	{
-		// Check that the UUID is unique
+public class MonoItemAttributes implements ItemAttributes {
+    private static final String KeyUUID = "UUID";
+    private static final String KeyAmount = "Amount";
+    private static final String KeyOperation = "Operation";
+    private static final String KeyName = "Name";
+    private static final String KeySlot = "Slot";
+    private static final String KeyAttributeName = "AttributeName";
+
+    private final NBTTagList list;
+
+    public MonoItemAttributes(NBTTagList list) {
+        this.list = list;
+    }
+
+    private static ItemAttributeModifier readModifier(NBTTagCompound tag) {
+        String name = tag.getString(KeyName);
+        UUID id = tag.a(KeyUUID);
+        double amount = tag.getDouble(KeyAmount);
+        int op = tag.getInt(KeyOperation);
+        String rawSlot = tag.getString(KeySlot);
+
+        EquipmentSlot slot = null;
+        if (rawSlot != null) {
+            switch (rawSlot) {
+                case "mainhand":
+                    slot = EquipmentSlot.HAND;
+                    break;
+                case "offhand":
+                    slot = EquipmentSlot.OFF_HAND;
+                    break;
+                case "head":
+                    slot = EquipmentSlot.HEAD;
+                    break;
+                case "chest":
+                    slot = EquipmentSlot.CHEST;
+                    break;
+                case "legs":
+                    slot = EquipmentSlot.LEGS;
+                    break;
+                case "feet":
+                    slot = EquipmentSlot.FEET;
+                    break;
+            }
+        }
+
+        return new ItemAttributeModifier(id, name, amount, Operation.values()[op], slot);
+    }
+
+    private static NBTTagCompound saveModifier(Attribute attribute, ItemAttributeModifier modifier) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString(KeyName, modifier.getName());
+        tag.a(KeyUUID, modifier.getUniqueId());
+        tag.setDouble(KeyAmount, modifier.getAmount());
+        tag.setInt(KeyOperation, modifier.getOperation().ordinal());
+        tag.setString(KeyAttributeName, Attributes.getId(attribute));
+
+        EquipmentSlot slot = modifier.getSlot();
+        if (slot != null) {
+            switch (slot) {
+                case CHEST:
+                    tag.setString(KeySlot, "chest");
+                    break;
+                case FEET:
+                    tag.setString(KeySlot, "feet");
+                    break;
+                case HAND:
+                    tag.setString(KeySlot, "mainhand");
+                    break;
+                case HEAD:
+                    tag.setString(KeySlot, "head");
+                    break;
+                case LEGS:
+                    tag.setString(KeySlot, "legs");
+                    break;
+                case OFF_HAND:
+                    tag.setString(KeySlot, "offhand");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return tag;
+    }
+
+    @Override
+    public void addModifier(Attribute attribute, ItemAttributeModifier modifier) {
+        // Check that the UUID is unique
         for (NBTBase aList : list) {
             if (aList instanceof NBTTagCompound) {
                 NBTTagCompound tag = (NBTTagCompound) aList;
@@ -65,59 +133,53 @@ public class MonoItemAttributes implements ItemAttributes
                     throw new IllegalArgumentException("UUID must be unique across all modifiers");
             }
         }
-		
-		// Add the modifier
-		NBTTagCompound modifierTag = saveModifier(attribute, modifier);
-		list.add(modifierTag);
-	}
 
-	@Override
-	public void removeModifier(ItemAttributeModifier modifier)
-	{
-		// Find the modifier
-		for (int i = 0; i < list.size(); ++i)
-		{
-			if(list.get(i) instanceof NBTTagCompound) {
-				NBTTagCompound tag = (NBTTagCompound) list.get(i);
-				if (modifier.getUniqueId().equals(tag.a(KeyUUID))) {
-					// Remove it
-					list.remove(i);
-					break;
-				}
-			}
-		}
-	}
+        // Add the modifier
+        NBTTagCompound modifierTag = saveModifier(attribute, modifier);
+        list.add(modifierTag);
+    }
 
-	@Override
-	public void clearModifiers(Attribute attribute)
-	{
-		String id = Attributes.getId(attribute);
-		
-		for (int i = 0; i < list.size(); ++i)
-		{
-			if(list.get(i) instanceof NBTTagCompound) {
+    @Override
+    public void removeModifier(ItemAttributeModifier modifier) {
+        // Find the modifier
+        for (int i = 0; i < list.size(); ++i) {
+            if (list.get(i) instanceof NBTTagCompound) {
+                NBTTagCompound tag = (NBTTagCompound) list.get(i);
+                if (modifier.getUniqueId().equals(tag.a(KeyUUID))) {
+                    // Remove it
+                    list.remove(i);
+                    break;
+                }
+            }
+        }
+    }
 
-				NBTTagCompound tag = (NBTTagCompound) list.get(i);
-				if (id.equals(tag.getString(KeyAttributeName))) {
-					// Remove it
-					list.remove(i);
-					--i;
-				}
-			}
-		}
-	}
+    @Override
+    public void clearModifiers(Attribute attribute) {
+        String id = Attributes.getId(attribute);
 
-	@Override
-	public void clearModifiers()
-	{
+        for (int i = 0; i < list.size(); ++i) {
+            if (list.get(i) instanceof NBTTagCompound) {
+
+                NBTTagCompound tag = (NBTTagCompound) list.get(i);
+                if (id.equals(tag.getString(KeyAttributeName))) {
+                    // Remove it
+                    list.remove(i);
+                    --i;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void clearModifiers() {
         if (list.size() > 0) {
             list.subList(0, list.size()).clear();
         }
-	}
+    }
 
-	@Override
-	public ItemAttributeModifier getModifier(UUID id)
-	{
+    @Override
+    public ItemAttributeModifier getModifier(UUID id) {
         for (NBTBase aList : list) {
             if (aList instanceof NBTTagCompound) {
                 NBTTagCompound tag = (NBTTagCompound) aList;
@@ -125,32 +187,30 @@ public class MonoItemAttributes implements ItemAttributes
                     return readModifier(tag);
             }
         }
-		
-		return null;
-	}
 
-	@Override
-	public Collection<ItemAttributeModifier> getModifiers(String name)
-	{
-		List<ItemAttributeModifier> modifiers = Lists.newArrayList();
+        return null;
+    }
 
-		modifyModifier(name, modifiers, KeyName);
+    @Override
+    public Collection<ItemAttributeModifier> getModifiers(String name) {
+        List<ItemAttributeModifier> modifiers = Lists.newArrayList();
 
-		return Collections.unmodifiableList(modifiers);
-	}
-	
-	@Override
-	public Collection<ItemAttributeModifier> getModifiers(Attribute attribute)
-	{
-		String id = Attributes.getId(attribute);
-		List<ItemAttributeModifier> modifiers = Lists.newArrayList();
+        modifyModifier(name, modifiers, KeyName);
 
-		modifyModifier(id, modifiers, KeyAttributeName);
+        return Collections.unmodifiableList(modifiers);
+    }
 
-		return Collections.unmodifiableList(modifiers);
-	}
+    @Override
+    public Collection<ItemAttributeModifier> getModifiers(Attribute attribute) {
+        String id = Attributes.getId(attribute);
+        List<ItemAttributeModifier> modifiers = Lists.newArrayList();
 
-	private void modifyModifier(String id, List<ItemAttributeModifier> modifiers, String keyAttributeName) {
+        modifyModifier(id, modifiers, KeyAttributeName);
+
+        return Collections.unmodifiableList(modifiers);
+    }
+
+    private void modifyModifier(String id, List<ItemAttributeModifier> modifiers, String keyAttributeName) {
         for (NBTBase aList : list) {
             if (aList instanceof NBTTagCompound) {
                 NBTTagCompound tag = (NBTTagCompound) aList;
@@ -158,83 +218,6 @@ public class MonoItemAttributes implements ItemAttributes
                     modifiers.add(readModifier(tag));
             }
         }
-	}
-
-	private static ItemAttributeModifier readModifier(NBTTagCompound tag)
-	{
-		String name = tag.getString(KeyName);
-		UUID id = tag.a(KeyUUID);
-		double amount = tag.getDouble(KeyAmount);
-		int op = tag.getInt(KeyOperation);
-		String rawSlot = tag.getString(KeySlot);
-		
-		EquipmentSlot slot = null;
-		if (rawSlot != null)
-		{
-			switch (rawSlot)
-			{
-			case "mainhand":
-				slot = EquipmentSlot.HAND;
-				break;
-			case "offhand":
-				slot = EquipmentSlot.OFF_HAND;
-				break;
-			case "head":
-				slot = EquipmentSlot.HEAD;
-				break;
-			case "chest":
-				slot = EquipmentSlot.CHEST;
-				break;
-			case "legs":
-				slot = EquipmentSlot.LEGS;
-				break;
-			case "feet":
-				slot = EquipmentSlot.FEET;
-				break;
-			}
-		}
-		
-		return new ItemAttributeModifier(id, name, amount, Operation.values()[op], slot);
-	}
-	
-	private static NBTTagCompound saveModifier(Attribute attribute, ItemAttributeModifier modifier)
-	{
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString(KeyName, modifier.getName());
-		tag.a(KeyUUID, modifier.getUniqueId());
-		tag.setDouble(KeyAmount, modifier.getAmount());
-		tag.setInt(KeyOperation, modifier.getOperation().ordinal());
-		tag.setString(KeyAttributeName, Attributes.getId(attribute));
-
-        EquipmentSlot slot = modifier.getSlot();
-        if (slot != null)
-		{
-			switch (slot)
-			{
-			case CHEST:
-				tag.setString(KeySlot, "chest");
-				break;
-			case FEET:
-				tag.setString(KeySlot, "feet");
-				break;
-			case HAND:
-				tag.setString(KeySlot, "mainhand");
-				break;
-			case HEAD:
-				tag.setString(KeySlot, "head");
-				break;
-			case LEGS:
-				tag.setString(KeySlot, "legs");
-				break;
-			case OFF_HAND:
-				tag.setString(KeySlot, "offhand");
-				break;
-			default:
-				break;
-			}
-		}
-		
-		return tag;
-	}
+    }
 
 }

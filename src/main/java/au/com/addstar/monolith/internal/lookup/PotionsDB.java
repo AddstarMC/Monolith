@@ -29,35 +29,31 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.google.common.collect.HashMultimap;
 
-public class PotionsDB extends FlatDb<PotionEffectType>
-{
-	private HashMap<String, PotionEffectType> mNameMap;
-	private HashMultimap<PotionEffectType, String> mIdMap;
-	
-	public PotionsDB()
-	{
-		mNameMap = new HashMap<>();
-		mIdMap = HashMultimap.create();
-	}
-	
-	public PotionEffectType getByName(String name)
-	{
-		return mNameMap.get(name.toLowerCase());
-	}
-	
-	public Set<String> getByEffect(PotionEffectType item)
-	{
-		return mIdMap.get(item);
-	}
+public class PotionsDB extends FlatDb<PotionEffectType> {
+    private final HashMap<String, PotionEffectType> mNameMap;
+    private final HashMultimap<PotionEffectType, String> mIdMap;
 
-	@Override
-	PotionEffectType getObject(String... string) {
-		return PotionEffectType.getByName(string[0]);
-	}
+    public PotionsDB() {
+        mNameMap = new HashMap<>();
+        mIdMap = HashMultimap.create();
+    }
 
-	@Override
-	void saveObject(String string, PotionEffectType object) {
-		mNameMap.put(string.toLowerCase(), object);
-		mIdMap.put(object, string);
-	}
+    public PotionEffectType getByName(String name) {
+        return mNameMap.get(name.toLowerCase());
+    }
+
+    public Set<String> getByEffect(PotionEffectType item) {
+        return mIdMap.get(item);
+    }
+
+    @Override
+    PotionEffectType getObject(String... string) {
+        return PotionEffectType.getByName(string[0]);
+    }
+
+    @Override
+    void saveObject(String string, PotionEffectType object) {
+        mNameMap.put(string.toLowerCase(), object);
+        mIdMap.put(object, string);
+    }
 }

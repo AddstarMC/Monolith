@@ -35,7 +35,7 @@ import org.bukkit.entity.Rabbit.Type;
 import org.bukkit.inventory.ItemStack;
 
 public class EntityDefinition {
-    private EntityType mType;
+    private final EntityType mType;
     private String mSubType;
 
     public EntityDefinition(EntityType type, String subtype) {

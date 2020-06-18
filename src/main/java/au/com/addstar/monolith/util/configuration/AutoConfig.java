@@ -82,12 +82,12 @@ public abstract class AutoConfig {
     /**
      * The file to save too and load from.
      */
-    private File file;
-    private HashMap<String, String> categoryComments;
+    private final File file;
+    private final HashMap<String, String> categoryComments;
     /**
      * The plugin name.
      */
-    private String pluginName;
+    private final String pluginName;
     private List<String> description = null;
 
     /**
@@ -112,23 +112,21 @@ public abstract class AutoConfig {
 
     /**
      * Runs after the file is loaded.
+     *
      * @param yaml {@link YamlConfiguration}
      * @throws InvalidConfigurationException if it cannot proccess the config.
      */
-    @SuppressWarnings("RedundantThrows")
-    protected void onPostLoad(YamlConfiguration yaml) throws InvalidConfigurationException {
-    }
+    protected abstract void onPostLoad(YamlConfiguration yaml) throws InvalidConfigurationException;
 
     /**
      * This should be used to update/convert any data in fields for saving.
      */
-    protected void onPreSave() {
-    }
+    protected abstract void onPreSave();
 
     private <T> Set<T> newSet(Class<? extends Set<T>> setClass, Collection<T> data)
-          throws InvalidConfigurationException {
+            throws InvalidConfigurationException {
         Validate.isTrue(!Modifier.isAbstract(setClass.getModifiers()),
-              "You cannot use an abstract type for AutoConfiguration");
+                "You cannot use an abstract type for AutoConfiguration");
 
         Constructor<? extends Set<T>> constructor;
 
@@ -151,9 +149,9 @@ public abstract class AutoConfig {
      * @throws InvalidConfigurationException if the data cannot be read
      */
     private <T> List<T> newList(Class<? extends List<T>> listClass, Collection<T> data)
-          throws InvalidConfigurationException {
+            throws InvalidConfigurationException {
         Validate.isTrue(!Modifier.isAbstract(listClass.getModifiers()),
-              "You cannot use an abstract type for AutoConfiguration");
+                "You cannot use an abstract type for AutoConfiguration");
 
         Constructor<? extends List<T>> constructor;
 
@@ -179,7 +177,7 @@ public abstract class AutoConfig {
             if (!file.exists()) {
                 if (!file.getParentFile().mkdirs() || !file.createNewFile()) {
                     Logger.getLogger(pluginName).warning(file.toString() + " could not be"
-                          + " created");
+                            + " created");
                 }
             }
 
@@ -194,7 +192,7 @@ public abstract class AutoConfig {
                 if (!yml.contains(path)) {
                     if (field.get(this) == null) {
                         throw new InvalidConfigurationException(path
-                              + " is required to be set! Info:\n" + configField.comment());
+                                + " is required to be set! Info:\n" + configField.comment());
                     }
                 } else {
                     // Parse the value
@@ -216,79 +214,79 @@ public abstract class AutoConfig {
                             field.set(this, yml.getStringList(path).toArray(new String[0]));
                         } else {
                             throw new IllegalArgumentException("Cannot use type "
-                                  + field.getType().getSimpleName() + " for AutoConfiguration");
+                                    + field.getType().getSimpleName() + " for AutoConfiguration");
                         }
                     } else if (List.class.isAssignableFrom(field.getType())) {
                         if (field.getGenericType() == null) {
                             throw new IllegalArgumentException("Cannot use type List without "
-                                  + "specifying generic type for AutoConfiguration");
+                                    + "specifying generic type for AutoConfiguration");
                         }
 
                         Type type = ((ParameterizedType) field.getGenericType())
-                              .getActualTypeArguments()[0];
+                                .getActualTypeArguments()[0];
 
                         if (type.equals(Integer.class)) {
                             field.set(this,
-                                  newList((Class<? extends List<Integer>>) field.getType(),
-                                        yml.getIntegerList(path)));
+                                    newList((Class<? extends List<Integer>>) field.getType(),
+                                            yml.getIntegerList(path)));
                         } else if (type.equals(Float.class)) {
                             field.set(this, newList((Class<? extends List<Float>>) field.getType(),
-                                  yml.getFloatList(path)));
+                                    yml.getFloatList(path)));
                         } else if (type.equals(Double.class)) {
                             field.set(this,
-                                  newList((Class<? extends List<Double>>) field.getType(),
-                                        yml.getDoubleList(path)));
+                                    newList((Class<? extends List<Double>>) field.getType(),
+                                            yml.getDoubleList(path)));
                         } else if (type.equals(Long.class)) {
                             field.set(this, newList((Class<? extends List<Long>>) field.getType(),
-                                  yml.getLongList(path)));
+                                    yml.getLongList(path)));
                         } else if (type.equals(Short.class)) {
                             field.set(this, newList((Class<? extends List<Short>>) field.getType(),
-                                  yml.getShortList(path)));
+                                    yml.getShortList(path)));
                         } else if (type.equals(Boolean.class)) {
                             field.set(this,
-                                  newList((Class<? extends List<Boolean>>) field.getType(),
-                                        yml.getBooleanList(path)));
+                                    newList((Class<? extends List<Boolean>>) field.getType(),
+                                            yml.getBooleanList(path)));
                         } else if (type.equals(String.class)) {
                             field.set(this,
-                                  newList((Class<? extends List<String>>) field.getType(),
-                                        yml.getStringList(path)));
+                                    newList((Class<? extends List<String>>) field.getType(),
+                                            yml.getStringList(path)));
                         } else {
                             throw new IllegalArgumentException("Cannot use type "
-                                  + field.getType().getSimpleName() + "<" + type.toString()
-                                  + "> for AutoConfiguration");
+                                    + field.getType().getSimpleName() + "<" + type.toString()
+                                    + "> for AutoConfiguration");
                         }
                     } else if (Set.class.isAssignableFrom(field.getType())) {
                         if (field.getGenericType() == null) {
                             throw new IllegalArgumentException("Cannot use type set without "
-                                  + "specifying generic type for AytoConfiguration");
+                                    + "specifying generic type for AytoConfiguration");
                         }
                         Type type = ((ParameterizedType) field.getGenericType())
-                              .getActualTypeArguments()[0];
+                                .getActualTypeArguments()[0];
                         if (type.equals(Integer.class)) {
                             field.set(this, newSet((Class<? extends Set<Integer>>) field.getType(),
-                                  yml.getIntegerList(path)));
+                                    yml.getIntegerList(path)));
                         } else if (type.equals(Float.class)) {
                             field.set(this, newSet((Class<? extends Set<Float>>) field.getType(),
-                                  yml.getFloatList(path)));
+                                    yml.getFloatList(path)));
                         } else if (type.equals(Double.class)) {
                             field.set(this, newSet((Class<? extends Set<Double>>) field.getType(),
-                                  yml.getDoubleList(path)));
+                                    yml.getDoubleList(path)));
                         } else if (type.equals(Long.class)) {
                             field.set(this, newSet((Class<? extends Set<Long>>) field.getType(),
-                                  yml.getLongList(path)));
+                                    yml.getLongList(path)));
                         } else if (type.equals(Short.class)) {
                             field.set(this, newSet((Class<? extends Set<Short>>) field.getType(),
-                                  yml.getShortList(path)));
+                                    yml.getShortList(path)));
                         } else if (type.equals(Boolean.class)) {
                             field.set(this, newSet((Class<? extends Set<Boolean>>) field.getType(),
-                                  yml.getBooleanList(path)));
+                                    yml.getBooleanList(path)));
                         } else if (type.equals(String.class)) {
                             field.set(this, newSet((Class<? extends Set<String>>) field.getType(),
-                                  yml.getStringList(path)));
+                                    yml.getStringList(path)));
                         } else {
                             throw new IllegalArgumentException("Cannot use type "
-                                  + field.getType().getSimpleName() + "<" + type.toString()
-                                  + "> for AutoConfiguration");
+                                    + field.getType().getSimpleName() + "<" + type.toString()
+                                    + "> for AutoConfiguration");
                         }
                     } else {
                         // Integer
@@ -310,7 +308,7 @@ public abstract class AutoConfig {
                             field.set(this, yml.getString(path));
                         } else {
                             throw new IllegalArgumentException("Cannot use type "
-                                  + field.getType().getSimpleName() + " for AutoConfiguration");
+                                    + field.getType().getSimpleName() + " for AutoConfiguration");
                         }
                     }
                 }
@@ -319,7 +317,7 @@ public abstract class AutoConfig {
 
             return true;
         } catch (IOException | IllegalAccessException
-              | IllegalArgumentException | InvalidConfigurationException e) {
+                | IllegalArgumentException | InvalidConfigurationException e) {
             e.printStackTrace();
             return false;
         }
@@ -378,44 +376,44 @@ public abstract class AutoConfig {
                         config.set(path, Arrays.asList((String[]) field.get(this)));
                     } else {
                         throw new IllegalArgumentException("Cannot use type "
-                              + field.getType().getSimpleName() + " for AutoConfiguration");
+                                + field.getType().getSimpleName() + " for AutoConfiguration");
                     }
                 } else if (List.class.isAssignableFrom(field.getType())) {
                     if (field.getGenericType() == null) {
                         throw new IllegalArgumentException("Cannot use type List without "
-                              + "specifying generic type for AutoConfiguration");
+                                + "specifying generic type for AutoConfiguration");
                     }
                     Type type = ((ParameterizedType) field.getGenericType())
-                          .getActualTypeArguments()[0];
+                            .getActualTypeArguments()[0];
 
                     if (type.equals(Integer.class) || type.equals(Float.class)
-                          || type.equals(Double.class) || type.equals(Long.class)
-                          || type.equals(Short.class) || type.equals(Boolean.class)
-                          || type.equals(String.class)) {
+                            || type.equals(Double.class) || type.equals(Long.class)
+                            || type.equals(Short.class) || type.equals(Boolean.class)
+                            || type.equals(String.class)) {
                         config.set(path, field.get(this));
                     } else {
                         throw new IllegalArgumentException("Cannot use type "
-                              + field.getType().getSimpleName() + "<" + type.toString()
-                              + "> for AutoConfiguration");
+                                + field.getType().getSimpleName() + "<" + type.toString()
+                                + "> for AutoConfiguration");
                     }
                 } else if (Set.class.isAssignableFrom(field.getType())) {
                     if (field.getGenericType() == null) {
                         throw new IllegalArgumentException("Cannot use type Set without specifying"
-                              + " generic type for AutoConfiguration");
+                                + " generic type for AutoConfiguration");
                     }
 
                     Type type = ((ParameterizedType) field.getGenericType())
-                          .getActualTypeArguments()[0];
+                            .getActualTypeArguments()[0];
 
                     if (type.equals(Integer.class) || type.equals(Float.class)
-                          || type.equals(Double.class) || type.equals(Long.class)
-                          || type.equals(Short.class) || type.equals(Boolean.class)
-                          || type.equals(String.class)) {
+                            || type.equals(Double.class) || type.equals(Long.class)
+                            || type.equals(Short.class) || type.equals(Boolean.class)
+                            || type.equals(String.class)) {
                         config.set(path, new ArrayList<Object>((Set<?>) field.get(this)));
                     } else {
                         throw new IllegalArgumentException("Cannot use type "
-                              + field.getType().getSimpleName() + "<" + type.toString()
-                              + "> for AutoConfiguration");
+                                + field.getType().getSimpleName() + "<" + type.toString()
+                                + "> for AutoConfiguration");
                     }
                 } else {
                     // Integer
@@ -436,8 +434,9 @@ public abstract class AutoConfig {
                     } else if (field.getType().equals(String.class)) {
                         config.set(path, field.get(this));
                     } else {
-                        throw new IllegalArgumentException("Cannot use type "
-                              + field.getType().getSimpleName() + " for AutoConfiguration");
+                        throw new IllegalArgumentException("Field: " + field.getName()
+                                + "Cannot use type " + field.getType().getSimpleName()
+                                + " for AutoConfiguration");
                     }
                 }
 
@@ -449,17 +448,17 @@ public abstract class AutoConfig {
             StringBuilder output = new StringBuilder(config.saveToString());
             //add a header and description
             List<String> reverse = Lists.reverse(description);
-            output.insert(0,"\n"); // blank line to ensure separate from config.
+            output.insert(0, "\n"); // blank line to ensure separate from config.
             for (String desc : reverse) {
                 output.insert(0, "# " + desc);
             }
-            output.insert(0,"\n");
+            output.insert(0, "\n");
             String header = "AutoConfig v" + VERSION + " : " + pluginName;
             output.insert(0, "# " + header);
             // Apply comments
             String category = "";
             List<String> lines =
-                  new ArrayList<>(Arrays.asList(output.toString().split("\n")));
+                    new ArrayList<>(Arrays.asList(output.toString().split("\n")));
             for (int l = 0; l < lines.size(); l++) {
                 String line = lines.get(l);
                 if (line.startsWith("#")) {

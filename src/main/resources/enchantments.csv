@@ -1,103 +1,103 @@
 #version: ${plugin.version}
 #If you change this file it will not be automatically updated after the next release.
-#name,id
-Sharpness,sharpness
-AllDamage,sharpness
-Sharp,sharpness
-ArDmg,bane_of_arthropods
-BaneOfArthropods,bane_of_arthropods
-BaneOfArthropod,bane_of_arthropods
-Arthropod,bane_of_arthropods
-Arthropods,bane_of_arthropods
-Smite,smite
-UndeadDamage,smite
-Efficiency,efficiency
-DigSpeed,efficiency
-MineSpeed,efficiency
-CutSpeed,efficiency
-Eff,efficiency
-Unbreaking,unbreaking
-Durability,unbreaking
-Thorns,thorns
-HighCrit,thorns
-HigherCrit,thorns
-Thorn,thorns
-FireAspect,fire_aspect
-Fire,fire_aspect
-MeleeFire,fire_aspect
-MeleeFlame,fire_aspect
-Knockback,knockback
-KBack,knockback
-Fortune,fortune
-BlocksLootBonus,fortune
-Fort,fortune
-Looting,looting
-MobLoot,looting
-MobsLootBonus,looting
-Respiration,respiration
-Oxygen,respiration
-Breathing,respiration
-Breath,respiration
-Protection,protection
-Prot,protection
-Protect,protection
-BlastProtection,blast_protection
-BlastProtect,blast_protection
-ExplosionProtection,blast_protection
-FeatherFalling,feather_falling
-FallProtection,feather_falling
-FeatherFall,feather_falling
-Falling,feather_falling
-FireProtection,fire_protection
-FlameProtection,fire_protection
-FireProtect,fire_protection
-FlameProtect,fire_protection
-FireProt,fire_protection
-FlameProt,fire_protection
-ProjectileProtection,projectile_protection
-ProjProt,projectile_protection
-Projectile,projectile_protection
-SilkTouch,silk_touch
-SoftTouch,silk_touch
-AquaAffinity,aqua_affinity
-WaterWorker,aqua_affinity
-WaterMine,aqua_affinity
-Flame,flame
-FlameArrow,flame
-FireArrow,flame
-Power,power
-ArrowDamage,power
-ArrowPower,power
-Punch,punch
-ArrowPunch,punch
-ArrowKnockback,punch
-Infinity,infinity
-InfiniteArrows,infinity
-InfArrows,infinity
-Infinite,infinity
-Unlimited,infinity
-UnlimitedArrows,infinity
-Lure,lure
-FishSpeed,lure
-FishingSpeed,lure
-LuckOfTheSea,luck_of_the_sea
-LuckOfSea,luck_of_the_sea
-Luck,luck_of_the_sea
-FishingLuck,luck_of_the_sea
-DepthStrider,depth_strider
-WaterWalking,depth_strider
-FrostWalker,frost_walker
-Mending,mending
-Curse,binding_curse
-binding,binding_curse
-BindingCurse,binding_curse
-sweeping,sweeping
-Sweep,sweeping
-loyalty,loyalty
-Loyalty,loyalty
-impaling,impaling
-riptide,riptide
-channeling,channeling
-thunder,channeling
-Vanishing,vanishing_curse
-Vanishingcurse,vanishing_curse
+#name                                                                                ,id
+Sharpness                                                                            ,sharpness
+AllDamage                                                                            ,sharpness
+Sharp                                                                                ,sharpness
+ArDmg                                                                                ,bane_of_arthropods
+BaneOfArthropods                                                                     ,bane_of_arthropods
+BaneOfArthropod                                                                      ,bane_of_arthropods
+Arthropod                                                                            ,bane_of_arthropods
+Arthropods                                                                           ,bane_of_arthropods
+Smite                                                                                ,smite
+UndeadDamage                                                                         ,smite
+Efficiency                                                                           ,efficiency
+DigSpeed                                                                             ,efficiency
+MineSpeed                                                                            ,efficiency
+CutSpeed                                                                             ,efficiency
+Eff                                                                                  ,efficiency
+Unbreaking                                                                           ,unbreaking
+Durability                                                                           ,unbreaking
+Thorns                                                                               ,thorns
+HighCrit                                                                             ,thorns
+HigherCrit                                                                           ,thorns
+Thorn                                                                                ,thorns
+FireAspect                                                                           ,fire_aspect
+Fire                                                                                 ,fire_aspect
+MeleeFire                                                                            ,fire_aspect
+MeleeFlame                                                                           ,fire_aspect
+Knockback                                                                            ,knockback
+KBack                                                                                ,knockback
+Fortune                                                                              ,fortune
+BlocksLootBonus                                                                      ,fortune
+Fort                                                                                 ,fortune
+Looting                                                                              ,looting
+MobLoot                                                                              ,looting
+MobsLootBonus                                                                        ,looting
+Respiration                                                                          ,respiration
+Oxygen                                                                               ,respiration
+Breathing                                                                            ,respiration
+Breath                                                                               ,respiration
+Protection                                                                           ,protection
+Prot                                                                                 ,protection
+Protect                                                                              ,protection
+BlastProtection                                                                      ,blast_protection
+BlastProtect                                                                         ,blast_protection
+ExplosionProtection                                                                  ,blast_protection
+FeatherFalling                                                                       ,feather_falling
+FallProtection                                                                       ,feather_falling
+FeatherFall                                                                          ,feather_falling
+Falling                                                                              ,feather_falling
+FireProtection                                                                       ,fire_protection
+FlameProtection                                                                      ,fire_protection
+FireProtect                                                                          ,fire_protection
+FlameProtect                                                                         ,fire_protection
+FireProt                                                                             ,fire_protection
+FlameProt                                                                            ,fire_protection
+ProjectileProtection                                                                 ,projectile_protection
+ProjProt                                                                             ,projectile_protection
+Projectile                                                                           ,projectile_protection
+SilkTouch                                                                            ,silk_touch
+SoftTouch                                                                            ,silk_touch
+AquaAffinity                                                                         ,aqua_affinity
+WaterWorker                                                                          ,aqua_affinity
+WaterMine                                                                            ,aqua_affinity
+Flame                                                                                ,flame
+FlameArrow                                                                           ,flame
+FireArrow                                                                            ,flame
+Power                                                                                ,power
+ArrowDamage                                                                          ,power
+ArrowPower                                                                           ,power
+Punch                                                                                ,punch
+ArrowPunch                                                                           ,punch
+ArrowKnockback                                                                       ,punch
+Infinity                                                                             ,infinity
+InfiniteArrows                                                                       ,infinity
+InfArrows                                                                            ,infinity
+Infinite                                                                             ,infinity
+Unlimited                                                                            ,infinity
+UnlimitedArrows                                                                      ,infinity
+Lure                                                                                 ,lure
+FishSpeed                                                                            ,lure
+FishingSpeed                                                                         ,lure
+LuckOfTheSea                                                                         ,luck_of_the_sea
+LuckOfSea                                                                            ,luck_of_the_sea
+Luck                                                                                 ,luck_of_the_sea
+FishingLuck                                                                          ,luck_of_the_sea
+DepthStrider                                                                         ,depth_strider
+WaterWalking                                                                         ,depth_strider
+FrostWalker                                                                          ,frost_walker
+Mending                                                                              ,mending
+Curse                                                                                ,binding_curse
+binding                                                                              ,binding_curse
+BindingCurse                                                                         ,binding_curse
+sweeping                                                                             ,sweeping
+Sweep                                                                                ,sweeping
+loyalty                                                                              ,loyalty
+Loyalty                                                                              ,loyalty
+impaling                                                                             ,impaling
+riptide                                                                              ,riptide
+channeling                                                                           ,channeling
+thunder                                                                              ,channeling
+Vanishing                                                                            ,vanishing_curse
+Vanishingcurse                                                                       ,vanishing_curse

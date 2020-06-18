@@ -26,13 +26,14 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-public abstract class BaseEffect implements Cloneable
-{
-	public abstract void spawn(Location location);
-	public abstract void spawn(Player player, Location location);
-	
-	public abstract void save(ConfigurationSection section);
-	public abstract void load(ConfigurationSection section);
-	
-	public abstract BaseEffect clone();
+public abstract class BaseEffect implements Cloneable {
+    public abstract void spawn(Location location);
+
+    public abstract void spawn(Player player, Location location);
+
+    public abstract void save(ConfigurationSection section);
+
+    public abstract void load(ConfigurationSection section);
+
+    public abstract BaseEffect clone();
 }

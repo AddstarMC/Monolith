@@ -29,10 +29,11 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ConfigField
-{
-	String name() default "";
-	String comment() default "";
-	String category() default "";
-	
+public @interface ConfigField {
+    String name() default "";
+
+    String comment() default "";
+
+    String category() default "";
+
 }

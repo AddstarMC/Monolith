@@ -30,28 +30,23 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 
-public class RootCommandDispatcher extends CommandDispatcher implements CommandExecutor, TabCompleter
-{
-	public RootCommandDispatcher( String description )
-	{
-		super(description);
-	}
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
-	{
-		return dispatchCommand(sender, "/", label, args);
-	}
-	
-	@Override
-	public List<String> onTabComplete( CommandSender sender, Command command, String label, String[] args )
-	{
-		return tabComplete(sender, "/", label, args);
-	}
-	
-	public void registerAs(PluginCommand command)
-	{
-		command.setExecutor(this);
-		command.setTabCompleter(this);
-	}
+public class RootCommandDispatcher extends CommandDispatcher implements CommandExecutor, TabCompleter {
+    public RootCommandDispatcher(String description) {
+        super(description);
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        return dispatchCommand(sender, "/", label, args);
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        return tabComplete(sender, "/", label, args);
+    }
+
+    public void registerAs(PluginCommand command) {
+        command.setExecutor(this);
+        command.setTabCompleter(this);
+    }
 }

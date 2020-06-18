@@ -37,55 +37,51 @@ import au.com.addstar.monolith.lookup.PlayerDefinition;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-public class GeSuitHandler
-{
-	private MessageWaiter mWaiter;
-	private Random mRand;
-	private Plugin mPlugin;
-	private String geSuitChannel = "gesuit:api";
-	
-	public GeSuitHandler(Plugin plugin)
-	{
-		mWaiter = new MessageWaiter();
-		mPlugin = plugin;
-		mRand = new Random();
-		Bukkit.getMessenger().registerIncomingPluginChannel(plugin, geSuitChannel, mWaiter);
-		Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, geSuitChannel);
-	}
-	
-	public ListenableFuture<List<PlayerDefinition>> lookupPlayerNames(Iterable<String> names)
-	{
-		// Now using this method thanks to the damn invalid method crap bukkit did (Bukkit.getOnlinePlayers() returns either a collection or array when compiling.)
-		Player toSend = null;
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			toSend = player;
-			break;
-		}
-		if (toSend == null)
-			throw new IllegalStateException("Messaging not available");
+public class GeSuitHandler {
+    private final MessageWaiter mWaiter;
+    private final Random mRand;
+    private final Plugin mPlugin;
+    private final String geSuitChannel = "gesuit:api";
 
-		int requestId = mRand.nextInt();
-		MessageResolvePlayer message = new MessageResolvePlayer(requestId, names);
-		toSend.sendPluginMessage(mPlugin, geSuitChannel, Message.save(message));
+    public GeSuitHandler(Plugin plugin) {
+        mWaiter = new MessageWaiter();
+        mPlugin = plugin;
+        mRand = new Random();
+        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, geSuitChannel, mWaiter);
+        Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, geSuitChannel);
+    }
 
-		return mWaiter.waitForReply(message);
-	}
-	
-	public ListenableFuture<List<PlayerDefinition>> lookupPlayerUUIDs(Iterable<UUID> ids)
-	{
-		// Now using this method thanks to the damn invalid method crap bukkit did (Bukkit.getOnlinePlayers() returns either a collection or array when compiling.)
-		Player toSend = null;
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			toSend = player;
-			break;
-		}
-		if (toSend == null)
-			throw new IllegalStateException("Messaging not available");
+    public ListenableFuture<List<PlayerDefinition>> lookupPlayerNames(Iterable<String> names) {
+        // Now using this method thanks to the damn invalid method crap bukkit did (Bukkit.getOnlinePlayers() returns either a collection or array when compiling.)
+        Player toSend = null;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            toSend = player;
+            break;
+        }
+        if (toSend == null)
+            throw new IllegalStateException("Messaging not available");
 
-		int requestId = mRand.nextInt();
-		MessageResolveUUID message = new MessageResolveUUID(requestId, ids);
-		toSend.sendPluginMessage(mPlugin, geSuitChannel, Message.save(message));
+        int requestId = mRand.nextInt();
+        MessageResolvePlayer message = new MessageResolvePlayer(requestId, names);
+        toSend.sendPluginMessage(mPlugin, geSuitChannel, Message.save(message));
 
-		return mWaiter.waitForReply(message);
-	}
+        return mWaiter.waitForReply(message);
+    }
+
+    public ListenableFuture<List<PlayerDefinition>> lookupPlayerUUIDs(Iterable<UUID> ids) {
+        // Now using this method thanks to the damn invalid method crap bukkit did (Bukkit.getOnlinePlayers() returns either a collection or array when compiling.)
+        Player toSend = null;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            toSend = player;
+            break;
+        }
+        if (toSend == null)
+            throw new IllegalStateException("Messaging not available");
+
+        int requestId = mRand.nextInt();
+        MessageResolveUUID message = new MessageResolveUUID(requestId, ids);
+        toSend.sendPluginMessage(mPlugin, geSuitChannel, Message.save(message));
+
+        return mWaiter.waitForReply(message);
+    }
 }

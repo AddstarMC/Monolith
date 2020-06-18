@@ -33,112 +33,99 @@ import com.google.common.collect.Sets;
 import au.com.addstar.monolith.attachments.Attachment;
 import au.com.addstar.monolith.effects.BaseEffect;
 
-public abstract class Emitter
-{
-	private EmitterManager manager;
+public abstract class Emitter {
+    private EmitterManager manager;
 
-	private BaseEffect effect;
-	private Attachment attachment;
+    private BaseEffect effect;
+    private Attachment attachment;
 
-	private Set<Player> viewers;
+    private final Set<Player> viewers;
 
-	public Emitter(Attachment attachment)
-	{
-		this.attachment = attachment;
-		viewers = Sets.newHashSet();
-	}
+    public Emitter(Attachment attachment) {
+        this.attachment = attachment;
+        viewers = Sets.newHashSet();
+    }
 
-	public BaseEffect getEffect()
-	{
-		return effect;
-	}
+    public BaseEffect getEffect() {
+        return effect;
+    }
 
-	public void setEffect(BaseEffect effect)
-	{
-		Preconditions.checkNotNull(effect);
-		this.effect = effect;
-	}
+    public void setEffect(BaseEffect effect) {
+        Preconditions.checkNotNull(effect);
+        this.effect = effect;
+    }
 
-	public Attachment getAttachment()
-	{
-		return attachment;
-	}
+    public Attachment getAttachment() {
+        return attachment;
+    }
 
-	public void setAttachment(Attachment attachment)
-	{
-		this.attachment = attachment;
-	}
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
+    }
 
-	public boolean isPrivate()
-	{
-		return !viewers.isEmpty();
-	}
+    public boolean isPrivate() {
+        return !viewers.isEmpty();
+    }
 
-	/**
-	 * Gets the viewers of this emitter.
-	 * If this is empty, everyone will be able to see this effect if in range.
-	 * If not, only the players in here will be able to see it.
-	 * 
-	 * @return A modifiable set of players
-	 */
-	public Set<Player> getViewers()
-	{
-		return viewers;
-	}
+    /**
+     * Gets the viewers of this emitter.
+     * If this is empty, everyone will be able to see this effect if in range.
+     * If not, only the players in here will be able to see it.
+     *
+     * @return A modifiable set of players
+     */
+    public Set<Player> getViewers() {
+        return viewers;
+    }
 
-	protected void emit()
-	{
-		if (effect == null)
-			return;
-		
-		Location location = attachment.getLocation();
-		if ( viewers.isEmpty() )
-			effect.spawn(location);
-		else
-		{
-			for (Player player : viewers)
-				effect.spawn(player, location);
-		}
-	}
+    protected void emit() {
+        if (effect == null)
+            return;
 
-	void setManager(EmitterManager manager)
-	{
-		this.manager = manager;
-	}
+        Location location = attachment.getLocation();
+        if (viewers.isEmpty())
+            effect.spawn(location);
+        else {
+            for (Player player : viewers)
+                effect.spawn(player, location);
+        }
+    }
 
-	/**
-	 * Starts this emitter
-	 */
-	public final void start()
-	{
-		Preconditions.checkState(manager != null, "This emitter does not belong to a manager");
+    void setManager(EmitterManager manager) {
+        this.manager = manager;
+    }
 
-		onStart();
-		if (isRunning())
-			manager.setActive(this);
-	}
+    /**
+     * Starts this emitter
+     */
+    public final void start() {
+        Preconditions.checkState(manager != null, "This emitter does not belong to a manager");
 
-	/**
-	 * Stops this emitter
-	 */
-	public final void stop()
-	{
-		Preconditions.checkState(manager != null, "This emitter does not belong to a manager");
+        onStart();
+        if (isRunning())
+            manager.setActive(this);
+    }
 
-		onStop();
-		manager.removeActive(this);
-	}
+    /**
+     * Stops this emitter
+     */
+    public final void stop() {
+        Preconditions.checkState(manager != null, "This emitter does not belong to a manager");
 
-	protected abstract void onStart();
+        onStop();
+        manager.removeActive(this);
+    }
 
-	protected abstract void onStop();
+    protected abstract void onStart();
 
-	protected abstract void onTick();
+    protected abstract void onStop();
 
-	/**
-	 * Checks if the emitter is running
-	 * 
-	 * @return True if it is running
-	 */
-	public abstract boolean isRunning();
+    protected abstract void onTick();
+
+    /**
+     * Checks if the emitter is running
+     *
+     * @return True if it is running
+     */
+    public abstract boolean isRunning();
 }

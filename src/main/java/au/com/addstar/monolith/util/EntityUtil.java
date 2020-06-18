@@ -37,40 +37,34 @@ import org.bukkit.util.Vector;
 
 import java.util.List;
 
-public class EntityUtil
-{
-	public static BoundingBox getBoundingBox(Entity entity)
-	{
-		AxisAlignedBB rawBB = ((CraftEntity)entity).getHandle().getBoundingBox();
-		return new BoundingBox(new Vector(rawBB.minX, rawBB.minY, rawBB.minZ), new Vector(rawBB.maxX, rawBB.maxY, rawBB.maxZ));
-	}
-	
-	public static List<Entity> getEntitiesWithin(World world, BoundingBox bb)
-	{
-		return getEntitiesWithin(world, bb, Entity.class);
-	}
-	
-	@SuppressWarnings( "unchecked" )
-	public static <T extends Entity> List<T> getEntitiesWithin(World world, BoundingBox bb, Class<T> type)
-	{
-		AxisAlignedBB rawBB = new AxisAlignedBB(bb.getMinCorner().getX(), bb.getMinCorner().getY(), bb.getMinCorner().getZ(), bb.getMaxCorner().getX(), bb.getMaxCorner().getY(), bb.getMaxCorner().getZ());
-		
-		// Call List<? extends Entity> getEntities(Class<? extends Entity>, AxisAlignedBB, Predicate<? extends Entity>)
-		List<net.minecraft.server.v1_15_R1.Entity> rawResults = ((CraftWorld) world).getHandle().a(net.minecraft.server.v1_15_R1.Entity.class, rawBB, null);
+public class EntityUtil {
+    public static BoundingBox getBoundingBox(Entity entity) {
+        AxisAlignedBB rawBB = ((CraftEntity) entity).getHandle().getBoundingBox();
+        return new BoundingBox(new Vector(rawBB.minX, rawBB.minY, rawBB.minZ), new Vector(rawBB.maxX, rawBB.maxY, rawBB.maxZ));
+    }
 
-		List<T> resolved = Lists.newArrayListWithCapacity(rawResults.size());
-		for (net.minecraft.server.v1_15_R1.Entity rawResult : rawResults)
-		{
-			Entity bukkitEntity = rawResult.getBukkitEntity();
-			if (type.isInstance(bukkitEntity))
-				resolved.add((T)bukkitEntity);
-		}
-		
-		return resolved;
-	}
+    public static List<Entity> getEntitiesWithin(World world, BoundingBox bb) {
+        return getEntitiesWithin(world, bb, Entity.class);
+    }
 
-	public static List<? extends Entity> getEntitiesWithin(World world, BoundingBox bb, EntityType type)
-	{
-		return getEntitiesWithin(world, bb, type.getEntityClass());
-	}
+    @SuppressWarnings("unchecked")
+    public static <T extends Entity> List<T> getEntitiesWithin(World world, BoundingBox bb, Class<T> type) {
+        AxisAlignedBB rawBB = new AxisAlignedBB(bb.getMinCorner().getX(), bb.getMinCorner().getY(), bb.getMinCorner().getZ(), bb.getMaxCorner().getX(), bb.getMaxCorner().getY(), bb.getMaxCorner().getZ());
+
+        // Call List<? extends Entity> getEntities(Class<? extends Entity>, AxisAlignedBB, Predicate<? extends Entity>)
+        List<net.minecraft.server.v1_15_R1.Entity> rawResults = ((CraftWorld) world).getHandle().a(net.minecraft.server.v1_15_R1.Entity.class, rawBB, null);
+
+        List<T> resolved = Lists.newArrayListWithCapacity(rawResults.size());
+        for (net.minecraft.server.v1_15_R1.Entity rawResult : rawResults) {
+            Entity bukkitEntity = rawResult.getBukkitEntity();
+            if (type.isInstance(bukkitEntity))
+                resolved.add((T) bukkitEntity);
+        }
+
+        return resolved;
+    }
+
+    public static List<? extends Entity> getEntitiesWithin(World world, BoundingBox bb, EntityType type) {
+        return getEntitiesWithin(world, bb, type.getEntityClass());
+    }
 }

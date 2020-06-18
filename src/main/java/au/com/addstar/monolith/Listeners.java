@@ -30,14 +30,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class Listeners implements Listener
-{
+public class Listeners implements Listener {
 
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	private void onPlayerQuit(PlayerQuitEvent event)
-	{
-		MonoPlayer player = MonoPlayer.getPlayer(event.getPlayer());
-		player.onDestroy();
-	}
-	
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onPlayerQuit(PlayerQuitEvent event) {
+        MonoPlayer player = MonoPlayer.getPlayer(event.getPlayer());
+        player.onDestroy();
+    }
+
 }

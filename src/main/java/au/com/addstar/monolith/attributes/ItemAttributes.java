@@ -30,51 +30,56 @@ import org.bukkit.attribute.Attribute;
 /**
  * Represents attribute modifiers stored on an item
  */
-public interface ItemAttributes
-{
-	/**
-	 * Gets all modifiers that modify the given attribute
-	 * @param attribute The modified attribute
-	 * @return A collection of ItemAttributeModifier objects
-	 */
+public interface ItemAttributes {
+    /**
+     * Gets all modifiers that modify the given attribute
+     *
+     * @param attribute The modified attribute
+     * @return A collection of ItemAttributeModifier objects
+     */
     Collection<ItemAttributeModifier> getModifiers(Attribute attribute);
-	
-	/**
-	 * Adds a modifier to this item
-	 * @param attribute The attribute to modify
-	 * @param modifier The modifier to add. The UUID of this modifier MUST be unique
-	 * @throws IllegalArgumentException Thrown if the uuid is not unique
-	 */
+
+    /**
+     * Adds a modifier to this item
+     *
+     * @param attribute The attribute to modify
+     * @param modifier  The modifier to add. The UUID of this modifier MUST be unique
+     * @throws IllegalArgumentException Thrown if the uuid is not unique
+     */
     void addModifier(Attribute attribute, ItemAttributeModifier modifier) throws IllegalArgumentException;
-	
-	/**
-	 * Removes a modifier from this item
-	 * @param modifier The modifier to remove
-	 */
+
+    /**
+     * Removes a modifier from this item
+     *
+     * @param modifier The modifier to remove
+     */
     void removeModifier(ItemAttributeModifier modifier);
-	
-	/**
-	 * Clears all modifiers that modify the given attribute
-	 * @param attribute The attribute to clear modifiers for
-	 */
+
+    /**
+     * Clears all modifiers that modify the given attribute
+     *
+     * @param attribute The attribute to clear modifiers for
+     */
     void clearModifiers(Attribute attribute);
-	
-	/**
-	 * Clears all modifiers from the item
-	 */
+
+    /**
+     * Clears all modifiers from the item
+     */
     void clearModifiers();
-	
-	/**
-	 * Gets a modifier by its UUID
-	 * @param id The id of the modifier
-	 * @return The modifier or null
-	 */
+
+    /**
+     * Gets a modifier by its UUID
+     *
+     * @param id The id of the modifier
+     * @return The modifier or null
+     */
     ItemAttributeModifier getModifier(UUID id);
-	
-	/**
-	 * Gets all modifiers that have the given name
-	 * @param name The name, case sensitive
-	 * @return A collection of ItemAttributeModifier instances
-	 */
+
+    /**
+     * Gets all modifiers that have the given name
+     *
+     * @param name The name, case sensitive
+     * @return A collection of ItemAttributeModifier instances
+     */
     Collection<ItemAttributeModifier> getModifiers(String name);
 }
