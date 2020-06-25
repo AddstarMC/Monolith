@@ -22,16 +22,14 @@
 
 package au.com.addstar.monolith;
 
-import au.com.addstar.monolith.chat.ChatMessage;
 import au.com.addstar.monolith.internal.GeSuitHandler;
 import au.com.addstar.monolith.lookup.Lookup;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.minecraft.server.v1_15_R1.DedicatedServer;
-import net.minecraft.server.v1_15_R1.DedicatedServerProperties;
+import net.minecraft.server.v1_16_R1.DedicatedServer;
+import net.minecraft.server.v1_16_R1.DedicatedServerProperties;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_15_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_16_R1.CraftServer;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,33 +49,6 @@ public class Monolith extends JavaPlugin {
         return mInstance;
     }
 
-    /**
-     * @param message the message to broadcast
-     * @deprecated use {@link Monolith#broadcastMessage(BaseComponent[])}
-     */
-    @Deprecated
-    public static void broadcastMessage(final ChatMessage message) {
-        broadcast(message, Server.BROADCAST_CHANNEL_USERS);
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public static void broadcastMessage(final BaseComponent[] message) {
-        broadcast(message, Server.BROADCAST_CHANNEL_USERS);
-    }
-
-    /**
-     * @param message    the message
-     * @param permission the perm
-     * @deprecated use {@link Monolith#broadcast(BaseComponent[], String)}
-     */
-    @Deprecated
-    public static void broadcast(final ChatMessage message, final String permission) {
-        for (Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission)) {
-            if (perm instanceof CommandSender && perm.hasPermission(permission)) {
-                message.send((CommandSender) perm);
-            }
-        }
-    }
 
     /**
      * @param message    the message
@@ -87,8 +58,7 @@ public class Monolith extends JavaPlugin {
     public static void broadcast(final BaseComponent[] message, final String permission) {
         for (Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission)) {
             if (perm instanceof CommandSender && perm.hasPermission(permission)) {
-                ((CommandSender) perm).spigot().sendMessage(message);
-            }
+                ((CommandSender) perm).spigot().sendMessage(message);            }
         }
     }
 

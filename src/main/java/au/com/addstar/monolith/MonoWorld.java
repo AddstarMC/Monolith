@@ -25,7 +25,6 @@ package au.com.addstar.monolith;
 import java.util.WeakHashMap;
 
 import org.bukkit.World;
-import au.com.addstar.monolith.chat.Title;
 
 public class MonoWorld {
     private static final WeakHashMap<World, MonoWorld> mWorlds = new WeakHashMap<>();
@@ -45,8 +44,4 @@ public class MonoWorld {
         return mworld;
     }
 
-    @Deprecated
-    public void showTitle(Title title) {
-        title.show(mWorld.getPlayers());
-    }
 }

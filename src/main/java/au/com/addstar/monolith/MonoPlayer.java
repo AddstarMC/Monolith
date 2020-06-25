@@ -25,7 +25,6 @@ package au.com.addstar.monolith;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
-import au.com.addstar.monolith.chat.Title;
 
 public class MonoPlayer {
     private static final HashMap<Player, MonoPlayer> mPlayers = new HashMap<>();
@@ -56,11 +55,6 @@ public class MonoPlayer {
 
     protected void onDestroy() {
         mPlayers.remove(mPlayer);
-    }
-
-    @Deprecated
-    public void showTitle(Title title) {
-        title.show(mPlayer);
     }
 
     @Override
