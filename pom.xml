@@ -25,11 +25,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.com.addstar</groupId>
     <artifactId>Monolith</artifactId>
-    <version>1.15.2-SNAPSHOT</version>
+    <version>1.16.1-SNAPSHOT</version>
     <name>Monolith</name>
     <description>A utility plugin for Spigot - ${spigot.version}</description>
     <properties>
-        <api.version>1.15</api.version>
+        <api.version>1.16</api.version>
         <plugin.version>${project.version}-${buildnumber}</plugin.version>
         <!-- so as to allow local declaration when building locally-->
         <buildnumber/>
