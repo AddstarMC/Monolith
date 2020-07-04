@@ -59,8 +59,6 @@ Zombie                     ,ZOMBIE                                              
 HuskZombie                 ,HUSK                                                        ,
 Slime                      ,SLIME                                                       ,
 Ghast                      ,GHAST                                                       ,
-PigZombie                  ,PIG_ZOMBIE                                                  ,
-ZombiePigman               ,PIG_ZOMBIE                                                  ,
 Enderman                   ,ENDERMAN                                                    ,
 CaveSpider                 ,CAVE_SPIDER                                                 ,
 Silverfish                 ,SILVERFISH                                                  ,
@@ -108,10 +106,10 @@ KillerBunny                ,RABBIT                                              
 Villager                   ,VILLAGER                                                    ,
 ZombieVillager             ,ZOMBIE_VILLAGER                                             ,
 VillagerZombie             ,ZOMBIE_VILLAGER                                             ,
-evoker                     ,EVOKER                                                      ,
-vex                        ,VEX                                                         ,
-vindicator                 ,VINDICATOR                                                  ,
-evokerfangs                ,EVOKER_FANGS                                                ,
+Evoker                     ,EVOKER                                                      ,
+Vex                        ,VEX                                                         ,
+Vindicator                 ,VINDICATOR                                                  ,
+EvokerFangs                ,EVOKER_FANGS                                                ,
 EnderCrystal               ,ENDER_CRYSTAL                                               ,
 SplashPotion               ,SPLASH_POTION                                               ,
 Egg                        ,EGG                                                         ,
@@ -121,12 +119,11 @@ Player                     ,PLAYER                                              
 Shulker                    ,SHULKER                                                     ,
 PotionSplash               ,AREA_EFFECT_CLOUD                                           ,
 AreaEffectCloud            ,AREA_EFFECT_CLOUD                                           ,
-llama                      ,LLAMA                                                       ,
-polarbear                  ,POLAR_BEAR                                                  ,
-shulker                    ,SHULKER                                                     ,
+Llama                      ,LLAMA                                                       ,
+PolarBear                  ,POLAR_BEAR                                                  ,
+Shulker                    ,SHULKER                                                     ,
 Parrot                     ,PARROT                                                      ,
-parrot                     ,PARROT                                                      ,
-bird                       ,PARROT                                                      ,
+Bird                       ,PARROT                                                      ,
 SpectralArrow              ,SPECTRAL_ARROW                                              ,
 ShulkerBullet              ,SHULKER_BULLET                                              ,
 DragonFireball             ,DRAGON_FIREBALL                                             ,
@@ -143,8 +140,12 @@ Drowned                    ,DROWNED                                             
 Dolphin                    ,DOLPHIN                                                     ,
 Panda                      ,PANDA
 Ravager                    ,RAVAGER
-ravager                    ,RAVAGER
+Ravager                    ,RAVAGER
 Pillager                   ,PILLAGER
-traderLlama                ,TRADER_LLAMA
-wanderingTrager            ,WANDERING_TRADER
-fox                        ,FOX
+TraderLlama                ,TRADER_LLAMA
+WanderingTrager            ,WANDERING_TRADER
+Fox                        ,FOX
+Hoglin                     ,HOGLIN
+Piglin                     ,PIGLIN
+Strider                    ,STRIDER
+Zoglin                     ,ZOGLIN
