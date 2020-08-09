@@ -2,14 +2,34 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
-      <option name="id" value="spigot-repo" />
-      <option name="name" value="spigot-repo" />
-      <option name="url" value="https://hub.spigotmc.org/nexus/content/groups/public" />
+      <option name="id" value="md_5-releases" />
+      <option name="name" value="md_5-releases" />
+      <option name="url" value="https://repo.md-5.net/content/repositories/releases/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="addstar-snapshot-repo" />
       <option name="name" value="addstar-snapshot-repo" />
       <option name="url" value="https://maven.addstar.com.au/artifactory/ext-snapshot-local" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="codemc-repo" />
+      <option name="name" value="codemc-repo" />
+      <option name="url" value="https://repo.codemc.org/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="md_5-snapshots" />
+      <option name="name" value="md_5-snapshots" />
+      <option name="url" value="https://repo.md-5.net/content/repositories/snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jitpack.io" />
+      <option name="name" value="jitpack.io" />
+      <option name="url" value="https://jitpack.io" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="codeMc" />
@@ -18,23 +38,13 @@
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
-      <option name="name" value="Central Repository" />
-      <option name="url" value="https://repo.maven.apache.org/maven2" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="central" />
       <option name="name" value="Maven Central repository" />
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="jitpack.io" />
-      <option name="name" value="jitpack.io" />
-      <option name="url" value="https://jitpack.io" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="addstar-repo" />
-      <option name="name" value="addstar-repo" />
-      <option name="url" value="https://maven.addstar.com.au/artifactory/ext-release-local" />
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="maven-central" />
@@ -42,24 +52,14 @@
       <option name="url" value="https://repo1.maven.org/maven2/" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="codemc-repo" />
-      <option name="name" value="codemc-repo" />
-      <option name="url" value="https://repo.codemc.org/repository/maven-public/" />
+      <option name="id" value="spigot-repo" />
+      <option name="name" value="spigot-repo" />
+      <option name="url" value="https://hub.spigotmc.org/nexus/content/groups/public" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="md_5-releases" />
-      <option name="name" value="md_5-releases" />
-      <option name="url" value="https://repo.md-5.net/content/repositories/releases/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="md_5-snapshots" />
-      <option name="name" value="md_5-snapshots" />
-      <option name="url" value="https://repo.md-5.net/content/repositories/snapshots/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="jboss.community" />
-      <option name="name" value="JBoss Community repository" />
-      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+      <option name="id" value="addstar-repo" />
+      <option name="name" value="addstar-repo" />
+      <option name="url" value="https://maven.addstar.com.au/artifactory/ext-release-local" />
     </remote-repository>
   </component>
 </project>

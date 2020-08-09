@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: net.kyori:adventure-text-serializer-bungeecord:4.0.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-bungeecord/4.0.0-SNAPSHOT/adventure-text-serializer-bungeecord-4.0.0-20200807.201013-22.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-bungeecord/4.0.0-SNAPSHOT/adventure-text-serializer-bungeecord-4.0.0-20200807.201013-22-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/kyori/adventure-text-serializer-bungeecord/4.0.0-SNAPSHOT/adventure-text-serializer-bungeecord-4.0.0-20200807.201013-22-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
