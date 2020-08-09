@@ -216,7 +216,8 @@ public class ItemMetaBuilder {
     }
 
     private boolean decodeEnchants(String name, String content) {
-        Enchantment enchant = Lookup.findEnchantmentByName(name);
+        String ent = name.replace(' ', '_');
+        Enchantment enchant = Lookup.findEnchantmentByName(ent);
         if (enchant == null) {
             return false;
         }
