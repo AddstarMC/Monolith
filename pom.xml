@@ -184,7 +184,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit</artifactId>
-            <version>v1.15-SNAPSHOT</version>
+            <version>v1.15-0.3.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
