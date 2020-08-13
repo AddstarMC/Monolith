@@ -28,10 +28,10 @@ package au.com.addstar.monolith.util;
  */
 
 
-import net.minecraft.server.v1_16_R1.NBTTagCompound;
+import net.minecraft.server.v1_16_R2.NBTTagCompound;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -108,7 +108,7 @@ public class PotionUtil {
                 item.getType() != Material.LINGERING_POTION) {
             throw new IllegalArgumentException("item is not a potion");
         }
-        net.minecraft.server.v1_16_R1.ItemStack stack = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_16_R2.ItemStack stack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound tagCompound = stack.getTag();
         if (tagCompound != null && !tagCompound.getString("Potion").isEmpty()) {
 
@@ -284,7 +284,7 @@ public class PotionUtil {
         } else if (linger) {
             item = new ItemStack(Material.LINGERING_POTION, amount);
         }
-        net.minecraft.server.v1_16_R1.ItemStack stack = CraftItemStack.asNMSCopy(item);
+        net.minecraft.server.v1_16_R2.ItemStack stack = CraftItemStack.asNMSCopy(item);
         NBTTagCompound tagCompound = stack.getTag();
         if (tagCompound == null) {
             tagCompound = new NBTTagCompound();

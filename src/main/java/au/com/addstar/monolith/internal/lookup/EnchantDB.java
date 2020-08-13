@@ -73,6 +73,9 @@ public class EnchantDB extends FlatDb<Enchantment> {
         }
 
         Enchantment enchant = Enchantment.getByKey(namekey);
+        if (enchant == null) {
+            enchant = Enchantment.getByName(keyparts[0]);
+        }
         return enchant;
     }
 

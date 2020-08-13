@@ -25,14 +25,17 @@ package au.com.addstar.monolith;
 import au.com.addstar.monolith.internal.GeSuitHandler;
 import au.com.addstar.monolith.lookup.Lookup;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.minecraft.server.v1_16_R1.DedicatedServer;
-import net.minecraft.server.v1_16_R1.DedicatedServerProperties;
+import net.minecraft.server.v1_16_R2.DedicatedServer;
+import net.minecraft.server.v1_16_R2.DedicatedServerProperties;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_16_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_16_R2.CraftServer;
 import org.bukkit.permissions.Permissible;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -47,8 +50,12 @@ public class Monolith extends JavaPlugin {
 
     public static Monolith getInstance() {
         return mInstance;
+
     }
 
+    protected Monolith(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+    }
 
     /**
      * @param message    the message
