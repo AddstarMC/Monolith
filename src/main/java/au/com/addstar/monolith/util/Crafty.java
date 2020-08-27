@@ -44,7 +44,7 @@ public final class Crafty {
     private static final String PREFIX_NMS = "net.minecraft.server";
     private static final String PREFIX_CRAFTBUKKIT = "org.bukkit.craftbukkit";
     private static final String CRAFT_SERVER = "CraftServer";
-    private static final @Nullable String VERSION;
+    public static final @Nullable String VERSION;
 
     static {
         final Class<?> serverClass = Bukkit.getServer().getClass(); // TODO: use reflection here too?

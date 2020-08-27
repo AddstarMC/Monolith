@@ -24,21 +24,20 @@ package au.com.addstar.monolith;
 
 import au.com.addstar.monolith.internal.GeSuitHandler;
 import au.com.addstar.monolith.lookup.Lookup;
+import au.com.addstar.monolith.util.Crafty;
+import net.kyori.adventure.platform.AudienceProvider;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeCordComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.minecraft.server.v1_16_R2.DedicatedServer;
-import net.minecraft.server.v1_16_R2.DedicatedServerProperties;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_16_R2.CraftServer;
-import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +46,12 @@ public class Monolith extends JavaPlugin {
     private static Monolith mInstance;
     public Boolean DebugMode = false;
     private GeSuitHandler mGeSuitHandler;
+
+    public final AudienceProvider getAudienceProvider() {
+        return audienceProvider;
+    }
+
+    private static AudienceProvider audienceProvider;
 
     public static Monolith getInstance() {
         return mInstance;
@@ -58,15 +63,23 @@ public class Monolith extends JavaPlugin {
     }
 
     /**
+     * Send a message with permission.
      * @param message    the message
      * @param permission the permission
      */
-    @SuppressWarnings("WeakerAccess")
+    public static void broadcast(Component message, final String permission) {
+        audienceProvider.permission(permission).sendMessage(message);
+    }
+
+    /**
+     * Send a message with permission.
+     * @param message    the message
+     * @param permission the permission
+     * @deprecated  use {@link Monolith#broadcast(Component, String)}
+     */
+    @Deprecated
     public static void broadcast(final BaseComponent[] message, final String permission) {
-        for (Permissible perm : Bukkit.getPluginManager().getPermissionSubscriptions(permission)) {
-            if (perm instanceof CommandSender && perm.hasPermission(permission)) {
-                ((CommandSender) perm).spigot().sendMessage(message);            }
-        }
+        audienceProvider.permission(permission).sendMessage(BungeeCordComponentSerializer.get().deserialize(message));
     }
 
     /**
@@ -96,18 +109,24 @@ public class Monolith extends JavaPlugin {
      */
     @Deprecated
     public static String getServerName() {
-        CraftServer server = ((CraftServer) Bukkit.getServer());
         String result;
         try {
-            Field field = server.getClass().getDeclaredField("console");
+            Class craftServerClass = Crafty.findCraftClass("CraftServer");
+            Field field = Crafty.needField(craftServerClass,"console");
             field.setAccessible(true);
-            DedicatedServer dServer = (DedicatedServer) field.get(server);
-            DedicatedServerProperties props = dServer.getDedicatedServerProperties();
-            Method getString = props.getClass().getMethod("getString", String.class, String.class);
-            result = (String) getString.invoke(props, "server-name", "");
-        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            Class dedicatedServer = Crafty.findNmsClass("DedicatedServer");
+            Class dedicatedServerProperties = Crafty.findNmsClass("DedicatedServerProperties");
+            Object dServer = field.get(Bukkit.getServer());
+            MethodHandle dedicatedPropsHandle = Crafty.findMethod(dedicatedServer,"getDedicatedServerProperties",dedicatedServerProperties);
+            Object props = dedicatedPropsHandle.invokeWithArguments(dServer);
+            MethodHandle getProperty = Crafty.findMethod(dedicatedServerProperties,"getString",String.class,String.class,String.class);
+            result = String.valueOf(getProperty.invoke(props,"server-name", ""));
+            //DedicatedServerProperties props = dServer.getDedicatedServerProperties();
+            //Method getString = props.getClass().getMethod("getString", String.class, String.class);
+            //result = (String) getString.invoke(props, "server-name", "");
+        } catch (Throwable e) {
             e.printStackTrace();
-            return "";
+            result = "";
         }
         return result;
     }
@@ -115,18 +134,11 @@ public class Monolith extends JavaPlugin {
     @Override
     public void onEnable() {
         String version;
-
-        try {
-
-            version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-
-        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
-            whatVersionAreYouUsingException.printStackTrace();
-            version = null;
-        }
+        version = Crafty.VERSION;
         getLogger().info("Your server is running version " + version);
         mInstance = this;
         Lookup.initialize(this);
+        audienceProvider = BukkitAudiences.create(this);
         Bukkit.getPluginManager().registerEvents(new Listeners(), this);
         try {
             getCommand("monolith").setExecutor(new MonolithCommand(this));

@@ -22,22 +22,20 @@
 
 package au.com.addstar.monolith.effects.emitters;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.google.common.collect.Lists;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class EmitterManager {
     private final Plugin plugin;
-    private BukkitTask task;
-
     private final List<Emitter> allEmitters;
     private final List<Emitter> activeEmitters;
+    private BukkitTask task;
 
     public EmitterManager(Plugin plugin) {
         this.plugin = plugin;
