@@ -45,6 +45,7 @@ import net.minecraft.server.v1_16_R2.NBTTagList;
  * <br>
  * <b>NOTE:</b> If the ItemStack held within is changed by external
  * code, the accuracy of values here can not be ensured.
+ * //todo Consider reflection vs NMS
  */
 public class MonoItemStack extends ItemStack {
     private static final String PropertiesNBTKey = "-mono-properties";

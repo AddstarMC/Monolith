@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: net.kyori:adventure-platform-common:4.0.0-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/net/kyori/adventure-platform-common/4.0.0-SNAPSHOT/adventure-platform-common-4.0.0-20200811.110724-15.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/kyori/adventure-platform-common/4.0.0-SNAPSHOT/adventure-platform-common-4.0.0-20200823.015425-16.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/net/kyori/adventure-platform-common/4.0.0-SNAPSHOT/adventure-platform-common-4.0.0-20200811.110724-15-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/kyori/adventure-platform-common/4.0.0-SNAPSHOT/adventure-platform-common-4.0.0-20200823.015425-16-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/net/kyori/adventure-platform-common/4.0.0-SNAPSHOT/adventure-platform-common-4.0.0-20200811.110724-15-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/kyori/adventure-platform-common/4.0.0-SNAPSHOT/adventure-platform-common-4.0.0-20200823.015425-16-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

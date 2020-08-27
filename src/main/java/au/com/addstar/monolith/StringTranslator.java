@@ -22,41 +22,95 @@
 
 package au.com.addstar.monolith;
 
+import au.com.addstar.monolith.util.Crafty;
 import org.bukkit.block.Block;
-
-import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
-import net.minecraft.server.v1_16_R2.BlockPosition;
-import net.minecraft.server.v1_16_R2.IBlockData;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class StringTranslator {
+    private final static Class ichatBaseComponentClass = Crafty.findNmsClass("IChatBaseComponent");
 
-
+    /**
+     * Grabs the internal Minecraft name of an item or empty string.
+     *
+     * @param item ItemStack
+     * @return String
+     */
     public static String getName(ItemStack item) {
-        net.minecraft.server.v1_16_R2.ItemStack base = CraftItemStack.asNMSCopy(item);
-        if (base != null && base.getItem() != null)
-            return base.getName().getText();
-        return "Unknown";
-    }
-
-    public static String getName(Entity entity) {
-        net.minecraft.server.v1_16_R2.Entity base = ((CraftEntity) entity).getHandle();
-        return base.getName();
+        //net.minecraft.server.v1_16_R2.ItemStack base = CraftItemStack.asNMSCopy(item);
+        //if (base != null && base.getItem() != null)
+        //    return base.getName().getText();
+        try {
+            Class nmsItemStackClass = Crafty.findNmsClass("ItemStack");
+            Class cbCraftItemStack = Crafty.findCraftClass("CraftItemStack");
+            Method asNMSCopy = cbCraftItemStack.getMethod("asNMSCopy", ItemStack.class);
+            Method getName = nmsItemStackClass.getMethod("getName");
+            Method getText = ichatBaseComponentClass.getMethod("getText");
+            Object nmsItemStack = asNMSCopy.invoke(null, item);
+            Object ichatBaseComponent = getName.invoke(nmsItemStack);
+            Object name = getText.invoke(ichatBaseComponent);
+            return String.valueOf(name);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            Monolith.getInstance().getLogger().warning(e.getMessage());
+            return "";
+        }
     }
 
     /**
-     * REturns the minecraft name of a block as per the internal registry
+     * Grabs the internal Minecraft name of an item or empty string.
+     *
+     * @param entity Entity
+     * @return String
+     */
+    public static String getName(Entity entity) {
+        try {
+            Class craftEntity = Crafty.findCraftClass("CraftEntity");
+            Method getHandle = craftEntity.getMethod("getHandle");
+            Object nmsEntity = getHandle.invoke(entity);
+            Class nmsEntityClass = Crafty.findNmsClass("Entity");
+            Method getName = nmsEntityClass.getMethod("getName");
+            Object name = getName.invoke(nmsEntity);
+            return String.valueOf(name);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            Monolith.getInstance().getLogger().warning(e.getMessage());
+            return "";
+        }
+    }
+
+    /**
+     * Returns the minecraft name of a block as per the internal registry.
      *
      * @param block the block to test
      * @return the minecraft name of the block
      */
     public static String getName(Block block) {
-        BlockPosition pos = new BlockPosition(block.getX(), block.getY(), block.getZ());
-        IBlockData type = ((CraftWorld) block.getWorld()).getHandle().getType(pos);
-        return type.getBlock().r().getKey();
+        //BlockPosition pos = new BlockPosition(block.getX(), block.getY(), block.getZ());
+        //IBlockData type = ((CraftWorld) block.getWorld()).getHandle().getType(pos);
+        //return type.getBlock().r().getKey();
+        try {
+            Class blockPositionClass = Crafty.findNmsClass("BlockPosition");
+            Constructor cons = blockPositionClass.getConstructor(int.class, int.class, int.class);
+            Object blockPostion = cons.newInstance(block.getX(), block.getY(), block.getZ());
+            Class nmsWorldClass = Crafty.findNmsClass("WorldServer");
+            Method getType = nmsWorldClass.getMethod("getType", blockPositionClass);
+            Object iblockData = getType.invoke(blockPostion);
+            Class IBlockDataClass = Crafty.findNmsClass("IBlockData");
+            Method getBlock = IBlockDataClass.getMethod("getBlock");
+            Object nmsBlock = getBlock.invoke(iblockData);
+            Class nmsBlockClass = Crafty.findNmsClass("Block");
+            Method getMKey = nmsBlockClass.getMethod("r");
+            Object nmsMineCraftKey = getMKey.invoke(nmsBlock);
+            Class nmsMineCraftKeyClass = Crafty.findNmsClass("MinecraftKey");
+            Method getKey = nmsMineCraftKeyClass.getMethod("getKey");
+            Object result = getKey.invoke(nmsMineCraftKey);
+            return String.valueOf(result);
+        } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            Monolith.getInstance().getLogger().warning(e.getMessage());
+            return "";
+        }
     }
 }
