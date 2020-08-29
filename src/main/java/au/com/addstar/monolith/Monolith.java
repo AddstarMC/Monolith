@@ -57,6 +57,9 @@ public class Monolith extends JavaPlugin {
         return mInstance;
 
     }
+    public Monolith(){
+        //not required.
+    }
 
     protected Monolith(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
