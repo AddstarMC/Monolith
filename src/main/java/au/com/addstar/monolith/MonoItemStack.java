@@ -22,22 +22,21 @@
 
 package au.com.addstar.monolith;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-
-import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import au.com.addstar.monolith.attributes.ItemAttributes;
 import au.com.addstar.monolith.attributes.MonoItemAttributes;
 import au.com.addstar.monolith.properties.PropertyContainer;
 import au.com.addstar.monolith.properties.PropertyContainerImpl;
-import net.minecraft.server.v1_16_R2.NBTBase;
-import net.minecraft.server.v1_16_R2.NBTTagCompound;
-import net.minecraft.server.v1_16_R2.NBTTagList;
+import au.com.addstar.monolith.util.Crafty;
+import net.minecraft.server.v1_16_R1.NBTBase;
+import net.minecraft.server.v1_16_R1.NBTTagCompound;
+import net.minecraft.server.v1_16_R1.NBTTagList;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * This class is a type of ItemStack that provides extra
@@ -55,12 +54,15 @@ public class MonoItemStack extends ItemStack {
     private static final Field NMSStack_Tag;
 
     private static final Field BukkitStack_UnhandledTags;
+    private static Class<?> craftItemStackClass;
 
     static {
         // Work out how to get the NBT data from item stacks
         try {
             // For CraftItemStacks
-            CraftStack_Handle = CraftItemStack.class.getDeclaredField("handle");
+
+            craftItemStackClass = Crafty.findCraftClass("inventory.CraftItemStack");
+            CraftStack_Handle = craftItemStackClass.getDeclaredField("handle");
             NMSStack_Tag = CraftStack_Handle.getType().getDeclaredField("tag");
 
             CraftStack_Handle.setAccessible(true);
@@ -90,8 +92,9 @@ public class MonoItemStack extends ItemStack {
      * @throws IllegalArgumentException Thrown if the material is AIR
      */
     public MonoItemStack(ItemStack item) {
-        if (item.getType() == Material.AIR)
+        if (item.getType() == Material.AIR) {
             throw new IllegalArgumentException("AIR cannot have properties");
+        }
 
         this.item = item;
     }
@@ -102,8 +105,9 @@ public class MonoItemStack extends ItemStack {
      * @return The properties
      */
     public PropertyContainer getProperties() {
-        if (getType() == Material.AIR)
+        if (getType() == Material.AIR) {
             throw new UnsupportedOperationException("AIR cannot have properties");
+        }
 
         // Create the properties if needed
         if (properties == null) {
@@ -120,8 +124,9 @@ public class MonoItemStack extends ItemStack {
      * @return The ItemAttributes
      */
     public ItemAttributes getAttributes() {
-        if (getType() == Material.AIR)
+        if (getType() == Material.AIR) {
             throw new UnsupportedOperationException("AIR cannot have attributes");
+        }
 
         if (attributes == null) {
             NBTTagList list = getNBTList(AttributesNBTKey);
@@ -136,7 +141,7 @@ public class MonoItemStack extends ItemStack {
             NBTTagList list;
 
             // CraftItemStack just uses the thing directly
-            if (item instanceof CraftItemStack) {
+            if (craftItemStackClass.isInstance(item)) {
                 Object handle = CraftStack_Handle.get(item);
                 Object rawTag = NMSStack_Tag.get(handle);
 
@@ -162,9 +167,9 @@ public class MonoItemStack extends ItemStack {
 
                 if (tags.containsKey(key)) {
                     NBTBase rawTag = tags.get(key);
-                    if (rawTag instanceof NBTTagList)
+                    if (rawTag instanceof NBTTagList) {
                         list = (NBTTagList) rawTag;
-                    else {
+                    } else {
                         list = new NBTTagList();
                         tags.put(key, list);
                     }
@@ -187,8 +192,9 @@ public class MonoItemStack extends ItemStack {
     public ItemStack clone() {
         MonoItemStack clone = new MonoItemStack(item.clone());
 
-        if (properties != null)
+        if (properties != null) {
             clone.properties = properties.clone();
+        }
 
         return clone;
     }
@@ -248,8 +254,9 @@ public class MonoItemStack extends ItemStack {
         if (item.setItemMeta(itemMeta)) {
             properties = null;
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 
     @Override

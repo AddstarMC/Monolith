@@ -26,9 +26,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.16.2-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: de.tr7zw:item-nbt-api:2.4.1" level="project" />
-    <orderEntry type="library" name="Maven: de.tr7zw:functional-annotations:0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.16.1-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: net.kyori:adventure-api:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: net.kyori:examination-api:1.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: net.kyori:examination-string:1.0.0-SNAPSHOT" level="project" />

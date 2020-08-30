@@ -29,10 +29,11 @@ package au.com.addstar.monolith.util;
 
 
 
-import net.minecraft.server.v1_16_R2.NBTTagCompound;
+import au.com.addstar.monolith.Monolith;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
+
+import java.lang.invoke.MethodHandle;
 
 /**
  * This class lets you get the potion type from a potion item stack, using the NBT tags introduced in Minecraft 1.9
@@ -108,107 +109,117 @@ public class PotionUtil {
                 item.getType() != Material.LINGERING_POTION) {
             throw new IllegalArgumentException("item is not a potion");
         }
-        net.minecraft.server.v1_16_R2.ItemStack stack = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound tagCompound = stack.getTag();
-        if (tagCompound != null && !tagCompound.getString("Potion").isEmpty()) {
+        Class nmsItemStackClass = Crafty.findNmsClass("ItemStack");
+        Class craftItemStackClass = Crafty.findCraftClass("inventory.CraftItemStack");
+        Class nbtCompoundTagClass = Crafty.findNmsClass("NBTTagCompound");
+        try {
+            MethodHandle handle = Crafty.findStaticMethod(craftItemStackClass, "asNMSCopy", nmsItemStackClass, ItemStack.class);
+            Object nmsStack = handle.invokeWithArguments(item);
+            MethodHandle tagHandle = Crafty.findMethod(nmsItemStackClass, "getTag", nbtCompoundTagClass);
+            Object tagCompound = tagHandle.invoke(nmsStack);
+            MethodHandle getString = Crafty.findMethod(nbtCompoundTagClass, "getString", String.class, String.class);
+            if (tagCompound != null && ! ((String)getString.invoke(tagCompound,"Potion")).isEmpty()) {
+                String tag = ((String)getString.invoke(tagCompound,"Potion")).replace("minecraft:", "");
+                PotionType type = null;
+                boolean strong = tag.contains("strong");
+                boolean extended = tag.contains("long");
+                switch (tag) {
+                    case "fire_resistance":
+                    case "long_fire_resistance":
+                        type = PotionType.FIRE_RESISTANCE;
+                        break;
+                    case "harming":
+                    case "strong_harming":
+                        type = PotionType.INSTANT_DAMAGE;
+                        break;
+                    case "healing":
+                    case "strong_healing":
+                        type = PotionType.INSTANT_HEAL;
+                        break;
+                    case "invisibility":
+                    case "long_invisibility":
+                        type = PotionType.INVISIBILITY;
+                        break;
+                    case "leaping":
+                    case "long_leaping":
+                    case "strong_leaping":
+                        type = PotionType.JUMP;
+                        break;
+                    case "luck":
+                        type = PotionType.LUCK;
+                        break;
+                    case "night_vision":
+                    case "long_night_vision":
+                        type = PotionType.NIGHT_VISION;
+                        break;
+                    case "poison":
+                    case "long_poison":
+                    case "strong_poison":
+                        type = PotionType.POISON;
+                        break;
+                    case "regeneration":
+                    case "long_regeneration":
+                    case "strong_regeneration":
+                        type = PotionType.REGEN;
+                        break;
+                    case "slowness":
+                    case "long_slowness":
+                        type = PotionType.SLOWNESS;
+                        break;
+                    case "swiftness":
+                    case "long_swiftness":
+                    case "strong_swiftness":
+                        type = PotionType.SPEED;
+                        break;
+                    case "strength":
+                    case "long_strength":
+                    case "strong_strength":
+                        type = PotionType.STRENGTH;
+                        break;
+                    case "water_breathing":
+                    case "long_water_breathing":
+                        type = PotionType.WATER_BREATHING;
+                        break;
+                    case "water":
+                        type = PotionType.WATER;
+                        break;
+                    case "weakness":
+                    case "long_weakness":
+                        type = PotionType.WEAKNESS;
+                        break;
+                    case "empty":
+                        type = PotionType.EMPTY;
+                        break;
+                    case "mundane":
+                        type = PotionType.MUNDANE;
+                        break;
+                    case "thick":
+                        type = PotionType.THICK;
+                        break;
+                    case "awkward":
+                        type = PotionType.AWKWARD;
+                        break;
+                    case "turtle_master":
+                    case "long_turtle_master":
+                    case "strong_turtle_master":
+                        type = PotionType.TURTLE;
+                        break;
+                    case "slow_falling":
+                    case "long_slow_falling":
+                        type = PotionType.SLOW_FALLING;
+                        break;
+                    default:
+                        return null;
+                }
 
-            String tag = tagCompound.getString("Potion").replace("minecraft:", "");
-            PotionType type = null;
-            boolean strong = tag.contains("strong");
-            boolean extended = tag.contains("long");
-            switch (tag) {
-                case "fire_resistance":
-                case "long_fire_resistance":
-                    type = PotionType.FIRE_RESISTANCE;
-                    break;
-                case "harming":
-                case "strong_harming":
-                    type = PotionType.INSTANT_DAMAGE;
-                    break;
-                case "healing":
-                case "strong_healing":
-                    type = PotionType.INSTANT_HEAL;
-                    break;
-                case "invisibility":
-                case "long_invisibility":
-                    type = PotionType.INVISIBILITY;
-                    break;
-                case "leaping":
-                case "long_leaping":
-                case "strong_leaping":
-                    type = PotionType.JUMP;
-                    break;
-                case "luck":
-                    type = PotionType.LUCK;
-                    break;
-                case "night_vision":
-                case "long_night_vision":
-                    type = PotionType.NIGHT_VISION;
-                    break;
-                case "poison":
-                case "long_poison":
-                case "strong_poison":
-                    type = PotionType.POISON;
-                    break;
-                case "regeneration":
-                case "long_regeneration":
-                case "strong_regeneration":
-                    type = PotionType.REGEN;
-                    break;
-                case "slowness":
-                case "long_slowness":
-                    type = PotionType.SLOWNESS;
-                    break;
-                case "swiftness":
-                case "long_swiftness":
-                case "strong_swiftness":
-                    type = PotionType.SPEED;
-                    break;
-                case "strength":
-                case "long_strength":
-                case "strong_strength":
-                    type = PotionType.STRENGTH;
-                    break;
-                case "water_breathing":
-                case "long_water_breathing":
-                    type = PotionType.WATER_BREATHING;
-                    break;
-                case "water":
-                    type = PotionType.WATER;
-                    break;
-                case "weakness":
-                case "long_weakness":
-                    type = PotionType.WEAKNESS;
-                    break;
-                case "empty":
-                    type = PotionType.EMPTY;
-                    break;
-                case "mundane":
-                    type = PotionType.MUNDANE;
-                    break;
-                case "thick":
-                    type = PotionType.THICK;
-                    break;
-                case "awkward":
-                    type = PotionType.AWKWARD;
-                    break;
-                case "turtle_master":
-                case "long_turtle_master":
-                case "strong_turtle_master":
-                    type = PotionType.TURTLE;
-                    break;
-                case "slow_falling":
-                case "long_slow_falling":
-                    type = PotionType.SLOW_FALLING;
-                    break;
-                default:
-                    return null;
+                return new PotionUtil(type, strong, extended,
+                      item.getType() == Material.LINGERING_POTION,
+                      item.getType() == Material.SPLASH_POTION);
+            } else {
+                return null;
             }
-
-            return new PotionUtil(type, strong, extended,
-                    item.getType() == Material.LINGERING_POTION,
-                    item.getType() == Material.SPLASH_POTION);
-        } else {
+        } catch (Throwable t) {
+            Monolith.getInstance().getLogger().warning(t.getMessage());
             return null;
         }
     }
@@ -278,87 +289,105 @@ public class PotionUtil {
      * @return ItemStack of a potion. NULL if it fails.
      */
     public ItemStack toItemStack(int amount) {
+
         ItemStack item = new ItemStack(Material.POTION, amount);
         if (splash) {
             item = new ItemStack(Material.SPLASH_POTION, amount);
         } else if (linger) {
             item = new ItemStack(Material.LINGERING_POTION, amount);
         }
-        net.minecraft.server.v1_16_R2.ItemStack stack = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound tagCompound = stack.getTag();
-        if (tagCompound == null) {
-            tagCompound = new NBTTagCompound();
+        try {
+            Class nmsItemStackClass = Crafty.findNmsClass("ItemStack");
+            Class craftItemStackClass = Crafty.findCraftClass("inventory.CraftItemStack");
+            Class nbtCompoundTagClass = Crafty.findNmsClass("NBTTagCompound");
+            MethodHandle handle = Crafty.findStaticMethod(craftItemStackClass, "asNMSCopy", nmsItemStackClass, ItemStack.class);
+            Object nmsStack = handle.invokeWithArguments(item);
+            MethodHandle getTagHandle = Crafty.findMethod(nmsItemStackClass, "getTag", nbtCompoundTagClass);
+            Object tagCompound = getTagHandle.invoke(nmsStack);
+            if (tagCompound == null) {
+                tagCompound = nbtCompoundTagClass.getConstructor().newInstance();
+            }
+            String tag = "";
+            switch (type) {
+                case JUMP:
+                    tag = "leaping";
+                    break;
+                case LUCK:
+                    tag = "luck";
+                    break;
+                case REGEN:
+                    tag = "regeneration";
+                    break;
+                case SPEED:
+                    tag = "swiftness";
+                    break;
+                case FIRE_RESISTANCE:
+                    tag = "fire_resistance";
+                    break;
+                case INSTANT_DAMAGE:
+                    tag = "harming";
+                    break;
+                case INSTANT_HEAL:
+                    tag = "healing";
+                    break;
+                case WATER_BREATHING:
+                    tag = "water_breathing";
+                    break;
+                case SLOW_FALLING:
+                    tag = "slow_falling";
+                    break;
+                case NIGHT_VISION:
+                    tag = "night_vision";
+                    break;
+                case INVISIBILITY:
+                    tag = "invisibility";
+                    break;
+                case WEAKNESS:
+                    tag = "weakness";
+                    break;
+                case STRENGTH:
+                    tag = "strength";
+                    break;
+                case SLOWNESS:
+                    tag = "slowness";
+                    break;
+                case MUNDANE:
+                    tag = "mundane";
+                    break;
+                case TURTLE:
+                    tag = "turtle_master";
+                    break;
+                case POISON:
+                    tag = "poison";
+                    break;
+                case AWKWARD:
+                    tag = "awkward";
+                    break;
+                case WATER:
+                    tag = "water";
+                    break;
+                case THICK:
+                    tag = "thick";
+                    break;
+                case EMPTY:
+                    tag = "empty";
+                    break;
+            }
+            if (extended) {
+                tag = "long_" + tag;
+            } else if (strong) {
+                tag = "strong_" + tag;
+            }
+            MethodHandle setString = Crafty.findMethod(tagCompound.getClass(), "setString", Void.class, String.class, String.class);
+            MethodHandle setTagHandle = Crafty.findMethod(nmsItemStackClass, "setTag", Void.class, nbtCompoundTagClass);
+            setString.invokeWithArguments(tagCompound, "Potion", "minecraft:" + tag);
+            //todo
+            setTagHandle.invokeWithArguments(nmsStack, tagCompound);
+            MethodHandle asBukkitCopy = Crafty.findStaticMethod(craftItemStackClass, "asBukkitCopy", ItemStack.class, nmsItemStackClass);
+            return ((ItemStack)asBukkitCopy.invokeWithArguments(nmsStack));
+        } catch (Throwable t) {
+            return null;
         }
-        String tag = "";
-        switch (type) {
-            case JUMP:
-                tag = "leaping";
-                break;
-            case LUCK:
-                tag = "luck";
-                break;
-            case REGEN:
-                tag = "regeneration";
-                break;
-            case SPEED:
-                tag = "swiftness";
-                break;
-            case FIRE_RESISTANCE:
-                tag = "fire_resistance";
-                break;
-            case INSTANT_DAMAGE:
-                tag = "harming";
-                break;
-            case INSTANT_HEAL:
-                tag = "healing";
-                break;
-            case WATER_BREATHING:
-                tag = "water_breathing";
-                break;
-            case SLOW_FALLING:
-                tag = "slow_falling";
-                break;
-            case NIGHT_VISION:
-                tag = "night_vision";
-                break;
-            case INVISIBILITY:
-                tag = "invisibility";
-                break;
-            case WEAKNESS:
-                tag = "weakness";
-                break;
-            case STRENGTH:
-                tag = "strength";
-                break;
-            case SLOWNESS:
-                tag = "slowness";
-                break;
-            case MUNDANE:
-                tag = "mundane";
-                break;
-            case TURTLE:
-                tag = "turtle_master";
-                break;
-            case POISON:
-                tag = "poison";
-                break;
-            case AWKWARD:
-                tag = "awkward";
-            case WATER:
-                tag = "water";
-            case THICK:
-                tag = "thick";
-            case EMPTY:
-                tag = "empty";
-        }
-        if (extended) {
-            tag = "long_" + tag;
-        } else if (strong) {
-            tag = "strong_" + tag;
-        }
-        tagCompound.setString("Potion", "minecraft:" + tag);
-        stack.setTag(tagCompound);
-        return CraftItemStack.asBukkitCopy(stack);
     }
 
     /**

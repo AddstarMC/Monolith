@@ -2,10 +2,10 @@
  * Copyright (c) 2020. AddstarMC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
- * and associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute,
- * sublicense, and/or copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ *  and associated documentation files (the "Software"), to deal in the Software without restriction,
+ *  including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ *  sublicense, and/or copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all copies or
  * substantial portions of the Software.
@@ -23,9 +23,6 @@
 package au.com.addstar.monolith;
 
 import au.com.addstar.monolith.lookup.Lookup;
-import de.tr7zw.changeme.nbtapi.NBTCompound;
-import de.tr7zw.changeme.nbtapi.NBTContainer;
-import de.tr7zw.changeme.nbtapi.NBTItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -524,28 +521,7 @@ public class ItemMetaBuilder {
 
     private boolean decodeNbtString(String name, String content) {
         if (name.equalsIgnoreCase("nbt")) {
-            String[] parts = content.split(":", 2);
-            if (parts.length == 2) {
-                String key = parts[0];
-                String value = parts[1];
-                try {
-                    NBTContainer container = new NBTContainer(value);
-                    NBTItem nbtItem = new NBTItem(item);
-                    NBTCompound compound = nbtItem.getCompound(key);
-                    if (compound == null) {
-                        compound = nbtItem.addCompound(key);
-                        compound.mergeCompound(container);
-                    }
-                    compound.mergeCompound(container);
-                    item = nbtItem.getItem();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    hasNbt = false;
-                    return false;
-                }
-            }
-            hasNbt = true;
-            return true;
+            throw new IllegalArgumentException("NBT Decoding is not supported in this version");
         }
         return false;
     }
