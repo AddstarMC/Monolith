@@ -39,10 +39,10 @@ public class ItemUtil {
      */
     public static String getItemNbtString(ItemStack item) {
         try {
-            Class<? extends ItemStack> craftItemStack = Crafty.findCraftClass("invetory.CraftItemStack", ItemStack.class);
+            Class<? extends ItemStack> craftItemStack = Crafty.findCraftClass("inventory.CraftItemStack", ItemStack.class);
             Class<?> nmsItemClass = Crafty.findNmsClass("ItemStack");
             Class<?> nbtTagCompoundClass = Crafty.findNmsClass("NBTTagCompound");
-            MethodHandle asNMSCopy = Crafty.findStaticMethod(craftItemStack, "asNMSCopy", nmsItemClass);
+            MethodHandle asNMSCopy = Crafty.findStaticMethod(craftItemStack, "asNMSCopy", nmsItemClass,ItemStack.class);
             MethodHandle getTag = Crafty.findMethod(nmsItemClass, "getTag", nbtTagCompoundClass);
             Object nmsStack = asNMSCopy.invokeWithArguments(item);
             return getTag.invokeWithArguments(nmsStack).toString();
