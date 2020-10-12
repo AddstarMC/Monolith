@@ -34,6 +34,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.invoke.MethodHandle;
+import java.util.Objects;
 
 /**
  * This class lets you get the potion type from a potion item stack, using the NBT tags introduced in Minecraft 1.9
@@ -114,7 +115,7 @@ public class PotionUtil {
         Class nbtCompoundTagClass = Crafty.findNmsClass("NBTTagCompound");
         try {
             MethodHandle handle = Crafty.findStaticMethod(craftItemStackClass, "asNMSCopy", nmsItemStackClass, ItemStack.class);
-            Object nmsStack = handle.invokeWithArguments(item);
+            Object nmsStack = Objects.requireNonNull(handle).invokeWithArguments(item);
             MethodHandle tagHandle = Crafty.findMethod(nmsItemStackClass, "getTag", nbtCompoundTagClass);
             Object tagCompound = tagHandle.invoke(nmsStack);
             MethodHandle getString = Crafty.findMethod(nbtCompoundTagClass, "getString", String.class, String.class);
@@ -301,9 +302,15 @@ public class PotionUtil {
             Class craftItemStackClass = Crafty.findCraftClass("inventory.CraftItemStack");
             Class nbtCompoundTagClass = Crafty.findNmsClass("NBTTagCompound");
             MethodHandle handle = Crafty.findStaticMethod(craftItemStackClass, "asNMSCopy", nmsItemStackClass, ItemStack.class);
-            Object nmsStack = handle.invokeWithArguments(item);
+            Object nmsStack = null;
+            if (handle != null) {
+                nmsStack = handle.invokeWithArguments(item);
+            }
             MethodHandle getTagHandle = Crafty.findMethod(nmsItemStackClass, "getTag", nbtCompoundTagClass);
-            Object tagCompound = getTagHandle.invoke(nmsStack);
+            Object tagCompound = null;
+            if (getTagHandle != null) {
+                tagCompound = getTagHandle.invoke(nmsStack);
+            }
             if (tagCompound == null) {
                 tagCompound = nbtCompoundTagClass.getConstructor().newInstance();
             }

@@ -22,16 +22,15 @@
 
 package au.com.addstar.monolith.lookup;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import net.minecraft.server.v1_16_R1.MinecraftKey;
-
+import au.com.addstar.monolith.Monolith;
+import au.com.addstar.monolith.internal.FutureWaiter;
+import au.com.addstar.monolith.internal.lookup.EnchantDB;
+import au.com.addstar.monolith.internal.lookup.EntityDB;
+import au.com.addstar.monolith.internal.lookup.ItemDB;
+import au.com.addstar.monolith.internal.lookup.PotionsDB;
+import au.com.addstar.monolith.util.Crafty;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -39,21 +38,25 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.potion.PotionEffectType;
 
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
+import java.io.File;
+import java.io.IOException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
-import au.com.addstar.monolith.Monolith;
-import au.com.addstar.monolith.internal.FutureWaiter;
-import au.com.addstar.monolith.internal.lookup.EnchantDB;
-import au.com.addstar.monolith.internal.lookup.EntityDB;
-import au.com.addstar.monolith.internal.lookup.ItemDB;
-import au.com.addstar.monolith.internal.lookup.PotionsDB;
 
 public class Lookup {
     private static ItemDB mNameDB;
     private static EnchantDB mEnchantDB;
     private static PotionsDB mPotionDB;
     private static EntityDB mEntityDB;
+
+    private static Class minecraftkey = Crafty.findNmsClass("MinecraftKey");
 
     /**
      * Initializes lookup systems. This should not be called by users of this API
@@ -121,9 +124,22 @@ public class Lookup {
      * @return The material or null
      */
     public static Material findByMinecraftName(String name) {
-        MinecraftKey key = new MinecraftKey(name);
-        Monolith.getInstance().DebugMsg("findByMinecraftName(" + name + ") = " + key.getKey());
-        return Material.matchMaterial(key.getKey());
+        MethodHandle handled = Crafty.findConstructor(minecraftkey, String.class);
+        if (handled != null) {
+            try {
+                MethodHandle keyHandles = MethodHandles.lookup().findVirtual(minecraftkey, "getKey", MethodType.methodType(String.class));
+                Object key = handled.invoke(name);
+                Object minecraftName = keyHandles.invoke(key);
+                Monolith.getInstance().DebugMsg("findByMinecraftName(" + name + ") = " + minecraftName);
+                return Material.matchMaterial((String) minecraftName);
+            } catch (Throwable throwable) {
+                Monolith.getInstance().getLogger().warning("Unable to perform lookup via NMS for " + name);
+                if (Monolith.getInstance().DebugMode) {
+                    throwable.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 
     /**

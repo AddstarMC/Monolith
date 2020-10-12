@@ -22,7 +22,6 @@
 
 package au.com.addstar.monolith.util;
 
-import au.com.addstar.monolith.MonoPlayer;
 import au.com.addstar.monolith.Monolith;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -31,8 +30,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
-
-import javax.xml.soap.Text;
 
 /**
  * Created for use for the Add5tar MC Minecraft server
@@ -56,7 +53,7 @@ public class Messenger {
      * @param player Monoplayer
      */
     public static void sendMessage(Component text, CommandSender player) {
-        audiences.audience(player).sendMessage(text);
+        audiences.sender(player).sendMessage(text);
     }
 
 
@@ -66,7 +63,7 @@ public class Messenger {
      * @param player MonoPlayer
      */
     public static void sendMessage(String string, CommandSender player) {
-        audiences.audience(player)
+        audiences.sender(player)
               .sendMessage(LegacyComponentSerializer.legacySection().deserialize(string));
     }
 
@@ -77,7 +74,7 @@ public class Messenger {
      * @param player MonoPlayer
      */
     public static void sendTitle(TextComponent title, TextComponent subTitle, CommandSender player) {
-        Title out = Title.of(title,subTitle);
+        Title out = Title.title(title,subTitle);
         sendTitle(out,player);
     }
 
@@ -95,11 +92,11 @@ public class Messenger {
      * @param player MonoPlayer
      */
     public static void sendTitle(Title title, CommandSender player) {
-        audiences.audience(player).showTitle(title);
+        audiences.sender(player).showTitle(title);
     }
 
     public static void sendActionBar(Component component, CommandSender player) {
-        audiences.audience(player).sendActionBar(component);
+        audiences.sender(player).sendActionBar(component);
     }
 
     public static Component parseString(String string) {

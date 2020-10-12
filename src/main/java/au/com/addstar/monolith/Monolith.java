@@ -28,7 +28,7 @@ import au.com.addstar.monolith.util.Crafty;
 import net.kyori.adventure.platform.AudienceProvider;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.bungeecord.BungeeCordComponentSerializer;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -82,7 +82,7 @@ public class Monolith extends JavaPlugin {
      */
     @Deprecated
     public static void broadcast(final BaseComponent[] message, final String permission) {
-        audienceProvider.permission(permission).sendMessage(BungeeCordComponentSerializer.get().deserialize(message));
+        audienceProvider.permission(permission).sendMessage(BungeeComponentSerializer.get().deserialize(message));
     }
 
     /**
