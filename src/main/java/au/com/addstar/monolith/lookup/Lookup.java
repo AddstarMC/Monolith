@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. AddstarMC
+ * Copyright (c) 2021. AddstarMC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.server.v1_16_R1.MinecraftKey;
+import net.minecraft.resources.MinecraftKey;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

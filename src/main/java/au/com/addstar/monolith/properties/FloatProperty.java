@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. AddstarMC
+ * Copyright (c) 2021. AddstarMC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -22,9 +22,10 @@
 
 package au.com.addstar.monolith.properties;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.UUID;
 
-import net.minecraft.server.v1_16_R1.NBTTagCompound;
 
 /**
  * Represents a property that holds a double

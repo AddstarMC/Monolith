@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. AddstarMC
+ * Copyright (c) 2021. AddstarMC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -24,6 +24,7 @@ package au.com.addstar.monolith.util;
 
 import au.com.addstar.monolith.MonoPlayer;
 import au.com.addstar.monolith.Monolith;
+import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -31,8 +32,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
 import org.bukkit.command.CommandSender;
-
-import javax.xml.soap.Text;
 
 /**
  * Created for use for the Add5tar MC Minecraft server
@@ -56,7 +55,7 @@ public class Messenger {
      * @param player Monoplayer
      */
     public static void sendMessage(Component text, CommandSender player) {
-        audiences.audience(player).sendMessage(text);
+        audiences.sender(player).sendMessage(Identity.nil(),text);
     }
 
 
@@ -66,8 +65,8 @@ public class Messenger {
      * @param player MonoPlayer
      */
     public static void sendMessage(String string, CommandSender player) {
-        audiences.audience(player)
-              .sendMessage(LegacyComponentSerializer.legacySection().deserialize(string));
+        audiences.sender(player)
+              .sendMessage(Identity.nil(),LegacyComponentSerializer.legacySection().deserialize(string));
     }
 
     /**
@@ -95,11 +94,11 @@ public class Messenger {
      * @param player MonoPlayer
      */
     public static void sendTitle(Title title, CommandSender player) {
-        audiences.audience(player).showTitle(title);
+        audiences.sender(player).showTitle(title);
     }
 
     public static void sendActionBar(Component component, CommandSender player) {
-        audiences.audience(player).sendActionBar(component);
+        audiences.sender(player).sendActionBar(component);
     }
 
     public static Component parseString(String string) {

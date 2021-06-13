@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. AddstarMC
+ * Copyright (c) 2021. AddstarMC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -25,13 +25,13 @@ package au.com.addstar.monolith.properties;
 import java.util.Iterator;
 import java.util.UUID;
 
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import com.google.common.collect.Iterators;
 
-import net.minecraft.server.v1_16_R1.NBTBase;
-import net.minecraft.server.v1_16_R1.NBTTagCompound;
-import net.minecraft.server.v1_16_R1.NBTTagList;
 
 public class PropertyContainerImpl implements PropertyContainer {
     private final NBTTagList root;

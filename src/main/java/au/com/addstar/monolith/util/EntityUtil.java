@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. AddstarMC
+ * Copyright (c) 2021. AddstarMC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -26,11 +26,11 @@ import com.google.common.collect.Lists;
 
 import au.com.addstar.monolith.BoundingBox;
 
-import net.minecraft.server.v1_16_R1.AxisAlignedBB;
 
+import net.minecraft.world.phys.AxisAlignedBB;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.Vector;
@@ -40,7 +40,7 @@ import java.util.List;
 public class EntityUtil {
     public static BoundingBox getBoundingBox(Entity entity) {
         AxisAlignedBB rawBB = ((CraftEntity) entity).getHandle().getBoundingBox();
-        return new BoundingBox(new Vector(rawBB.minX, rawBB.minY, rawBB.minZ), new Vector(rawBB.maxX, rawBB.maxY, rawBB.maxZ));
+        return new BoundingBox(new Vector(rawBB.a, rawBB.b, rawBB.c), new Vector(rawBB.d, rawBB.e, rawBB.f));
     }
 
     public static List<Entity> getEntitiesWithin(World world, BoundingBox bb) {
@@ -52,10 +52,10 @@ public class EntityUtil {
         AxisAlignedBB rawBB = new AxisAlignedBB(bb.getMinCorner().getX(), bb.getMinCorner().getY(), bb.getMinCorner().getZ(), bb.getMaxCorner().getX(), bb.getMaxCorner().getY(), bb.getMaxCorner().getZ());
 
         // Call List<? extends Entity> getEntities(Class<? extends Entity>, AxisAlignedBB, Predicate<? extends Entity>)
-        List<net.minecraft.server.v1_16_R1.Entity> rawResults = ((CraftWorld) world).getHandle().a(net.minecraft.server.v1_16_R1.Entity.class, rawBB, null);
+        List<net.minecraft.world.entity.Entity> rawResults = ((CraftWorld) world).getHandle().a(net.minecraft.world.entity.Entity.class, rawBB, null);
 
         List<T> resolved = Lists.newArrayListWithCapacity(rawResults.size());
-        for (net.minecraft.server.v1_16_R1.Entity rawResult : rawResults) {
+        for (net.minecraft.world.entity.Entity rawResult : rawResults) {
             Entity bukkitEntity = rawResult.getBukkitEntity();
             if (type.isInstance(bukkitEntity)) {
                 resolved.add((T) bukkitEntity);

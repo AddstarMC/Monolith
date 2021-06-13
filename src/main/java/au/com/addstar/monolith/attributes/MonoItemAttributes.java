@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. AddstarMC
+ * Copyright (c) 2021. AddstarMC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -34,9 +34,9 @@ import org.bukkit.inventory.EquipmentSlot;
 import com.google.common.collect.Lists;
 
 import au.com.addstar.monolith.util.Attributes;
-import net.minecraft.server.v1_16_R1.NBTBase;
-import net.minecraft.server.v1_16_R1.NBTTagCompound;
-import net.minecraft.server.v1_16_R1.NBTTagList;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 public class MonoItemAttributes implements ItemAttributes {
     private static final String KeyUUID = "UUID";

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020. AddstarMC
+ * Copyright (c) 2021. AddstarMC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  *  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -32,16 +32,16 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraft.server.v1_16_R1.NBTBase;
-import net.minecraft.server.v1_16_R1.NBTTagByte;
-import net.minecraft.server.v1_16_R1.NBTTagCompound;
-import net.minecraft.server.v1_16_R1.NBTTagDouble;
-import net.minecraft.server.v1_16_R1.NBTTagFloat;
-import net.minecraft.server.v1_16_R1.NBTTagInt;
-import net.minecraft.server.v1_16_R1.NBTTagList;
-import net.minecraft.server.v1_16_R1.NBTTagLong;
-import net.minecraft.server.v1_16_R1.NBTTagShort;
-import net.minecraft.server.v1_16_R1.NBTTagString;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 
 /**
  * Represents a property that holds any object that implements the
