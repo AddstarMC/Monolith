@@ -95,10 +95,8 @@ public abstract class PropertyBase<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof PropertyBase<?>))
+        if (!(obj instanceof PropertyBase<?> other))
             return false;
-
-        PropertyBase<?> other = (PropertyBase<?>) obj;
 
         return getName().equals(other.getName()) && getOwner().equals(other.getOwner()) && Objects.equals(getValue(), other.getValue());
     }

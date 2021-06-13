@@ -41,18 +41,13 @@ public class PropertyContainerImpl implements PropertyContainer {
     }
 
     private static PropertyBase<?> loadProperty(NBTTagCompound tag) {
-        switch (tag.getByte("type")) {
-            case PropertyBase.TYPE_STRING:
-                return new StringProperty(tag);
-            case PropertyBase.TYPE_INTEGER:
-                return new IntegerProperty(tag);
-            case PropertyBase.TYPE_FLOAT:
-                return new FloatProperty(tag);
-            case PropertyBase.TYPE_CUSTOM:
-                return new CustomProperty(tag);
-            default:
-                return null;
-        }
+        return switch (tag.getByte("type")) {
+            case PropertyBase.TYPE_STRING -> new StringProperty(tag);
+            case PropertyBase.TYPE_INTEGER -> new IntegerProperty(tag);
+            case PropertyBase.TYPE_FLOAT -> new FloatProperty(tag);
+            case PropertyBase.TYPE_CUSTOM -> new CustomProperty(tag);
+            default -> null;
+        };
     }
 
     public NBTTagList getRoot() {
@@ -62,8 +57,7 @@ public class PropertyContainerImpl implements PropertyContainer {
     @Override
     public PropertyBase<?> get(String name, UUID owner) throws PropertyClassException {
         for (NBTBase aRoot : root) {
-            if (aRoot instanceof NBTTagCompound) {
-                NBTTagCompound raw = (NBTTagCompound) aRoot;
+            if (aRoot instanceof NBTTagCompound raw) {
                 PropertyBase<?> property = loadProperty(raw);
                 if (property != null && property.getName() != null) {
                     if (property.getName().equals(name) && property.getOwner().equals(owner))
@@ -132,8 +126,7 @@ public class PropertyContainerImpl implements PropertyContainer {
     @Override
     public void remove(String name, UUID owner) {
         for (int i = 0; i < root.size(); ++i) {
-            if (root.get(i) instanceof NBTTagCompound) {
-                NBTTagCompound raw = (NBTTagCompound) root.get(i);
+            if (root.get(i) instanceof NBTTagCompound raw) {
                 PropertyBase<?> property = loadProperty(raw);
                 if (property.getName() != null) {
                     if (property.getName().equals(name) && property.getOwner().equals(owner)) {
@@ -149,8 +142,7 @@ public class PropertyContainerImpl implements PropertyContainer {
     @Override
     public void clear(UUID owner) {
         for (int i = 0; i < root.size(); ++i) {
-            if (root.get(i) instanceof NBTTagCompound) {
-                NBTTagCompound raw = (NBTTagCompound) root.get(i);
+            if (root.get(i) instanceof NBTTagCompound raw) {
                 PropertyBase<?> property = loadProperty(raw);
                 if (property.getOwner() != null) {
                     if (property.getOwner().equals(owner)) {
@@ -194,8 +186,7 @@ public class PropertyContainerImpl implements PropertyContainer {
         @Override
         public PropertyBase<?> next() {
             NBTBase base = root.get(index++);
-            if (base instanceof NBTTagCompound) {
-                NBTTagCompound raw = (NBTTagCompound) base;
+            if (base instanceof NBTTagCompound raw) {
                 return loadProperty(raw);
             } else {
                 throw new PropertyClassException(base.toString() + " is not a compound tag " +

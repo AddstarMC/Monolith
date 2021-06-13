@@ -73,7 +73,7 @@ public class MessageWaiter implements PluginMessageListener {
             checkMessage(message);
     }
 
-    private class WaitFuture<T> extends AbstractFuture<T> {
+    private static class WaitFuture<T> extends AbstractFuture<T> {
         private final Message<T> mSource;
         private final long mExpireTime;
 

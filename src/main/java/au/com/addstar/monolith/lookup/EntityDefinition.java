@@ -64,30 +64,18 @@ public class EntityDefinition {
     }
 
     public boolean isSpawnable() {
-        switch (mType) {
-            case UNKNOWN:
-            case PLAYER:
-            case FISHING_HOOK:
-            case SPLASH_POTION:
-            case DROPPED_ITEM:
-                return false;
-            default:
-                return true;
-        }
+        return switch (mType) {
+            case UNKNOWN, PLAYER, FISHING_HOOK, SPLASH_POTION, DROPPED_ITEM -> false;
+            default -> true;
+        };
     }
 
     public Entity createEntity(Location location) {
         World world = location.getWorld();
-        Entity entity;
-
-        switch (mType) {
-            case DROPPED_ITEM:
-                entity = world.dropItem(location, new ItemStack(Material.STONE));
-                break;
-            default:
-                entity = world.spawnEntity(location, mType);
-                break;
-        }
+        Entity entity = switch (mType) {
+            case DROPPED_ITEM -> world.dropItem(location, new ItemStack(Material.STONE));
+            default -> world.spawnEntity(location, mType);
+        };
 
         if (entity == null) {
             return null;

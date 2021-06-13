@@ -22,6 +22,7 @@
 
 package au.com.addstar.monolith.flag;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -89,14 +90,14 @@ public class FlagIO {
                 } else {
 
                     if (clazz != null) {
-                        Flag<?> flag = clazz.newInstance();
+                        Flag<?> flag = clazz.getDeclaredConstructor().newInstance();
                         flag.read(section);
                         flags.put(key, flag);
                     }
                 }
             } catch (ClassNotFoundException e) {
                 System.err.println("Flag Load: Unknown class name " + type);
-            } catch (InstantiationException | IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }

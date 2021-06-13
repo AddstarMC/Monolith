@@ -304,75 +304,33 @@ public class PotionUtil {
             Object nmsStack = handle.invokeWithArguments(item);
             MethodHandle getTagHandle = Crafty.findMethod(nmsItemStackClass, "getTag", nbtCompoundTagClass);
             Object tagCompound = getTagHandle.invoke(nmsStack);
-            if (tagCompound == null) {
-                tagCompound = nbtCompoundTagClass.getConstructor().newInstance();
+            if (tagCompound == null && nbtCompoundTagClass != null) {
+                tagCompound = nbtCompoundTagClass.getDeclaredConstructor().newInstance();
             }
-            String tag = "";
-            switch (type) {
-                case JUMP:
-                    tag = "leaping";
-                    break;
-                case LUCK:
-                    tag = "luck";
-                    break;
-                case REGEN:
-                    tag = "regeneration";
-                    break;
-                case SPEED:
-                    tag = "swiftness";
-                    break;
-                case FIRE_RESISTANCE:
-                    tag = "fire_resistance";
-                    break;
-                case INSTANT_DAMAGE:
-                    tag = "harming";
-                    break;
-                case INSTANT_HEAL:
-                    tag = "healing";
-                    break;
-                case WATER_BREATHING:
-                    tag = "water_breathing";
-                    break;
-                case SLOW_FALLING:
-                    tag = "slow_falling";
-                    break;
-                case NIGHT_VISION:
-                    tag = "night_vision";
-                    break;
-                case INVISIBILITY:
-                    tag = "invisibility";
-                    break;
-                case WEAKNESS:
-                    tag = "weakness";
-                    break;
-                case STRENGTH:
-                    tag = "strength";
-                    break;
-                case SLOWNESS:
-                    tag = "slowness";
-                    break;
-                case MUNDANE:
-                    tag = "mundane";
-                    break;
-                case TURTLE:
-                    tag = "turtle_master";
-                    break;
-                case POISON:
-                    tag = "poison";
-                    break;
-                case AWKWARD:
-                    tag = "awkward";
-                    break;
-                case WATER:
-                    tag = "water";
-                    break;
-                case THICK:
-                    tag = "thick";
-                    break;
-                case EMPTY:
-                    tag = "empty";
-                    break;
-            }
+            String tag = switch (type) {
+                case JUMP -> "leaping";
+                case LUCK -> "luck";
+                case REGEN -> "regeneration";
+                case SPEED -> "swiftness";
+                case FIRE_RESISTANCE -> "fire_resistance";
+                case INSTANT_DAMAGE -> "harming";
+                case INSTANT_HEAL -> "healing";
+                case WATER_BREATHING -> "water_breathing";
+                case SLOW_FALLING -> "slow_falling";
+                case NIGHT_VISION -> "night_vision";
+                case INVISIBILITY -> "invisibility";
+                case WEAKNESS -> "weakness";
+                case STRENGTH -> "strength";
+                case SLOWNESS -> "slowness";
+                case MUNDANE -> "mundane";
+                case TURTLE -> "turtle_master";
+                case POISON -> "poison";
+                case AWKWARD -> "awkward";
+                case WATER -> "water";
+                case THICK -> "thick";
+                case EMPTY -> "empty";
+                default -> "";
+            };
             if (extended) {
                 tag = "long_" + tag;
             } else if (strong) {
@@ -485,8 +443,7 @@ public class PotionUtil {
      */
     @Override
     public boolean equals(Object object) {
-        if (object instanceof PotionUtil) {
-            PotionUtil test = (PotionUtil) object;
+        if (object instanceof PotionUtil test) {
             return test.type.equals(type) && test.extended == extended && test.linger == linger && test.splash == splash;
         }
         return false;

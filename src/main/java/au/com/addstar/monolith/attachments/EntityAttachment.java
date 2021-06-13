@@ -22,12 +22,12 @@
 
 package au.com.addstar.monolith.attachments;
 
+import com.google.common.base.Functions;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
+import java.util.function.Function;
 
 public class EntityAttachment<T extends Entity> extends Attachment {
     private final T entity;
@@ -45,7 +45,7 @@ public class EntityAttachment<T extends Entity> extends Attachment {
 
     public EntityAttachment(T entity, Function<? super T, Vector> offsetFunction) {
         this.entity = entity;
-        this.offsetFunction = offsetFunction;
+        this.offsetFunction = offsetFunction::apply;
 
         locationCache = entity.getLocation();
     }

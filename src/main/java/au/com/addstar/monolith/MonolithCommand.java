@@ -26,6 +26,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class MonolithCommand implements CommandExecutor {
     Monolith plugin;
@@ -37,7 +38,7 @@ public class MonolithCommand implements CommandExecutor {
     // Very simple command handler for Monolith
     // Eventually if this is expanded, it should use Monolith's Command interface.. but I'm not so familiar with that
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         // Op only for Monolith commands
         if (!sender.isOp()) {
             return false;
@@ -51,15 +52,12 @@ public class MonolithCommand implements CommandExecutor {
 
         // Check arguments (only debug at this stage)
         switch (args[0].toUpperCase()) {
-            case "DEBUG":
+            case "DEBUG" -> {
                 plugin.DebugMode = !plugin.DebugMode;
                 sender.sendMessage(ChatColor.RED + "Monolith debugging is now "
-                        + (Monolith.getInstance().DebugMode ? "ON" : "OFF"));
-                break;
-
-            default:
-                showMonolithHelp(sender);
-                break;
+                      + (Monolith.getInstance().DebugMode ? "ON" : "OFF"));
+            }
+            default -> showMonolithHelp(sender);
         }
         return true;
     }

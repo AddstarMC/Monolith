@@ -46,13 +46,14 @@ import au.com.addstar.monolith.util.DynamicEnum;
 
 import static au.com.addstar.monolith.template.internal.EntityTemplateSetting.*;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({"unused","rawtypes"})
 public final class EntitySettings {
     @SuppressWarnings("unchecked")
     public static Iterable<EntityTemplateSetting> values() {
         return Iterables.concat(All.getInstance().values(), Living.getInstance().values(), Damageable.getInstance().values(), Explosive.getInstance().values(), Projectile.getInstance().values(), Ageable.getInstance().values(), Specific.getInstance().values());
     }
 
+    @SuppressWarnings("unused")
     public static final class All extends DynamicEnum<EntityTemplateSetting> {
         public static final EntityTemplateSetting<String> CustomName = create("customName", Entity.class, "setCustomName", String.class, "displayName", "name");
         public static final EntityTemplateSetting<Boolean> CustomNameVisible = createWithDefault("customNameVisible", Entity.class, "setCustomNameVisible", false, "displayNameVisible", "nameVisible");
@@ -74,6 +75,7 @@ public final class EntitySettings {
         }
     }
 
+    @SuppressWarnings("unused")
     public static final class Living extends DynamicEnum<EntityTemplateSetting> {
         public static final EntityTemplateSetting<Boolean> CanPickupItems = createWithDefault("canPickupItems", LivingEntity.class, "setCanPickupItems", false, "allowPickup");
         public static final EntityTemplateSetting<Integer> MaximumAir = create("maximumAir", LivingEntity.class, "setMaximumAir", Integer.class, "maxAir");
@@ -95,6 +97,7 @@ public final class EntitySettings {
         }
     }
 
+    @SuppressWarnings("unused")
     public static final class Damageable extends DynamicEnum<EntityTemplateSetting> {
         public static final EntityTemplateSetting<Double> Health = createWithDefault("health", org.bukkit.entity.Damageable.class, "setHealth", 20.0);
         private static final Damageable instance = new Damageable();
@@ -107,6 +110,7 @@ public final class EntitySettings {
         }
     }
 
+    @SuppressWarnings("unused")
     public static final class Explosive extends DynamicEnum<EntityTemplateSetting> {
         public static final EntityTemplateSetting<Float> Yield = create("yield", org.bukkit.entity.Explosive.class, "setYield", Float.class);
         public static final EntityTemplateSetting<Boolean> Incendiary = create("incendiary", org.bukkit.entity.Explosive.class, "setIsIncendiary", Boolean.class);
@@ -121,6 +125,7 @@ public final class EntitySettings {
         }
     }
 
+    @SuppressWarnings("unused")
     public static final class Projectile extends DynamicEnum<EntityTemplateSetting> {
         public static final EntityTemplateSetting<Boolean> Bounce = create("bounce", org.bukkit.entity.Projectile.class, "setBounce", Boolean.class);
         private static final Projectile instance = new Projectile();
@@ -134,6 +139,7 @@ public final class EntitySettings {
         }
     }
 
+    @SuppressWarnings("unused")
     public static final class Ageable extends DynamicEnum<EntityTemplateSetting> {
         public static final EntityTemplateSetting<Integer> Age = create("age", org.bukkit.entity.Ageable.class, "setAge", Integer.class);
         public static final EntityTemplateSetting<Boolean> CanBreed = create("canBreed", org.bukkit.entity.Ageable.class, "setBreed", Boolean.class);
@@ -153,6 +159,7 @@ public final class EntitySettings {
         }
     }
 
+    @SuppressWarnings("unused")
     public static final class MineCart extends DynamicEnum<EntityTemplateSetting> {
         public static final EntityTemplateSetting<Double> Damage = create("damage", Minecart
                 .class, "setDamage", Double.class);
@@ -169,6 +176,7 @@ public final class EntitySettings {
 
     }
 
+    @SuppressWarnings("unused")
     public static final class Armorstand extends DynamicEnum<EntityTemplateSetting> {
         public static final EntityTemplateSetting<ItemStack> Boots = create("boots", ArmorStand.class, "setBoots", ItemStack.class);
         public static final EntityTemplateSetting<ItemStack> Chestplate = create("chestplate", ArmorStand.class, "setChestplate", ItemStack.class);
@@ -191,6 +199,7 @@ public final class EntitySettings {
         }
     }
 
+    @SuppressWarnings("unused")
     public static final class Specific extends DynamicEnum<EntityTemplateSetting> {
         public static final EntityTemplateSetting<ItemStack> Item_ItemStack = create("item", org.bukkit.entity.Item.class, "setItemStack", ItemStack.class, "itemstack");
         public static final EntityTemplateSetting<Integer> Item_PickupDelay = create("pickupDelay", org.bukkit.entity.Item.class, "setPickupDelay", Integer.class);

@@ -54,7 +54,7 @@ public class MonoItemStack extends ItemStack {
     private static final Field NMSStack_Tag;
 
     private static final Field BukkitStack_UnhandledTags;
-    private static Class<?> craftItemStackClass;
+    private static final Class<?> craftItemStackClass;
 
     static {
         // Work out how to get the NBT data from item stacks

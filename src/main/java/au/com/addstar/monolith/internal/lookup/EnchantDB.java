@@ -61,6 +61,7 @@ public class EnchantDB extends FlatDb<Enchantment> {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     Enchantment getObject(String... string) {
         String key = StringUtils.trim(string[0]).toLowerCase();

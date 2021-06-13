@@ -22,10 +22,10 @@
 
 package au.com.addstar.monolith.util;
 
-import org.bukkit.attribute.Attribute;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import org.bukkit.attribute.Attribute;
+
 
 public class Attributes {
     private static final BiMap<Attribute, String> ids;

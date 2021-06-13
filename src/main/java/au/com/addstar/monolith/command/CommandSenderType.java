@@ -53,29 +53,21 @@ public enum CommandSenderType {
     }
 
     public boolean matches(CommandSender sender) {
-        switch (this) {
-            case Player:
-                return (sender instanceof org.bukkit.entity.Player);
-            case Block:
-                return (sender instanceof BlockCommandSender);
-            case Console:
-                return (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender);
-            default:
-                return false;
-        }
+        return switch (this) {
+            case Player -> (sender instanceof org.bukkit.entity.Player);
+            case Block -> (sender instanceof BlockCommandSender);
+            case Console -> (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender);
+            default -> false;
+        };
     }
 
     @Override
     public String toString() {
-        switch (this) {
-            case Block:
-                return "Command Block";
-            case Console:
-                return "Console";
-            case Player:
-                return "Player";
-            default:
-                return name();
-        }
+        return switch (this) {
+            case Block -> "Command Block";
+            case Console -> "Console";
+            case Player -> "Player";
+            default -> name();
+        };
     }
 }

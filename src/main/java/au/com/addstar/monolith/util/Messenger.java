@@ -46,7 +46,7 @@ public class Messenger {
      * @param text {@link TextComponent}
      */
     public static void sendMessageAll(Component text) {
-        audiences.all().sendMessage(text);
+        audiences.all().sendMessage(Identity.nil(),text);
     }
 
     /**
@@ -76,7 +76,7 @@ public class Messenger {
      * @param player MonoPlayer
      */
     public static void sendTitle(TextComponent title, TextComponent subTitle, CommandSender player) {
-        Title out = Title.of(title,subTitle);
+        Title out = Title.title(title, subTitle);
         sendTitle(out,player);
     }
 

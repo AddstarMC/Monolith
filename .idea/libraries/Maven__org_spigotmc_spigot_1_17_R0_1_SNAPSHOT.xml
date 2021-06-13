@@ -8,6 +8,8 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/org/spigotmc/spigot/1.17-R0.1-SNAPSHOT/spigot-1.17-R0.1-SNAPSHOT-sources.jar!/" />
+      <root url="file://F:/Server/builder/buildtools/Spigot/Spigot-API/src/main/java" />
+      <root url="file://F:/Server/builder/buildtools/Spigot/Spigot-Server/src/main/java" />
     </SOURCES>
   </library>
 </component>

@@ -58,7 +58,7 @@ public class ItemMetaBuilder {
     /**
      * The item.
      */
-    private ItemStack item;
+    private final ItemStack item;
     /**
      * True if it has NBT.
      */

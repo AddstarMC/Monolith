@@ -176,7 +176,7 @@ public abstract class AutoConfig {
             // Make sure the file exists
             if (!file.exists()) {
                 if (!file.getParentFile().mkdirs() || !file.createNewFile()) {
-                    Logger.getLogger(pluginName).warning(file.toString() + " could not be"
+                    Logger.getLogger(pluginName).warning(file + " could not be"
                             + " created");
                 }
             }
@@ -217,10 +217,6 @@ public abstract class AutoConfig {
                                     + field.getType().getSimpleName() + " for AutoConfiguration");
                         }
                     } else if (List.class.isAssignableFrom(field.getType())) {
-                        if (field.getGenericType() == null) {
-                            throw new IllegalArgumentException("Cannot use type List without "
-                                    + "specifying generic type for AutoConfiguration");
-                        }
 
                         Type type = ((ParameterizedType) field.getGenericType())
                                 .getActualTypeArguments()[0];
@@ -252,14 +248,9 @@ public abstract class AutoConfig {
                                             yml.getStringList(path)));
                         } else {
                             throw new IllegalArgumentException("Cannot use type "
-                                    + field.getType().getSimpleName() + "<" + type.toString()
-                                    + "> for AutoConfiguration");
+                                    + field.getType().getSimpleName() + "<" + type + "> for AutoConfiguration");
                         }
                     } else if (Set.class.isAssignableFrom(field.getType())) {
-                        if (field.getGenericType() == null) {
-                            throw new IllegalArgumentException("Cannot use type set without "
-                                    + "specifying generic type for AytoConfiguration");
-                        }
                         Type type = ((ParameterizedType) field.getGenericType())
                                 .getActualTypeArguments()[0];
                         if (type.equals(Integer.class)) {
@@ -285,7 +276,7 @@ public abstract class AutoConfig {
                                     yml.getStringList(path)));
                         } else {
                             throw new IllegalArgumentException("Cannot use type "
-                                    + field.getType().getSimpleName() + "<" + type.toString()
+                                    + field.getType().getSimpleName() + "<" + type
                                     + "> for AutoConfiguration");
                         }
                     } else {
@@ -379,10 +370,6 @@ public abstract class AutoConfig {
                                 + field.getType().getSimpleName() + " for AutoConfiguration");
                     }
                 } else if (List.class.isAssignableFrom(field.getType())) {
-                    if (field.getGenericType() == null) {
-                        throw new IllegalArgumentException("Cannot use type List without "
-                                + "specifying generic type for AutoConfiguration");
-                    }
                     Type type = ((ParameterizedType) field.getGenericType())
                             .getActualTypeArguments()[0];
 
@@ -393,14 +380,10 @@ public abstract class AutoConfig {
                         config.set(path, field.get(this));
                     } else {
                         throw new IllegalArgumentException("Cannot use type "
-                                + field.getType().getSimpleName() + "<" + type.toString()
+                                + field.getType().getSimpleName() + "<" + type
                                 + "> for AutoConfiguration");
                     }
                 } else if (Set.class.isAssignableFrom(field.getType())) {
-                    if (field.getGenericType() == null) {
-                        throw new IllegalArgumentException("Cannot use type Set without specifying"
-                                + " generic type for AutoConfiguration");
-                    }
 
                     Type type = ((ParameterizedType) field.getGenericType())
                             .getActualTypeArguments()[0];
@@ -412,8 +395,7 @@ public abstract class AutoConfig {
                         config.set(path, new ArrayList<Object>((Set<?>) field.get(this)));
                     } else {
                         throw new IllegalArgumentException("Cannot use type "
-                                + field.getType().getSimpleName() + "<" + type.toString()
-                                + "> for AutoConfiguration");
+                                + field.getType().getSimpleName() + "<" + type + "> for AutoConfiguration");
                     }
                 } else {
                     // Integer

@@ -35,7 +35,7 @@ public class ItemUtil {
     /**
      * Convert {@link ItemStack} to string or null}
      * @param item Itemstack
-     * @return
+     * @return String
      */
     public static String getItemNbtString(ItemStack item) {
         try {
@@ -44,11 +44,14 @@ public class ItemUtil {
             Class<?> nbtTagCompoundClass = Crafty.findNmsClass("NBTTagCompound");
             MethodHandle asNMSCopy = Crafty.findStaticMethod(craftItemStack, "asNMSCopy", nmsItemClass,ItemStack.class);
             MethodHandle getTag = Crafty.findMethod(nmsItemClass, "getTag", nbtTagCompoundClass);
-            Object nmsStack = asNMSCopy.invokeWithArguments(item);
-            return getTag.invokeWithArguments(nmsStack).toString();
+            Object nmsStack = null;
+            if (asNMSCopy != null && getTag != null) {
+                nmsStack = asNMSCopy.invokeWithArguments(item);
+                return getTag.invokeWithArguments(nmsStack).toString();
+            }
         } catch (Throwable t) {
             Monolith.getInstance().getLogger().warning("[MONOLITH] " + t.getMessage());
-            return null;
         }
+        return null;
     }
 }

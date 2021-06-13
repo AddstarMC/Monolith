@@ -431,7 +431,7 @@ public class Raytrace {
         Air
     }
 
-    public class Hit implements Comparable<Hit> {
+    public static class Hit implements Comparable<Hit> {
         private final Location mPosition;
         private double mDistance;
         private final HitType mType;
@@ -489,15 +489,11 @@ public class Raytrace {
 
         @Override
         public String toString() {
-            switch (mType) {
-                default:
-                case Air:
-                    return String.format("Hit AIR at %.0f,%.0f,%.0f dist %.2f", mPosition.getX(), mPosition.getY(), mPosition.getZ(), mDistance);
-                case Block:
-                    return String.format("Hit BLOCK %s on face %s at %.0f,%.0f,%.0f dist %.2f", mBlock.getType(), mBlockFace, mPosition.getX(), mPosition.getY(), mPosition.getZ(), mDistance);
-                case Entity:
-                    return String.format("Hit ENTITY %s at %.0f,%.0f,%.0f dist %.2f", mEntity.getType(), mPosition.getX(), mPosition.getY(), mPosition.getZ(), mDistance);
-            }
+            return switch (mType) {
+                case Air -> String.format("Hit AIR at %.0f,%.0f,%.0f dist %.2f", mPosition.getX(), mPosition.getY(), mPosition.getZ(), mDistance);
+                case Block -> String.format("Hit BLOCK %s on face %s at %.0f,%.0f,%.0f dist %.2f", mBlock.getType(), mBlockFace, mPosition.getX(), mPosition.getY(), mPosition.getZ(), mDistance);
+                case Entity -> String.format("Hit ENTITY %s at %.0f,%.0f,%.0f dist %.2f", mEntity.getType(), mPosition.getX(), mPosition.getY(), mPosition.getZ(), mDistance);
+            };
         }
 
         @Override

@@ -24,6 +24,8 @@ package au.com.addstar.monolith.internal.messages;
 
 import com.google.common.collect.HashBiMap;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class MessageType {
     private static final HashBiMap<String, Class<?>> mTypeMap;
 
@@ -43,10 +45,10 @@ public class MessageType {
             if (clazz == null)
                 return null;
 
-            return (Message<?>) clazz.newInstance();
+            return (Message<?>) clazz.getDeclaredConstructor().newInstance();
         } catch (IllegalAccessException e) {
             throw new AssertionError(e);
-        } catch (InstantiationException e) {
+        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
             return null;
         }

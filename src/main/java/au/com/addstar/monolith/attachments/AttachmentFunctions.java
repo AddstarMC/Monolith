@@ -26,7 +26,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-import com.google.common.base.Function;
+import java.util.function.Function;
+
 
 public final class AttachmentFunctions {
     private AttachmentFunctions() {
@@ -74,19 +75,13 @@ public final class AttachmentFunctions {
 
             // Final compute
             staging.setX(
-                    (forward.getX() * offset.getZ()) +
-                            (left.getX() * -offset.getX()) +
-                            (up.getX() * offset.getY())
+                    (forward.getX() * offset.getZ()) + (left.getX() * -offset.getX()) + (up.getX() * offset.getY())
             );
             staging.setY(
-                    (forward.getY() * offset.getZ()) +
-                            (left.getY() * -offset.getX()) +
-                            (up.getY() * offset.getY())
+                    (forward.getY() * offset.getZ()) + (left.getY() * -offset.getX()) + (up.getY() * offset.getY())
             );
             staging.setZ(
-                    (forward.getZ() * offset.getZ()) +
-                            (left.getZ() * -offset.getX()) +
-                            (up.getZ() * offset.getY())
+                    (forward.getZ() * offset.getZ()) + (left.getZ() * -offset.getX()) + (up.getZ() * offset.getY())
             );
 
             return staging;

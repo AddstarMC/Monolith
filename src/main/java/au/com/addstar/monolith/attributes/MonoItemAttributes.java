@@ -62,24 +62,12 @@ public class MonoItemAttributes implements ItemAttributes {
         EquipmentSlot slot = null;
         if (rawSlot != null) {
             switch (rawSlot) {
-                case "mainhand":
-                    slot = EquipmentSlot.HAND;
-                    break;
-                case "offhand":
-                    slot = EquipmentSlot.OFF_HAND;
-                    break;
-                case "head":
-                    slot = EquipmentSlot.HEAD;
-                    break;
-                case "chest":
-                    slot = EquipmentSlot.CHEST;
-                    break;
-                case "legs":
-                    slot = EquipmentSlot.LEGS;
-                    break;
-                case "feet":
-                    slot = EquipmentSlot.FEET;
-                    break;
+                case "mainhand" -> slot = EquipmentSlot.HAND;
+                case "offhand" -> slot = EquipmentSlot.OFF_HAND;
+                case "head" -> slot = EquipmentSlot.HEAD;
+                case "chest" -> slot = EquipmentSlot.CHEST;
+                case "legs" -> slot = EquipmentSlot.LEGS;
+                case "feet" -> slot = EquipmentSlot.FEET;
             }
         }
 
@@ -127,8 +115,7 @@ public class MonoItemAttributes implements ItemAttributes {
     public void addModifier(Attribute attribute, ItemAttributeModifier modifier) {
         // Check that the UUID is unique
         for (NBTBase aList : list) {
-            if (aList instanceof NBTTagCompound) {
-                NBTTagCompound tag = (NBTTagCompound) aList;
+            if (aList instanceof NBTTagCompound tag) {
                 if (modifier.getUniqueId().equals(tag.a(KeyUUID)))
                     throw new IllegalArgumentException("UUID must be unique across all modifiers");
             }
@@ -143,8 +130,7 @@ public class MonoItemAttributes implements ItemAttributes {
     public void removeModifier(ItemAttributeModifier modifier) {
         // Find the modifier
         for (int i = 0; i < list.size(); ++i) {
-            if (list.get(i) instanceof NBTTagCompound) {
-                NBTTagCompound tag = (NBTTagCompound) list.get(i);
+            if (list.get(i) instanceof NBTTagCompound tag) {
                 if (modifier.getUniqueId().equals(tag.a(KeyUUID))) {
                     // Remove it
                     list.remove(i);
@@ -159,9 +145,8 @@ public class MonoItemAttributes implements ItemAttributes {
         String id = Attributes.getId(attribute);
 
         for (int i = 0; i < list.size(); ++i) {
-            if (list.get(i) instanceof NBTTagCompound) {
+            if (list.get(i) instanceof NBTTagCompound tag) {
 
-                NBTTagCompound tag = (NBTTagCompound) list.get(i);
                 if (id.equals(tag.getString(KeyAttributeName))) {
                     // Remove it
                     list.remove(i);
@@ -181,8 +166,7 @@ public class MonoItemAttributes implements ItemAttributes {
     @Override
     public ItemAttributeModifier getModifier(UUID id) {
         for (NBTBase aList : list) {
-            if (aList instanceof NBTTagCompound) {
-                NBTTagCompound tag = (NBTTagCompound) aList;
+            if (aList instanceof NBTTagCompound tag) {
                 if (id.equals(tag.a(KeyUUID)))
                     return readModifier(tag);
             }
@@ -212,8 +196,7 @@ public class MonoItemAttributes implements ItemAttributes {
 
     private void modifyModifier(String id, List<ItemAttributeModifier> modifiers, String keyAttributeName) {
         for (NBTBase aList : list) {
-            if (aList instanceof NBTTagCompound) {
-                NBTTagCompound tag = (NBTTagCompound) aList;
+            if (aList instanceof NBTTagCompound tag) {
                 if (id.equals(tag.getString(keyAttributeName)))
                     modifiers.add(readModifier(tag));
             }
