@@ -24,8 +24,6 @@ package au.com.addstar.monolith.internal.lookup;
 
 import au.com.addstar.monolith.Monolith;
 
-import org.bukkit.Material;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;

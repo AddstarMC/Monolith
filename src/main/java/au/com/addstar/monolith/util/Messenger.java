@@ -22,7 +22,6 @@
 
 package au.com.addstar.monolith.util;
 
-import au.com.addstar.monolith.MonoPlayer;
 import au.com.addstar.monolith.Monolith;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
