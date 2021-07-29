@@ -32,16 +32,16 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import   net.minecraft.server.v1_16_R2.NBTBase;
-import   net.minecraft.server.v1_16_R2.NBTTagByte;
-import   net.minecraft.server.v1_16_R2.NBTTagCompound;
-import   net.minecraft.server.v1_16_R2.NBTTagDouble;
-import   net.minecraft.server.v1_16_R2.NBTTagFloat;
-import   net.minecraft.server.v1_16_R2.NBTTagInt;
-import   net.minecraft.server.v1_16_R2.NBTTagList;
-import   net.minecraft.server.v1_16_R2.NBTTagLong;
-import   net.minecraft.server.v1_16_R2.NBTTagShort;
-import   net.minecraft.server.v1_16_R2.NBTTagString;
+import net.minecraft.server.v1_16_R3.NBTBase;
+import net.minecraft.server.v1_16_R3.NBTTagByte;
+import net.minecraft.server.v1_16_R3.NBTTagCompound;
+import net.minecraft.server.v1_16_R3.NBTTagDouble;
+import net.minecraft.server.v1_16_R3.NBTTagFloat;
+import net.minecraft.server.v1_16_R3.NBTTagInt;
+import net.minecraft.server.v1_16_R3.NBTTagList;
+import net.minecraft.server.v1_16_R3.NBTTagLong;
+import net.minecraft.server.v1_16_R3.NBTTagShort;
+import net.minecraft.server.v1_16_R3.NBTTagString;
 
 /**
  * Represents a property that holds any object that implements the

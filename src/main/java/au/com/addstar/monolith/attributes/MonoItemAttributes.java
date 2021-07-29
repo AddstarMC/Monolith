@@ -34,9 +34,9 @@ import org.bukkit.inventory.EquipmentSlot;
 import com.google.common.collect.Lists;
 
 import au.com.addstar.monolith.util.Attributes;
-import   net.minecraft.server.v1_16_R2.NBTBase;
-import   net.minecraft.server.v1_16_R2.NBTTagCompound;
-import   net.minecraft.server.v1_16_R2.NBTTagList;
+import net.minecraft.server.v1_16_R3.NBTBase;
+import net.minecraft.server.v1_16_R3.NBTTagCompound;
+import net.minecraft.server.v1_16_R3.NBTTagList;
 
 public class MonoItemAttributes implements ItemAttributes {
     private static final String KeyUUID = "UUID";
