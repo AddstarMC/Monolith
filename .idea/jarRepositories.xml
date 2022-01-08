@@ -57,6 +57,11 @@
       <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="sonatype-oss-snapshots" />
+      <option name="name" value="sonatype-oss-snapshots" />
+      <option name="url" value="https://oss.sonatype.org/content/repositories/snapshots/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="codeMc" />
       <option name="name" value="codeMc" />
       <option name="url" value="https://repo.codemc.org/repository/maven-releases/" />
