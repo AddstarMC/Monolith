@@ -31,6 +31,7 @@ import au.com.addstar.monolith.internal.lookup.PotionsDB;
 import au.com.addstar.monolith.util.Crafty;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -237,7 +238,7 @@ public class Lookup {
                 return null;
             else
                 return list.get(0);
-        });
+        }, MoreExecutors.directExecutor());
     }
 
     /**
@@ -273,7 +274,7 @@ public class Lookup {
                 return null;
             else
                 return list.get(0);
-        });
+        }, MoreExecutors.directExecutor());
     }
 
     /**
