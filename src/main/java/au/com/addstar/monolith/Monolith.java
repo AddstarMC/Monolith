@@ -142,6 +142,7 @@ public class Monolith extends JavaPlugin {
         mInstance = this;
         Lookup.initialize(this);
         audienceProvider = BukkitAudiences.create(this);
+        Messenger.init(this);
         Bukkit.getPluginManager().registerEvents(new Listeners(), this);
         try {
             getCommand("monolith").setExecutor(new MonolithCommand(this));
@@ -151,6 +152,18 @@ public class Monolith extends JavaPlugin {
         mGeSuitHandler = new GeSuitHandler(this);
         getLogger().info("enabled");
 
+    }
+
+    @Override
+    public void onDisable() {
+        if (audienceProvider != null) {
+            try {
+                audienceProvider.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Messenger.close();
     }
 
     public GeSuitHandler getGeSuitHandler() {

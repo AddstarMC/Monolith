@@ -504,9 +504,9 @@ public abstract class AutoConfig {
             for (String line : lines) {
                 output.append(line).append("\n");
             }
-            FileWriter writer = new FileWriter(file);
-            writer.write(output.toString());
-            writer.close();
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(output.toString());
+            }
             return true;
         } catch (IllegalArgumentException | IOException | IllegalAccessException e) {
             e.printStackTrace();
