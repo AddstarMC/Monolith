@@ -50,30 +50,29 @@ public abstract class FlatDb<T> {
     }
 
     public void load(InputStream stream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
-        int count = 0;
-        while (reader.ready()) {
-            String line = reader.readLine();
-            if (line.startsWith("#"))
-                continue;
-            String[] parts = line.split(",");
-            if (parts.length < 2)
-                continue;
-            String name = parts[0];
-            List<String> search = new ArrayList<>();
-            for (int i = 0; i < parts.length; i++) {
-                if (i == 0) continue;
-                search.add(parts[i]);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+            int count = 0;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("#"))
+                    continue;
+                String[] parts = line.split(",");
+                if (parts.length < 2)
+                    continue;
+                String name = parts[0];
+                List<String> search = new ArrayList<>();
+                for (int i = 1; i < parts.length; i++) {
+                    search.add(parts[i]);
+                }
+                String[] s = search.toArray(new String[0]);
+                T obj = getObject(s);
+                if (obj == null)
+                    continue;
+                saveObject(name.toLowerCase(), obj);
+                count++;
             }
-            String[] s = search.toArray(new String[0]);
-            T obj = getObject(s);
-            if (obj == null)
-                continue;
-            saveObject(name.toLowerCase(), obj);
-            count++;
+            Monolith.getInstance().getLogger().log(Level.INFO, this.getClass().getName() + " added " + count + " search items");
         }
-        Monolith.getInstance().getLogger().log(Level.INFO, this.getClass().getName() + " added " + count + " search items");
     }
 
     abstract T getObject(String... string);

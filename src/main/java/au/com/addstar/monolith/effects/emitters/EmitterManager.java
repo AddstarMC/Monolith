@@ -49,7 +49,10 @@ public class EmitterManager {
     }
 
     public void stopTickTask() {
-        task.cancel();
+        if (task != null) {
+            task.cancel();
+            task = null;
+        }
     }
 
     /**

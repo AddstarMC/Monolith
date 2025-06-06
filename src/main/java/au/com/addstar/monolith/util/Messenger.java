@@ -37,7 +37,21 @@ import org.bukkit.command.CommandSender;
  */
 public class Messenger {
 
-    private static BukkitAudiences audiences = BukkitAudiences.create(Monolith.getInstance());
+    private static BukkitAudiences audiences;
+
+    public static void init(Monolith plugin) {
+        if (audiences != null) {
+            audiences.close();
+        }
+        audiences = BukkitAudiences.create(plugin);
+    }
+
+    public static void close() {
+        if (audiences != null) {
+            audiences.close();
+            audiences = null;
+        }
+    }
 
     /**
      * Send a TextComponent to all.
