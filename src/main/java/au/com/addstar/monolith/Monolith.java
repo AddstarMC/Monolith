@@ -25,6 +25,7 @@ package au.com.addstar.monolith;
 import au.com.addstar.monolith.internal.GeSuitHandler;
 import au.com.addstar.monolith.lookup.Lookup;
 import au.com.addstar.monolith.util.Crafty;
+import au.com.addstar.monolith.util.Messenger;
 import net.kyori.adventure.platform.AudienceProvider;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
